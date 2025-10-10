@@ -14,7 +14,8 @@ object RemoteConfigKeys {
     const val APP_VERSION_MIN = "app_version_min"
     const val FORCE_UPDATE = "force_update"
     
-    // Ad configs (for future use)
+    // Ad configs
+    const val SPLASH_AD_TYPE = "splash_ad_type" // Values: "interstitial", "app_open", "none"
     const val SHOW_ADS = "show_ads"
     const val AD_INTERVAL = "ad_interval"
 }

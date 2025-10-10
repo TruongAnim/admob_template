@@ -34,6 +34,7 @@ class RemoteConfigHelper {
             RemoteConfigKeys.IS_FEATURE_ENABLED to false,
             RemoteConfigKeys.APP_VERSION_MIN to "1.0.0",
             RemoteConfigKeys.FORCE_UPDATE to false,
+            RemoteConfigKeys.SPLASH_AD_TYPE to "interstitial", // Default: interstitial
             RemoteConfigKeys.SHOW_ADS to true,
             RemoteConfigKeys.AD_INTERVAL to 30
         )
@@ -92,6 +93,7 @@ class RemoteConfigHelper {
         println("  - ${RemoteConfigKeys.IS_FEATURE_ENABLED}: ${getBoolean(RemoteConfigKeys.IS_FEATURE_ENABLED)}")
         println("  - ${RemoteConfigKeys.APP_VERSION_MIN}: ${getString(RemoteConfigKeys.APP_VERSION_MIN)}")
         println("  - ${RemoteConfigKeys.FORCE_UPDATE}: ${getBoolean(RemoteConfigKeys.FORCE_UPDATE)}")
+        println("  - ${RemoteConfigKeys.SPLASH_AD_TYPE}: ${getString(RemoteConfigKeys.SPLASH_AD_TYPE)}")
         println("  - ${RemoteConfigKeys.SHOW_ADS}: ${getBoolean(RemoteConfigKeys.SHOW_ADS)}")
         println("  - ${RemoteConfigKeys.AD_INTERVAL}: ${getLong(RemoteConfigKeys.AD_INTERVAL)}")
     }

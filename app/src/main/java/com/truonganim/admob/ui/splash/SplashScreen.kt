@@ -1,5 +1,6 @@
 package com.truonganim.admob.ui.splash
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,15 +38,25 @@ import com.truonganim.admob.ui.theme.AdMobBaseTheme
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel = viewModel(),
-    onLoadingComplete: () -> Unit = {}
+    onAdReadyToShow: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+    val activity = context as? Activity
+
     val loadingProgress by viewModel.loadingProgress.collectAsState()
-    val isLoadingComplete by viewModel.isLoadingComplete.collectAsState()
-    
-    // Navigate when loading is complete
-    LaunchedEffect(isLoadingComplete) {
-        if (isLoadingComplete) {
-            onLoadingComplete()
+    val shouldShowAd by viewModel.shouldShowAd.collectAsState()
+
+    // Start loading when screen is first composed
+    LaunchedEffect(Unit) {
+        activity?.let {
+            viewModel.startLoading(it)
+        }
+    }
+
+    // Trigger ad show when loading is complete
+    LaunchedEffect(shouldShowAd) {
+        if (shouldShowAd) {
+            onAdReadyToShow()
         }
     }
     
