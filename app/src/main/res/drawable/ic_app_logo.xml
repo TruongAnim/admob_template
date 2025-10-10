@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Background circle -->
+    <path
+        android:fillColor="#6200EE"
+        android:pathData="M60,60m-55,0a55,55 0,1 1,110 0a55,55 0,1 1,-110 0"/>
+    
+    <!-- Letter A shape -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,30L75,70L68,70L65,62L55,62L52,70L45,70L60,30ZM60,42L57,54L63,54L60,42Z"/>
+    
+    <!-- Small circle accent -->
+    <path
+        android:fillColor="#03DAC6"
+        android:pathData="M85,45m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"/>
+</vector>
+
