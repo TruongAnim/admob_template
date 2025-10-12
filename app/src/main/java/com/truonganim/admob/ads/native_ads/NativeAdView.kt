@@ -21,6 +21,7 @@ import com.truonganim.admob.R
  * Native Ad View Composable
  * Displays a native ad using AndroidView
  * Observes StateFlow from NativeAdManager to automatically update when ad is loaded
+ * Shows skeleton loading while ad is being loaded
  */
 @Composable
 fun NativeAdView(
@@ -43,8 +44,8 @@ fun NativeAdView(
         }
     }
 
-    // Display ad if loaded
-    nativeAd?.let { ad ->
+    // Display ad if loaded, otherwise show skeleton
+    if (nativeAd != null) {
         println("✅ Displaying native ad for position: ${position.name}")
         AndroidView(
             modifier = modifier.fillMaxWidth(),
@@ -55,10 +56,13 @@ fun NativeAdView(
                     false
                 ) as com.google.android.gms.ads.nativead.NativeAdView
 
-                populateNativeAdView(ad, adView)
+                populateNativeAdView(nativeAd!!, adView)
                 adView
             }
         )
+    } else {
+        println("⏳ Showing skeleton for position: ${position.name}")
+        NativeAdSkeleton(modifier = modifier)
     }
 }
 
