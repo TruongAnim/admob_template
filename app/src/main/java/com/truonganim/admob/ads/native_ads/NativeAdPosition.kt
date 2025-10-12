@@ -13,14 +13,23 @@ enum class NativeAdPosition(
     val layoutResId: Int
 ) {
     /**
-     * Native ad at the bottom of Language Selection screen
+     * Native ad at the bottom of Language Selection screen (initial)
      * Uses medium layout with image
      */
     LANGUAGE_SCREEN(
         adUnitId = BuildConfig.NATIVE_AD_LANGUAGE_SCREEN,
         layoutResId = R.layout.native_ad_medium
     ),
-    
+
+    /**
+     * Native ad at the bottom of Language Selection screen (after language selected)
+     * Uses medium layout with image
+     */
+    LANGUAGE_SCREEN_2(
+        adUnitId = BuildConfig.NATIVE_AD_LANGUAGE_SCREEN_2,
+        layoutResId = R.layout.native_ad_medium
+    ),
+
     /**
      * Native ad on Home screen
      * Uses medium layout

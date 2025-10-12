@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +50,9 @@ fun LanguageScreen(
 ) {
     val languages by viewModel.languages.collectAsState()
     val selectedLanguage by viewModel.selectedLanguage.collectAsState()
-    println("truonghehe-1")
+    val isLoading by viewModel.isLoading.collectAsState()
+    val isFirstSelection by viewModel.isFirstSelection.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -118,15 +122,36 @@ fun LanguageScreen(
         }
 
         // Native Ad at the bottom
+        // Show LANGUAGE_SCREEN if first selection, otherwise LANGUAGE_SCREEN_2
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
         ) {
             NativeAdView(
-                position = NativeAdPosition.LANGUAGE_SCREEN,
+                position = if (isFirstSelection) {
+                    NativeAdPosition.LANGUAGE_SCREEN
+                } else {
+                    NativeAdPosition.LANGUAGE_SCREEN_2
+                },
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+
+        // Loading overlay
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(64.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    strokeWidth = 6.dp
+                )
+            }
         }
     }
 }
