@@ -1,5 +1,6 @@
 package com.truonganim.admob.ui.language
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -32,6 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.truonganim.admob.ads.native_ads.NativeAdPosition
+import com.truonganim.admob.ads.native_ads.NativeAdView
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
 /**
@@ -45,67 +48,85 @@ fun LanguageScreen(
 ) {
     val languages by viewModel.languages.collectAsState()
     val selectedLanguage by viewModel.selectedLanguage.collectAsState()
-    
-    Column(
+    println("truonghehe-1")
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Top Bar with Title and Apply Button
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            // Title
-            Text(
-                text = "Language",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.weight(1f)
-            )
-
-            // Apply Button (only visible when language is selected)
-            AnimatedVisibility(
-                visible = selectedLanguage != null,
-                enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
-                exit = fadeOut() + slideOutVertically(targetOffsetY = { -it })
+            // Top Bar with Title and Apply Button
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Button(
-                    onClick = {
-                        viewModel.confirmLanguage()
-                        onLanguageConfirmed()
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
+                // Title
+                Text(
+                    text = "Language",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.weight(1f)
+                )
+
+                // Apply Button (only visible when language is selected)
+                AnimatedVisibility(
+                    visible = selectedLanguage != null,
+                    enter = fadeIn() + slideInVertically(initialOffsetY = { -it }),
+                    exit = fadeOut() + slideOutVertically(targetOffsetY = { -it })
                 ) {
-                    Text(
-                        text = "Apply",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                    Button(
+                        onClick = {
+                            viewModel.confirmLanguage()
+                            onLanguageConfirmed()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text(
+                            text = "Apply",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            // Language List
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                items(languages) { language ->
+                    LanguageItem(
+                        language = language,
+                        isSelected = selectedLanguage?.code == language.code,
+                        onClick = {
+                            viewModel.selectLanguage(language)
+                        }
                     )
                 }
             }
         }
 
-        // Language List
-        LazyColumn(
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxSize()
+        // Native Ad at the bottom
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
         ) {
-            items(languages) { language ->
-                LanguageItem(
-                    language = language,
-                    isSelected = selectedLanguage?.code == language.code,
-                    onClick = {
-                        viewModel.selectLanguage(language)
-                    }
-                )
-            }
+            NativeAdView(
+                position = NativeAdPosition.LANGUAGE_SCREEN,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

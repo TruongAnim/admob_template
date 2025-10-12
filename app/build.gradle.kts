@@ -21,6 +21,11 @@ android {
         // Ad IDs - Using test IDs from AdMob
         buildConfigField("String", "SPLASH_INTERSTITIAL_AD_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
         buildConfigField("String", "SPLASH_APP_OPEN_AD_ID", "\"ca-app-pub-3940256099942544/9257395921\"")
+
+        // Native Ad IDs
+        buildConfigField("String", "NATIVE_AD_LANGUAGE_SCREEN", "\"ca-app-pub-3940256099942544/2247696110\"")
+        buildConfigField("String", "NATIVE_AD_HOME_SCREEN", "\"ca-app-pub-3940256099942544/2247696110\"")
+        buildConfigField("String", "NATIVE_AD_LIST_ITEM", "\"ca-app-pub-3940256099942544/2247696110\"")
     }
 
     buildTypes {
@@ -64,6 +69,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.play.services.ads)
+    implementation(libs.androidx.cardview)
+    implementation(libs.material)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
