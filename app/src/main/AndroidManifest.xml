@@ -25,6 +25,14 @@
             </intent-filter>
         </activity>
 
+        <!-- Onboarding Activity -->
+        <activity
+            android:name=".ui.onboarding.OnboardingActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AdMobBase">
+        </activity>
+
         <!-- Language Selection Activity -->
         <activity
             android:name=".ui.language.LanguageActivity"

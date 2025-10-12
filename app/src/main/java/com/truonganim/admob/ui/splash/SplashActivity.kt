@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
-import com.truonganim.admob.ui.language.LanguageActivity
+import com.truonganim.admob.ui.onboarding.OnboardingActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
 /**
@@ -38,22 +38,22 @@ class SplashActivity : ComponentActivity() {
     }
 
     /**
-     * Show ad (if any) and navigate to MainActivity
+     * Show ad (if any) and navigate to Onboarding
      */
     private fun showAdAndNavigate() {
         viewModel.showAd(
             activity = this,
             onAdClosed = {
-                navigateToMain()
+                navigateToOnboarding()
             }
         )
     }
 
     /**
-     * Navigate to Language Selection Activity
+     * Navigate to Onboarding Activity
      */
-    private fun navigateToMain() {
-        val intent = Intent(this, LanguageActivity::class.java)
+    private fun navigateToOnboarding() {
+        val intent = Intent(this, OnboardingActivity::class.java)
         startActivity(intent)
         finish() // Close splash activity
     }
