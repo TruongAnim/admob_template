@@ -6,8 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.truonganim.admob.MainActivity
+import com.truonganim.admob.datastore.PreferencesManager
+import com.truonganim.admob.ui.language.LanguageActivity
 import com.truonganim.admob.ui.onboarding.OnboardingActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
+import kotlinx.coroutines.launch
 
 /**
  * Splash Activity
@@ -38,24 +43,53 @@ class SplashActivity : ComponentActivity() {
     }
 
     /**
-     * Show ad (if any) and navigate to Onboarding
+     * Show ad (if any) and navigate based on onboarding status
      */
     private fun showAdAndNavigate() {
         viewModel.showAd(
             activity = this,
             onAdClosed = {
-                navigateToOnboarding()
+                checkOnboardingAndNavigate()
             }
         )
     }
 
     /**
-     * Navigate to Onboarding Activity
+     * Check onboarding status and navigate accordingly
+     * - If onboarding completed: Navigate to MainActivity
+     * - If onboarding not completed: Navigate to LanguageActivity
      */
-    private fun navigateToOnboarding() {
-        val intent = Intent(this, OnboardingActivity::class.java)
+    private fun checkOnboardingAndNavigate() {
+        lifecycleScope.launch {
+            val preferencesManager = PreferencesManager.getInstance(this@SplashActivity)
+            val isOnboardingCompleted = preferencesManager.isOnboardingCompletedSync()
+
+            if (isOnboardingCompleted) {
+                println("✅ Onboarding already completed, navigating to MainActivity")
+                navigateToMain()
+            } else {
+                println("⚠️ Onboarding not completed, navigating to LanguageActivity")
+                navigateToLanguage()
+            }
+        }
+    }
+
+    /**
+     * Navigate to Language Activity
+     */
+    private fun navigateToLanguage() {
+        val intent = Intent(this, LanguageActivity::class.java)
         startActivity(intent)
-        finish() // Close splash activity
+        finish()
+    }
+
+    /**
+     * Navigate to Main Activity
+     */
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     /**

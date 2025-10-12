@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.truonganim.admob.ui.language.LanguageActivity
+import androidx.lifecycle.lifecycleScope
+import com.truonganim.admob.MainActivity
+import com.truonganim.admob.datastore.PreferencesManager
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
+import kotlinx.coroutines.launch
 
 /**
  * Onboarding Activity
@@ -39,12 +42,20 @@ class OnboardingActivity : ComponentActivity() {
     }
     
     /**
-     * Navigate to Language Selection screen
+     * Navigate to Main screen and mark onboarding as completed
      */
     private fun navigateToLanguageScreen() {
-        val intent = Intent(this, LanguageActivity::class.java)
-        startActivity(intent)
-        finish()
+        lifecycleScope.launch {
+            // Mark onboarding as completed
+            val preferencesManager = PreferencesManager.getInstance(this@OnboardingActivity)
+            preferencesManager.setOnboardingCompleted(true)
+            println("✅ Onboarding completed!")
+
+            // Navigate to Main screen
+            val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
     
     /**

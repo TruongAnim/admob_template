@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
-import com.truonganim.admob.MainActivity
+import com.truonganim.admob.ui.onboarding.OnboardingActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
 /**
@@ -28,7 +28,7 @@ class LanguageActivity : ComponentActivity() {
                 LanguageScreen(
                     viewModel = viewModel,
                     onLanguageConfirmed = {
-                        navigateToMain()
+                        navigateToOnboarding()
                     }
                 )
             }
@@ -36,10 +36,10 @@ class LanguageActivity : ComponentActivity() {
     }
     
     /**
-     * Navigate to MainActivity after language is confirmed
+     * Navigate to Onboarding after language is confirmed
      */
-    private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun navigateToOnboarding() {
+        val intent = Intent(this, OnboardingActivity::class.java)
         startActivity(intent)
         finish() // Close language activity
     }

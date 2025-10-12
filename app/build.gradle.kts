@@ -80,4 +80,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.config)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
 }
