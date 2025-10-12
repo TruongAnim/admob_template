@@ -3,6 +3,7 @@ package com.truonganim.admob.ui.onboarding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,11 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.truonganim.admob.ads.native_ads.NativeAdPosition
+import com.truonganim.admob.ads.native_ads.NativeAdView
 import com.truonganim.admob.data.OnboardingPage
 
 /**
  * Onboarding Page Item
  * Displays a single onboarding page with title and image
+ * Ad and indicator are handled separately in OnboardingScreen
  */
 @Composable
 fun OnboardingPageItem(
@@ -35,7 +39,8 @@ fun OnboardingPageItem(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -48,9 +53,9 @@ fun OnboardingPageItem(
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
-        
-        Spacer(modifier = Modifier.height(48.dp))
-        
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         // Image content
         Image(
             painter = painterResource(id = page.imageRes),
@@ -59,8 +64,6 @@ fun OnboardingPageItem(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        
-        Spacer(modifier = Modifier.height(48.dp))
     }
 }
 

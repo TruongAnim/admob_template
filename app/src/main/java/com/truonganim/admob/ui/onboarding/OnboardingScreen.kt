@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -25,6 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.truonganim.admob.ads.native_ads.NativeAdPosition
+import com.truonganim.admob.ads.native_ads.NativeAdView
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
 /**
@@ -53,64 +56,82 @@ fun OnboardingScreen(
         }
     }
     
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+        // Horizontal Pager - Title and Image
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) { page ->
+            OnboardingPageItem(
+                page = pages[page],
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        // Dot Indicator or Get Started button
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
-            // Horizontal Pager
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) { page ->
-                OnboardingPageItem(
-                    page = pages[page],
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-            
-            // Bottom section: Dot Indicator or Get Started button
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 48.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                if (currentPage == pages.size - 1) {
-                    // Last page: Show "Get Started" button
-                    Button(
-                        onClick = {
-                            println("🚀 Get Started clicked!")
-                            onGetStarted()
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(
-                            text = "Get Started",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        )
-                    }
-                } else {
-                    // Other pages: Show dot indicator
-                    DotIndicator(
-                        totalDots = pages.size,
-                        selectedIndex = currentPage,
-                        modifier = Modifier.padding(16.dp)
+            if (currentPage == pages.size - 1) {
+                // Last page: Show "Get Started" button
+                Button(
+                    onClick = {
+                        println("🚀 Get Started clicked!")
+                        onGetStarted()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text(
+                        text = "Get Started",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(vertical = 8.dp)
                     )
                 }
+            } else {
+                // Other pages: Show dot indicator
+                DotIndicator(
+                    totalDots = pages.size,
+                    selectedIndex = currentPage,
+                    modifier = Modifier.padding(16.dp)
+                )
             }
+        }
+
+        // Native Ad at the bottom (for pages 1 and 3)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(340.dp), // Fixed height to maintain consistent layout
+            contentAlignment = Alignment.Center
+        ) {
+            // Determine which ad position to show
+            val adPosition = when (currentPage) {
+                0 -> NativeAdPosition.ONBOARDING_PAGE_1  // Page 1 (index 0)
+                2 -> NativeAdPosition.ONBOARDING_PAGE_3  // Page 3 (index 2)
+                else -> null  // Pages 2 and 4 have no ads
+            }
+
+            if (adPosition != null) {
+                NativeAdView(
+                    position = adPosition,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            // If no ad, just empty space to maintain consistent layout
         }
     }
 }

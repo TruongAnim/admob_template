@@ -31,6 +31,24 @@ enum class NativeAdPosition(
     ),
 
     /**
+     * Native ad on Onboarding Page 1
+     * Uses medium layout
+     */
+    ONBOARDING_PAGE_1(
+        adUnitId = BuildConfig.NATIVE_AD_ONBOARDING_PAGE_1,
+        layoutResId = R.layout.native_ad_medium
+    ),
+
+    /**
+     * Native ad on Onboarding Page 3
+     * Uses medium layout
+     */
+    ONBOARDING_PAGE_3(
+        adUnitId = BuildConfig.NATIVE_AD_ONBOARDING_PAGE_3,
+        layoutResId = R.layout.native_ad_medium
+    ),
+
+    /**
      * Native ad on Home screen
      * Uses medium layout
      */

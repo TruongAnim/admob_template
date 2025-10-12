@@ -34,6 +34,10 @@ class AdMobBaseApplication : Application() {
     private fun preloadNativeAds() {
         val adManager = NativeAdManager.getInstance()
 
+        // Preload onboarding screen ads
+        adManager.preloadAd(this, NativeAdPosition.ONBOARDING_PAGE_1)
+        adManager.preloadAd(this, NativeAdPosition.ONBOARDING_PAGE_3)
+
         // Preload language screen ads
         adManager.preloadAd(this, NativeAdPosition.LANGUAGE_SCREEN)
         adManager.preloadAd(this, NativeAdPosition.LANGUAGE_SCREEN_2)
