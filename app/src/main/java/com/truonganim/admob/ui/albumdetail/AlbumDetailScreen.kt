@@ -38,6 +38,7 @@ import com.truonganim.admob.data.Character
 fun AlbumDetailScreen(
     albumCategory: AlbumCategory,
     onBackClick: () -> Unit,
+    onCharacterClick: (Int) -> Unit = {},
     viewModel: AlbumDetailViewModel = viewModel(
         factory = AlbumDetailViewModelFactory(albumCategory)
     )
@@ -56,7 +57,9 @@ fun AlbumDetailScreen(
         AlbumDetailContent(
             characters = uiState.characters,
             isLoading = uiState.isLoading,
-            onCharacterClick = viewModel::onCharacterClick,
+            onCharacterClick = { character ->
+                onCharacterClick(character.id)
+            },
             onFavoriteClick = viewModel::onFavoriteClick,
             modifier = Modifier.padding(paddingValues)
         )

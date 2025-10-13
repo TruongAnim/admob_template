@@ -61,8 +61,7 @@ class AlbumDetailViewModel(
     }
     
     fun onCharacterClick(character: Character) {
-        // TODO: Navigate to character detail screen
-        // This will be implemented later
+        // Navigation is handled by the screen composable
     }
     
     fun onFavoriteClick(character: Character) {
