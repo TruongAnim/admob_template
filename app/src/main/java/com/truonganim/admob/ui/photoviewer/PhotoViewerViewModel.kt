@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.data.CharacterRepository
 import com.truonganim.admob.utils.ImageUtils
 import com.truonganim.admob.utils.WallpaperHelper
@@ -115,6 +116,7 @@ class PhotoViewerViewModel(
     
     /**
      * Set current photo as wallpaper
+     * Uses the method configured in AppConfig.Wallpaper.SET_WALLPAPER_METHOD
      */
     fun onSetWallpaperClick(context: Context) {
         val currentPhoto = _uiState.value.photos.getOrNull(_uiState.value.currentPhotoIndex)
@@ -128,7 +130,8 @@ class PhotoViewerViewModel(
             WallpaperHelper.setWallpaperFromUrl(
                 context = context,
                 imageUrl = currentPhoto,
-                wallpaperType = WallpaperHelper.WallpaperType.BOTH
+                wallpaperType = AppConfig.Wallpaper.DEFAULT_WALLPAPER_TYPE,
+                method = AppConfig.Wallpaper.SET_WALLPAPER_METHOD
             )
 
             _uiState.value = _uiState.value.copy(isSettingWallpaper = false)
