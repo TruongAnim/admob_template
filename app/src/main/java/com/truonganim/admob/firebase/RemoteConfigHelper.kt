@@ -36,7 +36,8 @@ class RemoteConfigHelper {
             RemoteConfigKeys.FORCE_UPDATE to false,
             RemoteConfigKeys.SPLASH_AD_TYPE to "interstitial", // Default: interstitial
             RemoteConfigKeys.SHOW_ADS to true,
-            RemoteConfigKeys.AD_INTERVAL to 30
+            RemoteConfigKeys.AD_INTERVAL to 30,
+            RemoteConfigKeys.ALBUM_DATA to "[]" // Empty array as default
         )
         remoteConfig.setDefaultsAsync(defaults)
     }

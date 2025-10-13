@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.ui.albums.AlbumsScreen
 import com.truonganim.admob.ui.favorites.FavoritesScreen
 import com.truonganim.admob.ui.settings.SettingsScreen
@@ -20,7 +21,9 @@ import com.truonganim.admob.ui.settings.SettingsScreen
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onAlbumClick: (AlbumCategory) -> Unit = {}
+) {
     val navController = rememberNavController()
     
     Scaffold(
@@ -64,7 +67,9 @@ fun HomeScreen() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Albums.route) {
-                AlbumsScreen()
+                AlbumsScreen(
+                    onAlbumClick = onAlbumClick
+                )
             }
             composable(BottomNavItem.Favorites.route) {
                 FavoritesScreen()

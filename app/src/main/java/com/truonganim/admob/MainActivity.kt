@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.truonganim.admob.ui.home.HomeScreen
+import com.truonganim.admob.navigation.AppNavigation
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AdMobBaseTheme {
-                HomeScreen()
+                AppNavigation()
             }
         }
     }

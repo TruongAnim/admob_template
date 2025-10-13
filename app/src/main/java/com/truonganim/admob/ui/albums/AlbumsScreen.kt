@@ -21,12 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.truonganim.admob.data.Album
+import com.truonganim.admob.data.AlbumCategory
 
 /**
  * Albums Screen
  */
 @Composable
 fun AlbumsScreen(
+    onAlbumClick: (AlbumCategory) -> Unit = {},
     viewModel: AlbumsViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -34,7 +36,9 @@ fun AlbumsScreen(
     AlbumsContent(
         albums = uiState.albums,
         isLoading = uiState.isLoading,
-        onAlbumClick = viewModel::onAlbumClick
+        onAlbumClick = { album ->
+            onAlbumClick(album.category)
+        }
     )
 }
 

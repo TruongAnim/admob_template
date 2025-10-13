@@ -18,5 +18,8 @@ object RemoteConfigKeys {
     const val SPLASH_AD_TYPE = "splash_ad_type" // Values: "interstitial", "app_open", "none"
     const val SHOW_ADS = "show_ads"
     const val AD_INTERVAL = "ad_interval"
+
+    // Album data
+    const val ALBUM_DATA = "album_data"
 }
 
