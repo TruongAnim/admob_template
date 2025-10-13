@@ -54,8 +54,7 @@ class CharacterDetailViewModel(
     }
     
     fun onPhotoClick(photoIndex: Int) {
-        // TODO: Open full screen photo viewer
-        // This will be implemented later
+        // Navigation is handled by the screen composable
     }
     
     fun onFavoriteClick() {

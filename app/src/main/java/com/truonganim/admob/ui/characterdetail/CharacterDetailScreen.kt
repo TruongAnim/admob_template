@@ -36,6 +36,7 @@ import coil.compose.rememberAsyncImagePainter
 fun CharacterDetailScreen(
     characterId: Int,
     onBackClick: () -> Unit,
+    onPhotoClick: (Int) -> Unit = {},
     viewModel: CharacterDetailViewModel = viewModel(
         factory = CharacterDetailViewModelFactory(characterId)
     )
@@ -55,7 +56,7 @@ fun CharacterDetailScreen(
         CharacterDetailContent(
             photos = uiState.character?.photos ?: emptyList(),
             isLoading = uiState.isLoading,
-            onPhotoClick = viewModel::onPhotoClick,
+            onPhotoClick = onPhotoClick,
             modifier = Modifier.padding(paddingValues)
         )
     }

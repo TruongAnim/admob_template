@@ -11,6 +11,7 @@ import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.ui.albumdetail.AlbumDetailScreen
 import com.truonganim.admob.ui.characterdetail.CharacterDetailScreen
 import com.truonganim.admob.ui.home.HomeScreen
+import com.truonganim.admob.ui.photoviewer.PhotoViewerScreen
 
 /**
  * Navigation Routes
@@ -19,6 +20,7 @@ object Routes {
     const val HOME = "home"
     const val ALBUM_DETAIL = "album_detail/{albumCategory}"
     const val CHARACTER_DETAIL = "character_detail/{characterId}"
+    const val PHOTO_VIEWER = "photo_viewer/{characterId}/{photoIndex}"
 
     fun albumDetail(albumCategory: AlbumCategory): String {
         return "album_detail/${albumCategory.name}"
@@ -26,6 +28,10 @@ object Routes {
 
     fun characterDetail(characterId: Int): String {
         return "character_detail/$characterId"
+    }
+
+    fun photoViewer(characterId: Int, photoIndex: Int): String {
+        return "photo_viewer/$characterId/$photoIndex"
     }
 }
 
@@ -85,6 +91,33 @@ fun AppNavigation(
 
             CharacterDetailScreen(
                 characterId = characterId,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onPhotoClick = { photoIndex ->
+                    navController.navigate(Routes.photoViewer(characterId, photoIndex))
+                }
+            )
+        }
+
+        // Photo Viewer Screen
+        composable(
+            route = Routes.PHOTO_VIEWER,
+            arguments = listOf(
+                navArgument("characterId") {
+                    type = NavType.IntType
+                },
+                navArgument("photoIndex") {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
+            val photoIndex = backStackEntry.arguments?.getInt("photoIndex") ?: 0
+
+            PhotoViewerScreen(
+                characterId = characterId,
+                initialPhotoIndex = photoIndex,
                 onBackClick = {
                     navController.popBackStack()
                 }
