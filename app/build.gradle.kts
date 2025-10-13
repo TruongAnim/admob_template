@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -74,6 +75,7 @@ dependencies {
     implementation(libs.play.services.ads)
     implementation(libs.androidx.cardview)
     implementation(libs.material)
+    implementation(libs.androidx.material.icons.extended)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
@@ -82,5 +84,4 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
-
 }
