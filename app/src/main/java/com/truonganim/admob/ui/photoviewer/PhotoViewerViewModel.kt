@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.truonganim.admob.data.CharacterRepository
 import com.truonganim.admob.utils.ImageUtils
+import com.truonganim.admob.utils.WallpaperHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +23,8 @@ data class PhotoViewerUiState(
     val currentPhotoIndex: Int = 0,
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
-    val isSharing: Boolean = false
+    val isSharing: Boolean = false,
+    val isSettingWallpaper: Boolean = false
 )
 
 /**
@@ -112,6 +114,28 @@ class PhotoViewerViewModel(
     }
     
     /**
+     * Set current photo as wallpaper
+     */
+    fun onSetWallpaperClick(context: Context) {
+        val currentPhoto = _uiState.value.photos.getOrNull(_uiState.value.currentPhotoIndex)
+        if (currentPhoto == null) {
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSettingWallpaper = true)
+
+            WallpaperHelper.setWallpaperFromUrl(
+                context = context,
+                imageUrl = currentPhoto,
+                wallpaperType = WallpaperHelper.WallpaperType.BOTH
+            )
+
+            _uiState.value = _uiState.value.copy(isSettingWallpaper = false)
+        }
+    }
+
+    /**
      * Check if storage permission is needed
      */
     private fun needsStoragePermission(context: Context): Boolean {
@@ -119,12 +143,12 @@ class PhotoViewerViewModel(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return false
         }
-        
+
         // Android 10-12 doesn't need permission when using MediaStore with scoped storage
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return false
         }
-        
+
         // Android 9 and below needs WRITE_EXTERNAL_STORAGE
         return ContextCompat.checkSelfPermission(
             context,

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,6 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.ui.components.GradientButton
+import com.truonganim.admob.ui.components.GradientPresets
 
 /**
  * Photo Viewer Screen - Full screen photo viewer with swipe
@@ -80,14 +83,15 @@ fun PhotoViewerScreen(
                     }
                 }
             },
-            onMiddleButtonClick = {
-                // TODO: Implement middle button action
+            onSetWallpaperClick = {
+                viewModel.onSetWallpaperClick(context)
             },
             onShareClick = {
                 viewModel.onShareClick(context)
             },
             isSaving = uiState.isSaving,
             isSharing = uiState.isSharing,
+            isSettingWallpaper = uiState.isSettingWallpaper,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
@@ -159,47 +163,58 @@ private fun PhotoViewerTopBar(
 @Composable
 private fun PhotoViewerBottomBar(
     onSaveClick: () -> Unit,
-    onMiddleButtonClick: () -> Unit,
+    onSetWallpaperClick: () -> Unit,
     onShareClick: () -> Unit,
     isSaving: Boolean,
     isSharing: Boolean,
+    isSettingWallpaper: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(bottom = 32.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Save Button
-        ActionButton(
-            onClick = onSaveClick,
-            icon = Icons.Default.Download,
-            contentDescription = "Save",
-            isLoading = isSaving
+        // Row 1: Set Wallpaper Button (Gradient)
+        GradientButton(
+            text = "SET WALLPAPER",
+            onClick = onSetWallpaperClick,
+            icon = Icons.Default.Wallpaper,
+            isLoading = isSettingWallpaper,
+            gradientColors = GradientPresets.Aurora,
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .height(56.dp),
+            cornerRadius = 28.dp
         )
-        
-        Spacer(modifier = Modifier.width(24.dp))
-        
-        // Middle Button (TODO)
-        ActionButton(
-            onClick = onMiddleButtonClick,
-            icon = Icons.Default.Download, // Placeholder icon
-            contentDescription = "Action",
-            isLoading = false
-        )
-        
-        Spacer(modifier = Modifier.width(24.dp))
-        
-        // Share Button
-        ActionButton(
-            onClick = onShareClick,
-            icon = Icons.Default.Share,
-            contentDescription = "Share",
-            isLoading = isSharing
-        )
+
+        // Row 2: Save and Share Buttons
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Save Button
+            ActionButton(
+                onClick = onSaveClick,
+                icon = Icons.Default.Download,
+                contentDescription = "Save",
+                isLoading = isSaving
+            )
+
+            Spacer(modifier = Modifier.width(32.dp))
+
+            // Share Button
+            ActionButton(
+                onClick = onShareClick,
+                icon = Icons.Default.Share,
+                contentDescription = "Share",
+                isLoading = isSharing
+            )
+        }
     }
 }
 
