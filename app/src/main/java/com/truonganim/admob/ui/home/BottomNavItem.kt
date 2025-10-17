@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -25,15 +26,21 @@ sealed class BottomNavItem(
         title = "Favorites",
         icon = Icons.Default.Favorite
     )
-    
+
+    object Games : BottomNavItem(
+        route = "games",
+        title = "Games",
+        icon = Icons.Default.SportsEsports
+    )
+
     object Settings : BottomNavItem(
         route = "settings",
         title = "Settings",
         icon = Icons.Default.Settings
     )
-    
+
     companion object {
-        val items = listOf(Albums, Favorites, Settings)
+        val items = listOf(Albums, Favorites, Games, Settings)
     }
 }
 

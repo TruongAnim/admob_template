@@ -1,6 +1,7 @@
 package com.truonganim.admob.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albumdetail.AlbumDetailScreen
 import com.truonganim.admob.ui.characterdetail.CharacterDetailScreen
 import com.truonganim.admob.ui.home.HomeScreen
@@ -43,6 +45,7 @@ object Routes {
 fun AppNavigation(
     navController: NavHostController = rememberNavController()
 ) {
+    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = Routes.HOME
@@ -64,6 +67,11 @@ fun AppNavigation(
                     val photoIndex = allPhotos.indexOf(photoUrl).coerceAtLeast(0)
                     // Navigate to PhotoViewer with FAVOURITE_PHOTOS_ID
                     navController.navigate(Routes.photoViewer(AppCharacter.FAVOURITE_PHOTOS_ID, photoIndex))
+                },
+                onGameClick = { game ->
+                    // Start game activity
+                    val intent = Game.createIntent(context, game)
+                    context.startActivity(intent)
                 }
             )
         }

@@ -60,6 +60,14 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.AdMobBase">
         </activity>
+
+        <!-- Game Activities -->
+        <activity
+            android:name=".games.taptozoom.TapToZoomGameActivity"
+            android:exported="false"
+            android:label="Tap to Zoom"
+            android:theme="@style/Theme.AdMobBase">
+        </activity>
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
         android:name="com.google.android.gms.ads.APPLICATION_ID"

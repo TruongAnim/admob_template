@@ -13,8 +13,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albums.AlbumsScreen
 import com.truonganim.admob.ui.favorites.FavoritesScreen
+import com.truonganim.admob.ui.games.GamesScreen
 import com.truonganim.admob.ui.settings.SettingsScreen
 
 /**
@@ -26,7 +28,8 @@ fun HomeScreen(
     onAlbumClick: (AlbumCategory) -> Unit = {},
     onCharacterClick: (Int) -> Unit = {},
     onPhotoClick: (String) -> Unit = {},
-    onFavouritePhotoClick: (String, List<String>) -> Unit = { _, _ -> }
+    onFavouritePhotoClick: (String, List<String>) -> Unit = { _, _ -> },
+    onGameClick: (Game) -> Unit = {}
 ) {
     val navController = rememberNavController()
     
@@ -85,6 +88,11 @@ fun HomeScreen(
                     onViewAllPhotosClick = {
                         onCharacterClick(AppCharacter.FAVOURITE_PHOTOS_ID)
                     }
+                )
+            }
+            composable(BottomNavItem.Games.route) {
+                GamesScreen(
+                    onGameClick = onGameClick
                 )
             }
             composable(BottomNavItem.Settings.route) {
