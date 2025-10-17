@@ -68,6 +68,14 @@
             android:label="Tap to Zoom"
             android:theme="@style/Theme.AdMobBase">
         </activity>
+
+        <!-- App Resume Ad Activity -->
+        <activity
+            android:name=".ads.AppResumeAdActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AdMobBase"
+            android:launchMode="singleTop">
+        </activity>
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
         android:name="com.google.android.gms.ads.APPLICATION_ID"

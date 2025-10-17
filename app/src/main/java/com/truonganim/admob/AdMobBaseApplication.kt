@@ -5,12 +5,15 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import com.truonganim.admob.ads.native_ads.NativeAdManager
 import com.truonganim.admob.ads.native_ads.NativeAdPosition
+import com.truonganim.admob.lifecycle.AppLifecycleObserver
 
 /**
  * Application class
  * Initialize Firebase, AdMob and other app-wide components
  */
 class AdMobBaseApplication : Application() {
+
+    private lateinit var appLifecycleObserver: AppLifecycleObserver
 
     override fun onCreate() {
         super.onCreate()
@@ -26,6 +29,10 @@ class AdMobBaseApplication : Application() {
             // Preload native ads after AdMob is initialized
             preloadNativeAds()
         }
+
+        // Initialize app lifecycle observer for app open ads
+        appLifecycleObserver = AppLifecycleObserver(this)
+        println("👁️ App lifecycle observer initialized!")
     }
 
     /**

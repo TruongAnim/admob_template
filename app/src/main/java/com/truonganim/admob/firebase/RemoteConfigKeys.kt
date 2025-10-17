@@ -19,6 +19,9 @@ object RemoteConfigKeys {
     const val SHOW_ADS = "show_ads"
     const val AD_INTERVAL = "ad_interval"
 
+    // App Open Ad config (JSON format)
+    const val APP_OPEN_AD_CONFIG = "app_open_ad_config"
+
     // Album data
     const val ALBUM_DATA = "album_data"
 }
