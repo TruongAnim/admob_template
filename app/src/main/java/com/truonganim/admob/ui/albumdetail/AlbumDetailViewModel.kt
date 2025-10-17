@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.truonganim.admob.data.AlbumCategory
-import com.truonganim.admob.data.Character
+import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  */
 data class AlbumDetailUiState(
     val albumCategory: AlbumCategory = AlbumCategory.NORMAL,
-    val characters: List<Character> = emptyList(),
+    val appCharacters: List<AppCharacter> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -50,7 +50,7 @@ class AlbumDetailViewModel(
                 val characters = characterRepository.getCharactersByAlbum(albumCategory)
                 
                 _uiState.value = _uiState.value.copy(
-                    characters = characters,
+                    appCharacters = characters,
                     isLoading = false
                 )
             } catch (e: Exception) {
@@ -62,13 +62,13 @@ class AlbumDetailViewModel(
         }
     }
     
-    fun onCharacterClick(character: Character) {
+    fun onCharacterClick(appCharacter: AppCharacter) {
         // Navigation is handled by the screen composable
     }
     
-    fun onFavoriteClick(character: Character) {
+    fun onFavoriteClick(appCharacter: AppCharacter) {
         viewModelScope.launch {
-            characterRepository.toggleFavorite(character.id)
+            characterRepository.toggleFavorite(appCharacter.id)
             // Reload characters to update UI
             loadCharacters()
         }

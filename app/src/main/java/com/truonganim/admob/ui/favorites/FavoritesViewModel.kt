@@ -3,7 +3,7 @@ package com.truonganim.admob.ui.favorites
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.truonganim.admob.data.Character
+import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
 import com.truonganim.admob.data.PhotoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * Favorites Screen UI State
  */
 data class FavoritesUiState(
-    val favoriteCharacters: List<Character> = emptyList(),
+    val favoriteAppCharacters: List<AppCharacter> = emptyList(),
     val favoritePhotos: List<String> = emptyList(),
     val isLoading: Boolean = false
 )
@@ -52,14 +52,14 @@ class FavoritesViewModel(
             val favouritePhotos = photoRepository.getFavouritePhotos()
 
             _uiState.value = _uiState.value.copy(
-                favoriteCharacters = favouriteCharacters,
+                favoriteAppCharacters = favouriteCharacters,
                 favoritePhotos = favouritePhotos,
                 isLoading = false
             )
         }
     }
 
-    fun onCharacterClick(character: Character) {
+    fun onCharacterClick(appCharacter: AppCharacter) {
         // Navigation is handled by the screen composable
     }
 
@@ -67,9 +67,9 @@ class FavoritesViewModel(
         // Navigation is handled by the screen composable
     }
 
-    fun onCharacterFavoriteClick(character: Character) {
+    fun onCharacterFavoriteClick(appCharacter: AppCharacter) {
         viewModelScope.launch {
-            characterRepository.toggleFavorite(character.id)
+            characterRepository.toggleFavorite(appCharacter.id)
             loadFavorites()
         }
     }

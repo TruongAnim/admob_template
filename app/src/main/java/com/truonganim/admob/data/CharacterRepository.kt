@@ -16,8 +16,8 @@ class CharacterRepository private constructor(private val context: Context) {
     private val remoteConfigHelper = RemoteConfigHelper.getInstance()
     private val preferencesManager = PreferencesManager.getInstance(context)
 
-    private val _characters = MutableStateFlow<List<Character>>(emptyList())
-    val characters: StateFlow<List<Character>> = _characters.asStateFlow()
+    private val _characters = MutableStateFlow<List<AppCharacter>>(emptyList())
+    val characters: StateFlow<List<AppCharacter>> = _characters.asStateFlow()
 
     private val _favorites = MutableStateFlow<Set<Int>>(emptySet())
     val favorites: StateFlow<Set<Int>> = _favorites.asStateFlow()
@@ -40,8 +40,8 @@ class CharacterRepository private constructor(private val context: Context) {
      */
     suspend fun loadCharacters() {
         val jsonString = remoteConfigHelper.getString(RemoteConfigKeys.ALBUM_DATA)
-        val characterList = Character.fromJsonArray(jsonString)
-        _characters.value = characterList
+        val appCharacterList = AppCharacter.fromJsonArray(jsonString)
+        _characters.value = appCharacterList
 
         // Load favourites and update character list
         loadFavourites()
@@ -50,14 +50,19 @@ class CharacterRepository private constructor(private val context: Context) {
     /**
      * Get characters by album category
      */
-    fun getCharactersByAlbum(albumCategory: AlbumCategory): List<Character> {
-        return _characters.value.filterByAlbum(albumCategory)
+    fun getCharactersByAlbum(albumCategory: AlbumCategory): List<AppCharacter> {
+        return if (albumCategory == AlbumCategory.FAVOURITE) {
+            // Return favourite characters for special FAVOURITE category
+            _characters.value.filter { it.isFavorite }
+        } else {
+            _characters.value.filterByAlbum(albumCategory)
+        }
     }
     
     /**
      * Get character by ID
      */
-    fun getCharacterById(id: Int): Character? {
+    fun getCharacterById(id: Int): AppCharacter? {
         return _characters.value.find { it.id == id }
     }
     
@@ -96,7 +101,7 @@ class CharacterRepository private constructor(private val context: Context) {
     /**
      * Get all favorite characters
      */
-    fun getFavoriteCharacters(): List<Character> {
+    fun getFavoriteCharacters(): List<AppCharacter> {
         return _characters.value.filter { it.isFavorite }
     }
     
@@ -122,6 +127,7 @@ class CharacterRepository private constructor(private val context: Context) {
             AlbumCategory.ROLE_PLAY -> "role_play"
             AlbumCategory.HARD -> "hard"
             AlbumCategory.FULL -> "full"
+            AlbumCategory.FAVOURITE -> "favourite"
         }
         
         _characters.value = _characters.value.map { character ->

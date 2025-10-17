@@ -9,7 +9,8 @@ enum class AlbumCategory(val displayName: String) {
     NORMAL("NORMAL"),
     ROLE_PLAY("ROLE PLAY"),
     HARD("H.A.R.D"),
-    FULL("FULL")
+    FULL("FULL"),
+    FAVOURITE("FAVOURITES") // Special category for favourite characters
 }
 
 /**

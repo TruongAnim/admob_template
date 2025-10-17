@@ -3,7 +3,7 @@ package com.truonganim.admob.ui.characterdetail
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.truonganim.admob.data.Character
+import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
 import com.truonganim.admob.data.PhotoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * Character Detail Screen UI State
  */
 data class CharacterDetailUiState(
-    val character: Character? = null,
+    val appCharacter: AppCharacter? = null,
     val favouritePhotoUrls: Set<String> = emptySet(),
     val isLoading: Boolean = false,
     val error: String? = null
@@ -45,9 +45,15 @@ class CharacterDetailViewModel(
             _uiState.value = _uiState.value.copy(isLoading = true)
 
             try {
-                val character = characterRepository.getCharacterById(characterId)
+                val appCharacter = if (characterId == AppCharacter.FAVOURITE_PHOTOS_ID) {
+                    // Create a special character for favourite photos
+                    createFavouritePhotosCharacter()
+                } else {
+                    characterRepository.getCharacterById(characterId)
+                }
+
                 _uiState.value = _uiState.value.copy(
-                    character = character,
+                    appCharacter = appCharacter,
                     isLoading = false
                 )
             } catch (e: Exception) {
@@ -57,6 +63,24 @@ class CharacterDetailViewModel(
                 )
             }
         }
+    }
+
+    private suspend fun createFavouritePhotosCharacter(): AppCharacter {
+        // Get all favourite photos
+        val favouritePhotos = photoRepository.getFavouritePhotos()
+
+        return AppCharacter(
+            id = AppCharacter.FAVOURITE_PHOTOS_ID,
+            name = "Favourite Photos",
+            album = "favourite",
+            order = 0,
+            adCount = 0,
+            thumbnail = favouritePhotos.firstOrNull() ?: "",
+            photos = favouritePhotos,
+            isFavorite = false,
+            isUnlocked = true,
+            currentPhotoIndex = 0
+        )
     }
 
     private fun loadFavouritePhotos() {
@@ -74,7 +98,7 @@ class CharacterDetailViewModel(
 
     fun onCharacterFavoriteClick() {
         viewModelScope.launch {
-            _uiState.value.character?.let { character ->
+            _uiState.value.appCharacter?.let { character ->
                 characterRepository.toggleFavorite(character.id)
                 // Reload character to update UI
                 loadCharacter()

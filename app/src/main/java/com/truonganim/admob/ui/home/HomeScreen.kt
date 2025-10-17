@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.truonganim.admob.data.AlbumCategory
+import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.ui.albums.AlbumsScreen
 import com.truonganim.admob.ui.favorites.FavoritesScreen
 import com.truonganim.admob.ui.settings.SettingsScreen
@@ -76,7 +77,13 @@ fun HomeScreen(
             composable(BottomNavItem.Favorites.route) {
                 FavoritesScreen(
                     onCharacterClick = onCharacterClick,
-                    onPhotoClick = onPhotoClick
+                    onPhotoClick = onPhotoClick,
+                    onViewAllCharactersClick = {
+                        onAlbumClick(AlbumCategory.FAVOURITE)
+                    },
+                    onViewAllPhotosClick = {
+                        onCharacterClick(AppCharacter.FAVOURITE_PHOTOS_ID)
+                    }
                 )
             }
             composable(BottomNavItem.Settings.route) {

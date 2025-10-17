@@ -18,16 +18,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.data.AppCharacter
 
 /**
  * Character Detail Screen
@@ -47,15 +46,16 @@ fun CharacterDetailScreen(
     Scaffold(
         topBar = {
             CharacterDetailTopBar(
-                characterName = uiState.character?.name ?: "",
-                isFavorite = uiState.character?.isFavorite ?: false,
+                characterId = characterId,
+                characterName = uiState.appCharacter?.name ?: "",
+                isFavorite = uiState.appCharacter?.isFavorite ?: false,
                 onBackClick = onBackClick,
                 onFavoriteClick = viewModel::onCharacterFavoriteClick
             )
         }
     ) { paddingValues ->
         CharacterDetailContent(
-            photos = uiState.character?.photos ?: emptyList(),
+            photos = uiState.appCharacter?.photos ?: emptyList(),
             favouritePhotoUrls = uiState.favouritePhotoUrls,
             isLoading = uiState.isLoading,
             onPhotoClick = onPhotoClick,
@@ -68,6 +68,7 @@ fun CharacterDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CharacterDetailTopBar(
+    characterId: Int,
     characterName: String,
     isFavorite: Boolean,
     onBackClick: () -> Unit,
@@ -93,16 +94,19 @@ private fun CharacterDetailTopBar(
             }
         },
         actions = {
-            IconButton(onClick = onFavoriteClick) {
-                Icon(
-                    imageVector = if (isFavorite) {
-                        Icons.Default.Favorite
-                    } else {
-                        Icons.Default.FavoriteBorder
-                    },
-                    contentDescription = "Favorite",
-                    tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
-                )
+            // Only show favourite icon if not FAVOURITE_PHOTOS special character
+            if (characterId != AppCharacter.FAVOURITE_PHOTOS_ID) {
+                IconButton(onClick = onFavoriteClick) {
+                    Icon(
+                        imageVector = if (isFavorite) {
+                            Icons.Default.Favorite
+                        } else {
+                            Icons.Default.FavoriteBorder
+                        },
+                        contentDescription = "Favorite",
+                        tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
         }
     )

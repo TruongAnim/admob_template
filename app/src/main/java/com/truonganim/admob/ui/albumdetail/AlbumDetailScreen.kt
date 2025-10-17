@@ -19,7 +19,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -29,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.data.AlbumCategory
-import com.truonganim.admob.data.Character
+import com.truonganim.admob.data.AppCharacter
 
 /**
  * Album Detail Screen
@@ -56,7 +55,7 @@ fun AlbumDetailScreen(
         }
     ) { paddingValues ->
         AlbumDetailContent(
-            characters = uiState.characters,
+            appCharacters = uiState.appCharacters,
             isLoading = uiState.isLoading,
             onCharacterClick = { character ->
                 onCharacterClick(character.id)
@@ -110,19 +109,22 @@ private fun AlbumDetailTopBar(
             }
         },
         actions = {
-            Button(
-                onClick = onUnlockAllClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFF9800) // Orange
-                ),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.padding(end = 8.dp)
-            ) {
-                Text(
-                    text = "UNLOCK ALL",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp
-                )
+            // Only show "UNLOCK ALL" button if not FAVOURITE category
+            if (albumCategory != AlbumCategory.FAVOURITE) {
+                Button(
+                    onClick = onUnlockAllClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFF9800) // Orange
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.padding(end = 8.dp)
+                ) {
+                    Text(
+                        text = "UNLOCK ALL",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp
+                    )
+                }
             }
         }
     )
@@ -130,10 +132,10 @@ private fun AlbumDetailTopBar(
 
 @Composable
 private fun AlbumDetailContent(
-    characters: List<Character>,
+    appCharacters: List<AppCharacter>,
     isLoading: Boolean,
-    onCharacterClick: (Character) -> Unit,
-    onFavoriteClick: (Character) -> Unit,
+    onCharacterClick: (AppCharacter) -> Unit,
+    onFavoriteClick: (AppCharacter) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -153,9 +155,9 @@ private fun AlbumDetailContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(characters) { character ->
+                items(appCharacters) { character ->
                     CharacterGridItem(
-                        character = character,
+                        appCharacter = character,
                         onClick = { onCharacterClick(character) },
                         onFavoriteClick = { onFavoriteClick(character) }
                     )
@@ -167,7 +169,7 @@ private fun AlbumDetailContent(
 
 @Composable
 private fun CharacterGridItem(
-    character: Character,
+    appCharacter: AppCharacter,
     onClick: () -> Unit,
     onFavoriteClick: () -> Unit
 ) {
@@ -184,14 +186,14 @@ private fun CharacterGridItem(
         ) {
             // Thumbnail Image
             Image(
-                painter = rememberAsyncImagePainter(character.thumbnail),
-                contentDescription = character.name,
+                painter = rememberAsyncImagePainter(appCharacter.thumbnail),
+                contentDescription = appCharacter.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
             
             // Lock Icon (Top Left) - if not unlocked
-            if (!character.isUnlocked) {
+            if (!appCharacter.isUnlocked) {
                 Surface(
                     modifier = Modifier
                         .padding(8.dp)
@@ -217,13 +219,13 @@ private fun CharacterGridItem(
                     .size(32.dp)
             ) {
                 Icon(
-                    imageVector = if (character.isFavorite) {
+                    imageVector = if (appCharacter.isFavorite) {
                         Icons.Default.Favorite
                     } else {
                         Icons.Default.FavoriteBorder
                     },
                     contentDescription = "Favorite",
-                    tint = if (character.isFavorite) Color.Red else Color.White,
+                    tint = if (appCharacter.isFavorite) Color.Red else Color.White,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -264,7 +266,7 @@ private fun CharacterGridItem(
                     
                     // Progress Text
                     Text(
-                        text = character.progressText,
+                        text = appCharacter.progressText,
                         style = MaterialTheme.typography.bodySmall.copy(
                             fontWeight = FontWeight.Bold,
                             color = Color.White,

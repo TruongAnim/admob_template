@@ -6,7 +6,7 @@ import org.json.JSONObject
 /**
  * Character data model
  */
-data class Character(
+data class AppCharacter(
     val id: Int,
     val name: String,
     val album: String,
@@ -32,16 +32,21 @@ data class Character(
     
     companion object {
         /**
+         * Special ID for favourite photos collection
+         */
+        const val FAVOURITE_PHOTOS_ID = -1
+
+        /**
          * Parse Character from JSON object
          */
-        fun fromJson(json: JSONObject): Character {
+        fun fromJson(json: JSONObject): AppCharacter {
             val photosArray = json.getJSONArray("photos")
             val photos = mutableListOf<String>()
             for (i in 0 until photosArray.length()) {
                 photos.add(photosArray.getString(i))
             }
             
-            return Character(
+            return AppCharacter(
                 id = json.getInt("id"),
                 name = json.getString("name"),
                 album = json.getString("album"),
@@ -58,15 +63,15 @@ data class Character(
         /**
          * Parse list of Characters from JSON array string
          */
-        fun fromJsonArray(jsonString: String): List<Character> {
+        fun fromJsonArray(jsonString: String): List<AppCharacter> {
             return try {
                 val jsonArray = JSONArray(jsonString)
-                val characters = mutableListOf<Character>()
+                val appCharacters = mutableListOf<AppCharacter>()
                 for (i in 0 until jsonArray.length()) {
                     val jsonObject = jsonArray.getJSONObject(i)
-                    characters.add(fromJson(jsonObject))
+                    appCharacters.add(fromJson(jsonObject))
                 }
-                characters
+                appCharacters
             } catch (e: Exception) {
                 e.printStackTrace()
                 emptyList()
@@ -78,12 +83,13 @@ data class Character(
 /**
  * Extension function to filter characters by album
  */
-fun List<Character>.filterByAlbum(albumCategory: AlbumCategory): List<Character> {
+fun List<AppCharacter>.filterByAlbum(albumCategory: AlbumCategory): List<AppCharacter> {
     val albumName = when (albumCategory) {
         AlbumCategory.NORMAL -> "normal"
         AlbumCategory.ROLE_PLAY -> "role_play"
         AlbumCategory.HARD -> "hard"
         AlbumCategory.FULL -> "full"
+        AlbumCategory.FAVOURITE -> return emptyList() // FAVOURITE is handled separately
     }
     return this.filter { it.album == albumName }
         .sortedBy { it.order }

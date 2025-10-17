@@ -21,10 +21,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
-import com.truonganim.admob.data.Character
+import com.truonganim.admob.data.AppCharacter
 
 /**
  * Favorites Screen
@@ -33,6 +32,8 @@ import com.truonganim.admob.data.Character
 fun FavoritesScreen(
     onCharacterClick: (Int) -> Unit = {},
     onPhotoClick: (String) -> Unit = {},
+    onViewAllCharactersClick: () -> Unit = {},
+    onViewAllPhotosClick: () -> Unit = {},
     viewModel: FavoritesViewModel = viewModel(
         factory = FavoritesViewModelFactory(LocalContext.current)
     )
@@ -40,7 +41,7 @@ fun FavoritesScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     FavoritesContent(
-        favoriteCharacters = uiState.favoriteCharacters,
+        favoriteAppCharacters = uiState.favoriteAppCharacters,
         favoritePhotos = uiState.favoritePhotos,
         isLoading = uiState.isLoading,
         onCharacterClick = { character ->
@@ -48,19 +49,23 @@ fun FavoritesScreen(
         },
         onPhotoClick = onPhotoClick,
         onCharacterFavoriteClick = viewModel::onCharacterFavoriteClick,
-        onPhotoFavoriteClick = viewModel::onPhotoFavoriteClick
+        onPhotoFavoriteClick = viewModel::onPhotoFavoriteClick,
+        onViewAllCharactersClick = onViewAllCharactersClick,
+        onViewAllPhotosClick = onViewAllPhotosClick
     )
 }
 
 @Composable
 private fun FavoritesContent(
-    favoriteCharacters: List<Character>,
+    favoriteAppCharacters: List<AppCharacter>,
     favoritePhotos: List<String>,
     isLoading: Boolean,
-    onCharacterClick: (Character) -> Unit,
+    onCharacterClick: (AppCharacter) -> Unit,
     onPhotoClick: (String) -> Unit,
-    onCharacterFavoriteClick: (Character) -> Unit,
-    onPhotoFavoriteClick: (String) -> Unit
+    onCharacterFavoriteClick: (AppCharacter) -> Unit,
+    onPhotoFavoriteClick: (String) -> Unit,
+    onViewAllCharactersClick: () -> Unit,
+    onViewAllPhotosClick: () -> Unit
 ) {
     if (isLoading) {
         Box(
@@ -69,7 +74,7 @@ private fun FavoritesContent(
         ) {
             CircularProgressIndicator()
         }
-    } else if (favoriteCharacters.isEmpty() && favoritePhotos.isEmpty()) {
+    } else if (favoriteAppCharacters.isEmpty() && favoritePhotos.isEmpty()) {
         // Empty state
         Box(
             modifier = Modifier
@@ -120,16 +125,17 @@ private fun FavoritesContent(
             }
 
             // Favourite Characters Section
-            if (favoriteCharacters.isNotEmpty()) {
+            if (favoriteAppCharacters.isNotEmpty()) {
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
                 item {
                     FavouriteCharactersSection(
-                        characters = favoriteCharacters,
+                        appCharacters = favoriteAppCharacters,
                         onCharacterClick = onCharacterClick,
-                        onFavoriteClick = onCharacterFavoriteClick
+                        onFavoriteClick = onCharacterFavoriteClick,
+                        onViewAllClick = onViewAllCharactersClick
                     )
                 }
             }
@@ -142,7 +148,8 @@ private fun FavoritesContent(
 
                 item {
                     FavouritePhotosSectionHeader(
-                        photoCount = favoritePhotos.size
+                        photoCount = favoritePhotos.size,
+                        onViewAllClick = onViewAllPhotosClick
                     )
                 }
 
@@ -185,9 +192,10 @@ private fun FavoritesContent(
 
 @Composable
 private fun FavouriteCharactersSection(
-    characters: List<Character>,
-    onCharacterClick: (Character) -> Unit,
-    onFavoriteClick: (Character) -> Unit
+    appCharacters: List<AppCharacter>,
+    onCharacterClick: (AppCharacter) -> Unit,
+    onFavoriteClick: (AppCharacter) -> Unit,
+    onViewAllClick: () -> Unit
 ) {
     Column {
         // Section Header
@@ -206,12 +214,10 @@ private fun FavouriteCharactersSection(
             )
 
             Text(
-                text = "View All (${characters.size})",
+                text = "View All (${appCharacters.size})",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable {
-                    // TODO: Handle view all click
-                }
+                modifier = Modifier.clickable(onClick = onViewAllClick)
             )
         }
 
@@ -222,9 +228,9 @@ private fun FavouriteCharactersSection(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(characters) { character ->
+            items(appCharacters) { character ->
                 FavouriteCharacterItem(
-                    character = character,
+                    appCharacter = character,
                     onClick = { onCharacterClick(character) },
                     onFavoriteClick = { onFavoriteClick(character) }
                 )
@@ -235,7 +241,7 @@ private fun FavouriteCharactersSection(
 
 @Composable
 private fun FavouriteCharacterItem(
-    character: Character,
+    appCharacter: AppCharacter,
     onClick: () -> Unit,
     onFavoriteClick: () -> Unit
 ) {
@@ -252,8 +258,8 @@ private fun FavouriteCharacterItem(
         ) {
             // Thumbnail Image
             Image(
-                painter = rememberAsyncImagePainter(character.thumbnail),
-                contentDescription = character.name,
+                painter = rememberAsyncImagePainter(appCharacter.thumbnail),
+                contentDescription = appCharacter.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
@@ -281,7 +287,7 @@ private fun FavouriteCharacterItem(
                 color = Color.Black.copy(alpha = 0.6f)
             ) {
                 Text(
-                    text = character.name,
+                    text = appCharacter.name,
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Medium,
                         color = Color.White
@@ -296,7 +302,8 @@ private fun FavouriteCharacterItem(
 
 @Composable
 private fun FavouritePhotosSectionHeader(
-    photoCount: Int
+    photoCount: Int,
+    onViewAllClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -316,9 +323,7 @@ private fun FavouritePhotosSectionHeader(
             text = "View All ($photoCount)",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.clickable {
-                // TODO: Handle view all click
-            }
+            modifier = Modifier.clickable(onClick = onViewAllClick)
         )
     }
 }
