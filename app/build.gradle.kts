@@ -20,6 +20,7 @@ android {
 
         // Ad IDs - Using test IDs from AdMob
         buildConfigField("String", "SPLASH_INTERSTITIAL_AD_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
+        buildConfigField("String", "MAIN_INTERSTITIAL_AD_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
         buildConfigField("String", "SPLASH_APP_OPEN_AD_ID", "\"ca-app-pub-3940256099942544/9257395921\"")
         buildConfigField("String", "RESUME_APP_OPEN_AD_ID", "\"ca-app-pub-3940256099942544/9257395921\"")
 

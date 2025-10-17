@@ -76,6 +76,14 @@
             android:theme="@style/Theme.AdMobBase"
             android:launchMode="singleTop">
         </activity>
+
+        <!-- Ad Gate Activity -->
+        <activity
+            android:name=".ads.AdGateActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AdMobBase"
+            android:launchMode="singleTop">
+        </activity>
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
         android:name="com.google.android.gms.ads.APPLICATION_ID"

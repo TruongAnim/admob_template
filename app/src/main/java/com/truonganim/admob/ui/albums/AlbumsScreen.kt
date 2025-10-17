@@ -1,5 +1,8 @@
 package com.truonganim.admob.ui.albums
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,16 +13,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.truonganim.admob.ads.AdGateActivity
+import com.truonganim.admob.ads.AdGateHelper
 import com.truonganim.admob.data.Album
 import com.truonganim.admob.data.AlbumCategory
 
@@ -31,13 +40,50 @@ fun AlbumsScreen(
     onAlbumClick: (AlbumCategory) -> Unit = {},
     viewModel: AlbumsViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
-    
+
+    // Track which album is pending (waiting for ad result)
+    var pendingAlbum by remember { mutableStateOf<AlbumCategory?>(null) }
+
+    // Ad gate launcher
+    val adGateLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        AdGateHelper.handleAdGateResult(
+            resultCode = result.resultCode,
+            data = result.data,
+            onAdShown = {
+                // Ad shown successfully, navigate to album
+                pendingAlbum?.let { onAlbumClick(it) }
+                pendingAlbum = null
+            },
+            onAdFailed = {
+                // Ad failed to load (required ad)
+                Toast.makeText(
+                    context,
+                    "Failed to load ad. Please try again.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                pendingAlbum = null
+            },
+            onAdSkipped = {
+                // Ad skipped (interval not reached or optional ad failed)
+                pendingAlbum?.let { onAlbumClick(it) }
+                pendingAlbum = null
+            }
+        )
+    }
+
     AlbumsContent(
         albums = uiState.albums,
         isLoading = uiState.isLoading,
         onAlbumClick = { album ->
-            onAlbumClick(album.category)
+            // Store pending album
+            pendingAlbum = album.category
+
+            // Show ad gate (optional - respects interval)
+            AdGateHelper.showOptionalAdGate(adGateLauncher, context as androidx.activity.ComponentActivity)
         }
     )
 }

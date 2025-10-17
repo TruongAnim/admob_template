@@ -3,14 +3,17 @@ package com.truonganim.admob.ui.home
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.truonganim.admob.ads.InterstitialAdManager
 import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
@@ -31,7 +34,14 @@ fun HomeScreen(
     onFavouritePhotoClick: (String, List<String>) -> Unit = { _, _ -> },
     onGameClick: (Game) -> Unit = {}
 ) {
+    val context = LocalContext.current
     val navController = rememberNavController()
+
+    // Load interstitial ad when entering home screen
+    LaunchedEffect(Unit) {
+        val adManager = InterstitialAdManager.getInstance(context)
+        adManager.loadAd()
+    }
     
     Scaffold(
         bottomBar = {
