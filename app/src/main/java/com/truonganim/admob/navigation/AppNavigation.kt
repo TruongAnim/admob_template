@@ -51,6 +51,14 @@ fun AppNavigation(
             HomeScreen(
                 onAlbumClick = { albumCategory ->
                     navController.navigate(Routes.albumDetail(albumCategory))
+                },
+                onCharacterClick = { characterId ->
+                    navController.navigate(Routes.characterDetail(characterId))
+                },
+                onPhotoClick = { photoUrl ->
+                    // TODO: Handle photo click from favourites
+                    // For now, we don't have a direct route to photo viewer from URL
+                    // This will be handled later
                 }
             )
         }

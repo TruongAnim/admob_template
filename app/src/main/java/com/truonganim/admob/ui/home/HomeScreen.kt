@@ -22,7 +22,9 @@ import com.truonganim.admob.ui.settings.SettingsScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onAlbumClick: (AlbumCategory) -> Unit = {}
+    onAlbumClick: (AlbumCategory) -> Unit = {},
+    onCharacterClick: (Int) -> Unit = {},
+    onPhotoClick: (String) -> Unit = {}
 ) {
     val navController = rememberNavController()
     
@@ -72,7 +74,10 @@ fun HomeScreen(
                 )
             }
             composable(BottomNavItem.Favorites.route) {
-                FavoritesScreen()
+                FavoritesScreen(
+                    onCharacterClick = onCharacterClick,
+                    onPhotoClick = onPhotoClick
+                )
             }
             composable(BottomNavItem.Settings.route) {
                 SettingsScreen()
