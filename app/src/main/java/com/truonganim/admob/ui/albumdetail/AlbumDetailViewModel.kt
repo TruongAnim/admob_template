@@ -1,5 +1,6 @@
 package com.truonganim.admob.ui.albumdetail
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.truonganim.admob.data.AlbumCategory
@@ -24,10 +25,11 @@ data class AlbumDetailUiState(
  * Album Detail ViewModel
  */
 class AlbumDetailViewModel(
-    private val albumCategory: AlbumCategory
+    private val albumCategory: AlbumCategory,
+    private val context: Context
 ) : ViewModel() {
-    
-    private val characterRepository = CharacterRepository.getInstance()
+
+    private val characterRepository = CharacterRepository.getInstance(context)
     
     private val _uiState = MutableStateFlow(AlbumDetailUiState(albumCategory = albumCategory))
     val uiState: StateFlow<AlbumDetailUiState> = _uiState.asStateFlow()
@@ -65,9 +67,11 @@ class AlbumDetailViewModel(
     }
     
     fun onFavoriteClick(character: Character) {
-        characterRepository.toggleFavorite(character.id)
-        // Reload characters to update UI
-        loadCharacters()
+        viewModelScope.launch {
+            characterRepository.toggleFavorite(character.id)
+            // Reload characters to update UI
+            loadCharacters()
+        }
     }
     
     fun onUnlockAllClick() {

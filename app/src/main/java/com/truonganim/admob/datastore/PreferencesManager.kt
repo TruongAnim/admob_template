@@ -173,5 +173,47 @@ class PreferencesManager private constructor(private val context: Context) {
         val currentCount = getAdClickCount()
         saveValue(PreferencesKeys.AD_CLICK_COUNT, currentCount + 1)
     }
+
+    // ==================== Favourite Methods ====================
+
+    /**
+     * Get favourite character IDs
+     */
+    suspend fun getFavouriteCharacterIds(): Set<Int> {
+        val idsString = getValueSync(PreferencesKeys.FAVOURITE_CHARACTER_IDS, "")
+        return if (idsString.isEmpty()) {
+            emptySet()
+        } else {
+            idsString.split(",").mapNotNull { it.toIntOrNull() }.toSet()
+        }
+    }
+
+    /**
+     * Save favourite character IDs
+     */
+    suspend fun saveFavouriteCharacterIds(ids: Set<Int>) {
+        val idsString = ids.joinToString(",")
+        saveValue(PreferencesKeys.FAVOURITE_CHARACTER_IDS, idsString)
+    }
+
+    /**
+     * Get favourite photo URLs
+     */
+    suspend fun getFavouritePhotoUrls(): Set<String> {
+        val urlsString = getValueSync(PreferencesKeys.FAVOURITE_PHOTO_URLS, "")
+        return if (urlsString.isEmpty()) {
+            emptySet()
+        } else {
+            urlsString.split("|||").filter { it.isNotEmpty() }.toSet()
+        }
+    }
+
+    /**
+     * Save favourite photo URLs
+     */
+    suspend fun saveFavouritePhotoUrls(urls: Set<String>) {
+        val urlsString = urls.joinToString("|||")
+        saveValue(PreferencesKeys.FAVOURITE_PHOTO_URLS, urlsString)
+    }
 }
 

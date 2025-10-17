@@ -33,10 +33,11 @@ data class PhotoViewerUiState(
  */
 class PhotoViewerViewModel(
     private val characterId: Int,
-    private val initialPhotoIndex: Int
+    private val initialPhotoIndex: Int,
+    private val context: Context
 ) : ViewModel() {
-    
-    private val characterRepository = CharacterRepository.getInstance()
+
+    private val characterRepository = CharacterRepository.getInstance(context)
     
     private val _uiState = MutableStateFlow(PhotoViewerUiState())
     val uiState: StateFlow<PhotoViewerUiState> = _uiState.asStateFlow()

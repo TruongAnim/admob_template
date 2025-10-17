@@ -21,7 +21,11 @@ object PreferencesKeys {
     val FIRST_LAUNCH = booleanPreferencesKey("first_launch")
     val LAST_AD_SHOWN_TIME = longPreferencesKey("last_ad_shown_time")
     val AD_CLICK_COUNT = intPreferencesKey("ad_click_count")
-    
+
+    // Favourites
+    val FAVOURITE_CHARACTER_IDS = stringPreferencesKey("favourite_character_ids")
+    val FAVOURITE_PHOTO_URLS = stringPreferencesKey("favourite_photo_urls")
+
     // Add more keys as needed
 }
 

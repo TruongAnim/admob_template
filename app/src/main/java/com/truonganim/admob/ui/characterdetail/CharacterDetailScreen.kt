@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,7 @@ fun CharacterDetailScreen(
     onBackClick: () -> Unit,
     onPhotoClick: (Int) -> Unit = {},
     viewModel: CharacterDetailViewModel = viewModel(
-        factory = CharacterDetailViewModelFactory(characterId)
+        factory = CharacterDetailViewModelFactory(characterId, LocalContext.current)
     )
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -49,14 +50,16 @@ fun CharacterDetailScreen(
                 characterName = uiState.character?.name ?: "",
                 isFavorite = uiState.character?.isFavorite ?: false,
                 onBackClick = onBackClick,
-                onFavoriteClick = viewModel::onFavoriteClick
+                onFavoriteClick = viewModel::onCharacterFavoriteClick
             )
         }
     ) { paddingValues ->
         CharacterDetailContent(
             photos = uiState.character?.photos ?: emptyList(),
+            favouritePhotoUrls = uiState.favouritePhotoUrls,
             isLoading = uiState.isLoading,
             onPhotoClick = onPhotoClick,
+            onPhotoFavoriteClick = viewModel::onPhotoFavoriteClick,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -108,8 +111,10 @@ private fun CharacterDetailTopBar(
 @Composable
 private fun CharacterDetailContent(
     photos: List<String>,
+    favouritePhotoUrls: Set<String>,
     isLoading: Boolean,
     onPhotoClick: (Int) -> Unit,
+    onPhotoFavoriteClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -132,7 +137,9 @@ private fun CharacterDetailContent(
                 itemsIndexed(photos) { index, photoUrl ->
                     PhotoGridItem(
                         photoUrl = photoUrl,
-                        onClick = { onPhotoClick(index) }
+                        isFavorite = favouritePhotoUrls.contains(photoUrl),
+                        onClick = { onPhotoClick(index) },
+                        onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
                     )
                 }
             }
@@ -143,7 +150,9 @@ private fun CharacterDetailContent(
 @Composable
 private fun PhotoGridItem(
     photoUrl: String,
-    onClick: () -> Unit
+    isFavorite: Boolean,
+    onClick: () -> Unit,
+    onFavoriteClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -163,6 +172,25 @@ private fun PhotoGridItem(
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
+
+            // Favorite Icon (Top Right)
+            IconButton(
+                onClick = onFavoriteClick,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(32.dp)
+            ) {
+                Icon(
+                    imageVector = if (isFavorite) {
+                        Icons.Default.Favorite
+                    } else {
+                        Icons.Default.FavoriteBorder
+                    },
+                    contentDescription = "Favorite",
+                    tint = if (isFavorite) Color.Red else Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 }

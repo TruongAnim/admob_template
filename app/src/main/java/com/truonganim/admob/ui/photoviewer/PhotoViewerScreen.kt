@@ -38,7 +38,7 @@ fun PhotoViewerScreen(
     initialPhotoIndex: Int,
     onBackClick: () -> Unit,
     viewModel: PhotoViewerViewModel = viewModel(
-        factory = PhotoViewerViewModelFactory(characterId, initialPhotoIndex)
+        factory = PhotoViewerViewModelFactory(characterId, initialPhotoIndex, LocalContext.current)
     )
 ) {
     val uiState by viewModel.uiState.collectAsState()
