@@ -31,7 +31,7 @@ import com.truonganim.admob.data.AppCharacter
 @Composable
 fun FavoritesScreen(
     onCharacterClick: (Int) -> Unit = {},
-    onPhotoClick: (String) -> Unit = {},
+    onPhotoClick: (String, List<String>) -> Unit = { _, _ -> },
     onViewAllCharactersClick: () -> Unit = {},
     onViewAllPhotosClick: () -> Unit = {},
     viewModel: FavoritesViewModel = viewModel(
@@ -61,7 +61,7 @@ private fun FavoritesContent(
     favoritePhotos: List<String>,
     isLoading: Boolean,
     onCharacterClick: (AppCharacter) -> Unit,
-    onPhotoClick: (String) -> Unit,
+    onPhotoClick: (String, List<String>) -> Unit,
     onCharacterFavoriteClick: (AppCharacter) -> Unit,
     onPhotoFavoriteClick: (String) -> Unit,
     onViewAllCharactersClick: () -> Unit,
@@ -169,7 +169,7 @@ private fun FavoritesContent(
                             Box(modifier = Modifier.weight(1f)) {
                                 FavouritePhotoItem(
                                     photoUrl = photoUrl,
-                                    onClick = { onPhotoClick(photoUrl) },
+                                    onClick = { onPhotoClick(photoUrl, favoritePhotos) },
                                     onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
                                 )
                             }

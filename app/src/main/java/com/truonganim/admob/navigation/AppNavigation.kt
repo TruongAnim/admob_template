@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.truonganim.admob.data.AlbumCategory
+import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.ui.albumdetail.AlbumDetailScreen
 import com.truonganim.admob.ui.characterdetail.CharacterDetailScreen
 import com.truonganim.admob.ui.home.HomeScreen
@@ -56,9 +57,13 @@ fun AppNavigation(
                     navController.navigate(Routes.characterDetail(characterId))
                 },
                 onPhotoClick = { photoUrl ->
-                    // TODO: Handle photo click from favourites
-                    // For now, we don't have a direct route to photo viewer from URL
-                    // This will be handled later
+                    // Not used anymore - kept for compatibility
+                },
+                onFavouritePhotoClick = { photoUrl, allPhotos ->
+                    // Find the index of the clicked photo in the list
+                    val photoIndex = allPhotos.indexOf(photoUrl).coerceAtLeast(0)
+                    // Navigate to PhotoViewer with FAVOURITE_PHOTOS_ID
+                    navController.navigate(Routes.photoViewer(AppCharacter.FAVOURITE_PHOTOS_ID, photoIndex))
                 }
             )
         }

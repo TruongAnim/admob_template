@@ -25,7 +25,8 @@ import com.truonganim.admob.ui.settings.SettingsScreen
 fun HomeScreen(
     onAlbumClick: (AlbumCategory) -> Unit = {},
     onCharacterClick: (Int) -> Unit = {},
-    onPhotoClick: (String) -> Unit = {}
+    onPhotoClick: (String) -> Unit = {},
+    onFavouritePhotoClick: (String, List<String>) -> Unit = { _, _ -> }
 ) {
     val navController = rememberNavController()
     
@@ -77,7 +78,7 @@ fun HomeScreen(
             composable(BottomNavItem.Favorites.route) {
                 FavoritesScreen(
                     onCharacterClick = onCharacterClick,
-                    onPhotoClick = onPhotoClick,
+                    onPhotoClick = onFavouritePhotoClick,
                     onViewAllCharactersClick = {
                         onAlbumClick(AlbumCategory.FAVOURITE)
                     },

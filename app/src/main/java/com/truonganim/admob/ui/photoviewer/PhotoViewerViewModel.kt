@@ -8,7 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.truonganim.admob.config.AppConfig
+import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
+import com.truonganim.admob.data.PhotoRepository
 import com.truonganim.admob.utils.ImageUtils
 import com.truonganim.admob.utils.WallpaperHelper
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,23 +40,32 @@ class PhotoViewerViewModel(
 ) : ViewModel() {
 
     private val characterRepository = CharacterRepository.getInstance(context)
-    
+    private val photoRepository = PhotoRepository.getInstance(context)
+
     private val _uiState = MutableStateFlow(PhotoViewerUiState())
     val uiState: StateFlow<PhotoViewerUiState> = _uiState.asStateFlow()
-    
+
     init {
         loadPhotos()
     }
-    
+
     private fun loadPhotos() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
-            
-            val character = characterRepository.getCharacterById(characterId)
-            
+
+            val photos = if (characterId == AppCharacter.FAVOURITE_PHOTOS_ID) {
+                // Load favourite photos for special FAVOURITE_PHOTOS character
+                photoRepository.loadFavourites()
+                photoRepository.getFavouritePhotos()
+            } else {
+                // Load photos from character
+                val character = characterRepository.getCharacterById(characterId)
+                character?.photos ?: emptyList()
+            }
+
             _uiState.value = _uiState.value.copy(
-                photos = character?.photos ?: emptyList(),
-                currentPhotoIndex = initialPhotoIndex,
+                photos = photos,
+                currentPhotoIndex = initialPhotoIndex.coerceIn(0, photos.size - 1),
                 isLoading = false
             )
         }
