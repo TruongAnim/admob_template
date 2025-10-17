@@ -6,9 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
+import com.truonganim.admob.data.filterByAlbum
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -30,34 +33,46 @@ class AlbumDetailViewModel(
 ) : ViewModel() {
 
     private val characterRepository = CharacterRepository.getInstance(context)
-    
-    private val _uiState = MutableStateFlow(AlbumDetailUiState(albumCategory = albumCategory))
-    val uiState: StateFlow<AlbumDetailUiState> = _uiState.asStateFlow()
-    
+
+    private val _isLoading = MutableStateFlow(false)
+
+    // Observe characters from repository and filter by album category
+    val uiState: StateFlow<AlbumDetailUiState> = combine(
+        characterRepository.characters,
+        _isLoading
+    ) { characters, isLoading ->
+        val filteredCharacters = if (albumCategory == AlbumCategory.FAVOURITE) {
+            characters.filter { it.isFavorite }
+        } else {
+            characters.filterByAlbum(albumCategory)
+        }
+
+        AlbumDetailUiState(
+            albumCategory = albumCategory,
+            appCharacters = filteredCharacters,
+            isLoading = isLoading
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = AlbumDetailUiState(albumCategory = albumCategory)
+    )
+
     init {
         loadCharacters()
     }
-    
+
     private fun loadCharacters() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            
+            _isLoading.value = true
+
             try {
                 // Load characters from repository
                 characterRepository.loadCharacters()
-                
-                // Filter by album category
-                val characters = characterRepository.getCharactersByAlbum(albumCategory)
-                
-                _uiState.value = _uiState.value.copy(
-                    appCharacters = characters,
-                    isLoading = false
-                )
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = e.message,
-                    isLoading = false
-                )
+                // Handle error if needed
+            } finally {
+                _isLoading.value = false
             }
         }
     }
@@ -69,15 +84,13 @@ class AlbumDetailViewModel(
     fun onFavoriteClick(appCharacter: AppCharacter) {
         viewModelScope.launch {
             characterRepository.toggleFavorite(appCharacter.id)
-            // Reload characters to update UI
-            loadCharacters()
+            // UI will auto-update via StateFlow
         }
     }
-    
+
     fun onUnlockAllClick() {
         characterRepository.unlockAllInAlbum(albumCategory)
-        // Reload characters to update UI
-        loadCharacters()
+        // UI will auto-update via StateFlow
     }
 }
 

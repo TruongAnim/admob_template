@@ -7,8 +7,10 @@ import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
 import com.truonganim.admob.data.PhotoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -30,8 +32,24 @@ class FavoritesViewModel(
     private val characterRepository = CharacterRepository.getInstance(context)
     private val photoRepository = PhotoRepository.getInstance(context)
 
-    private val _uiState = MutableStateFlow(FavoritesUiState())
-    val uiState: StateFlow<FavoritesUiState> = _uiState.asStateFlow()
+    private val _isLoading = MutableStateFlow(false)
+
+    // Observe both characters and photos from repositories
+    val uiState: StateFlow<FavoritesUiState> = combine(
+        characterRepository.characters,
+        photoRepository.favouritePhotoUrls,
+        _isLoading
+    ) { characters, favouritePhotoUrls, isLoading ->
+        FavoritesUiState(
+            favoriteAppCharacters = characters.filter { it.isFavorite },
+            favoritePhotos = favouritePhotoUrls.toList(),
+            isLoading = isLoading
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = FavoritesUiState()
+    )
 
     init {
         loadFavorites()
@@ -39,23 +57,17 @@ class FavoritesViewModel(
 
     private fun loadFavorites() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            _isLoading.value = true
 
-            // Load characters and favourites
-            characterRepository.loadCharacters()
-            photoRepository.loadFavourites()
-
-            // Get favourite characters
-            val favouriteCharacters = characterRepository.getFavoriteCharacters()
-
-            // Get favourite photos
-            val favouritePhotos = photoRepository.getFavouritePhotos()
-
-            _uiState.value = _uiState.value.copy(
-                favoriteAppCharacters = favouriteCharacters,
-                favoritePhotos = favouritePhotos,
-                isLoading = false
-            )
+            try {
+                // Load characters and favourites
+                characterRepository.loadCharacters()
+                photoRepository.loadFavourites()
+            } catch (e: Exception) {
+                // Handle error if needed
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 
@@ -70,14 +82,14 @@ class FavoritesViewModel(
     fun onCharacterFavoriteClick(appCharacter: AppCharacter) {
         viewModelScope.launch {
             characterRepository.toggleFavorite(appCharacter.id)
-            loadFavorites()
+            // UI will auto-update via StateFlow
         }
     }
 
     fun onPhotoFavoriteClick(photoUrl: String) {
         viewModelScope.launch {
             photoRepository.toggleFavourite(photoUrl)
-            loadFavorites()
+            // UI will auto-update via StateFlow
         }
     }
 }

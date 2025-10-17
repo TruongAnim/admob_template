@@ -7,8 +7,10 @@ import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
 import com.truonganim.admob.data.PhotoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -32,62 +34,59 @@ class CharacterDetailViewModel(
     private val characterRepository = CharacterRepository.getInstance(context)
     private val photoRepository = PhotoRepository.getInstance(context)
 
-    private val _uiState = MutableStateFlow(CharacterDetailUiState())
-    val uiState: StateFlow<CharacterDetailUiState> = _uiState.asStateFlow()
+    private val _isLoading = MutableStateFlow(false)
+
+    // Observe both characters and favourite photos from repositories
+    val uiState: StateFlow<CharacterDetailUiState> = combine(
+        characterRepository.characters,
+        photoRepository.favouritePhotoUrls,
+        _isLoading
+    ) { characters, favouritePhotoUrls, isLoading ->
+        val character = if (characterId == AppCharacter.FAVOURITE_PHOTOS_ID) {
+            // Create special character for favourite photos
+            AppCharacter(
+                id = AppCharacter.FAVOURITE_PHOTOS_ID,
+                name = "Favourite Photos",
+                album = "favourite",
+                order = 0,
+                adCount = 0,
+                thumbnail = favouritePhotoUrls.firstOrNull() ?: "",
+                photos = favouritePhotoUrls.toList(),
+                isFavorite = false,
+                isUnlocked = true,
+                currentPhotoIndex = 0
+            )
+        } else {
+            characters.find { it.id == characterId }
+        }
+
+        CharacterDetailUiState(
+            appCharacter = character,
+            favouritePhotoUrls = favouritePhotoUrls,
+            isLoading = isLoading
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = CharacterDetailUiState()
+    )
 
     init {
-        loadCharacter()
-        loadFavouritePhotos()
+        loadData()
     }
 
-    private fun loadCharacter() {
+    private fun loadData() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            _isLoading.value = true
 
             try {
-                val appCharacter = if (characterId == AppCharacter.FAVOURITE_PHOTOS_ID) {
-                    // Create a special character for favourite photos
-                    createFavouritePhotosCharacter()
-                } else {
-                    characterRepository.getCharacterById(characterId)
-                }
-
-                _uiState.value = _uiState.value.copy(
-                    appCharacter = appCharacter,
-                    isLoading = false
-                )
+                // Load characters and favourite photos
+                characterRepository.loadCharacters()
+                photoRepository.loadFavourites()
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = e.message,
-                    isLoading = false
-                )
-            }
-        }
-    }
-
-    private suspend fun createFavouritePhotosCharacter(): AppCharacter {
-        // Get all favourite photos
-        val favouritePhotos = photoRepository.getFavouritePhotos()
-
-        return AppCharacter(
-            id = AppCharacter.FAVOURITE_PHOTOS_ID,
-            name = "Favourite Photos",
-            album = "favourite",
-            order = 0,
-            adCount = 0,
-            thumbnail = favouritePhotos.firstOrNull() ?: "",
-            photos = favouritePhotos,
-            isFavorite = false,
-            isUnlocked = true,
-            currentPhotoIndex = 0
-        )
-    }
-
-    private fun loadFavouritePhotos() {
-        viewModelScope.launch {
-            photoRepository.loadFavourites()
-            photoRepository.favouritePhotoUrls.collect { favourites ->
-                _uiState.value = _uiState.value.copy(favouritePhotoUrls = favourites)
+                // Handle error if needed
+            } finally {
+                _isLoading.value = false
             }
         }
     }
@@ -98,10 +97,9 @@ class CharacterDetailViewModel(
 
     fun onCharacterFavoriteClick() {
         viewModelScope.launch {
-            _uiState.value.appCharacter?.let { character ->
+            uiState.value.appCharacter?.let { character ->
                 characterRepository.toggleFavorite(character.id)
-                // Reload character to update UI
-                loadCharacter()
+                // UI will auto-update via StateFlow
             }
         }
     }
@@ -109,6 +107,7 @@ class CharacterDetailViewModel(
     fun onPhotoFavoriteClick(photoUrl: String) {
         viewModelScope.launch {
             photoRepository.toggleFavourite(photoUrl)
+            // UI will auto-update via StateFlow
         }
     }
 }
