@@ -32,6 +32,12 @@ android {
         buildConfigField("String", "NATIVE_AD_AFTER_INTERESTIAL", "\"ca-app-pub-3940256099942544/2247696110\"")
         buildConfigField("String", "NATIVE_AD_HOME_SCREEN", "\"ca-app-pub-3940256099942544/2247696110\"")
         buildConfigField("String", "NATIVE_AD_LIST_ITEM", "\"ca-app-pub-3940256099942544/2247696110\"")
+
+        // Reward Ad IDs
+        buildConfigField("String", "REWARD_AD_UNLOCK_CHARACTER", "\"ca-app-pub-3940256099942544/5224354917\"")
+        buildConfigField("String", "REWARD_AD_UNLOCK_PHOTO", "\"ca-app-pub-3940256099942544/5224354917\"")
+        buildConfigField("String", "REWARD_AD_DAILY_BONUS", "\"ca-app-pub-3940256099942544/5224354917\"")
+        buildConfigField("String", "REWARD_AD_EXTRA_COINS", "\"ca-app-pub-3940256099942544/5224354917\"")
     }
 
     buildTypes {

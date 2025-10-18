@@ -1,6 +1,9 @@
 package com.truonganim.admob.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,11 +11,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.truonganim.admob.ads.RewardAdManager
 import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albumdetail.AlbumDetailScreen
 import com.truonganim.admob.ui.characterdetail.CharacterDetailScreen
+import com.truonganim.admob.ui.components.RewardAdLoadingOverlay
 import com.truonganim.admob.ui.home.HomeScreen
 import com.truonganim.admob.ui.photoviewer.PhotoViewerScreen
 
@@ -46,10 +51,16 @@ fun AppNavigation(
     navController: NavHostController = rememberNavController()
 ) {
     val context = LocalContext.current
-    NavHost(
-        navController = navController,
-        startDestination = Routes.HOME
-    ) {
+
+    // Reward Ad Manager
+    val rewardAdManager = RewardAdManager.getInstance(context)
+    val rewardAdLoadingState by rewardAdManager.loadingState.collectAsState()
+
+    Box {
+        NavHost(
+            navController = navController,
+            startDestination = Routes.HOME
+        ) {
         // Home Screen with Bottom Navigation
         composable(Routes.HOME) {
             HomeScreen(
@@ -144,6 +155,15 @@ fun AppNavigation(
                 }
             )
         }
+    }
+
+        // Reward Ad Loading Overlay - covers entire app
+        RewardAdLoadingOverlay(
+            loadingState = rewardAdLoadingState,
+            onDismiss = {
+                rewardAdManager.cancelLoading()
+            }
+        )
     }
 }
 
