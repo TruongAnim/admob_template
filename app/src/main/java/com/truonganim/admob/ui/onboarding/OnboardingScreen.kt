@@ -2,16 +2,16 @@ package com.truonganim.admob.ui.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,21 +43,22 @@ fun OnboardingScreen(
 ) {
     val pages by viewModel.pages.collectAsState()
     val currentPage by viewModel.currentPage.collectAsState()
-    
+
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { pages.size }
     )
-    
+
     // Update ViewModel when page changes
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
             viewModel.updateCurrentPage(page)
         }
     }
-    
+
     Column(
         modifier = Modifier
+            .statusBarsPadding()
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
@@ -82,25 +83,19 @@ fun OnboardingScreen(
         ) {
             if (currentPage == pages.size - 1) {
                 // Last page: Show "Get Started" button
-                Button(
-                    onClick = {
-                        println("🚀 Get Started clicked!")
-                        onGetStarted()
-                    },
+
+                Text(
+                    text = "GET STARTED",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Text(
-                        text = "Get Started",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                }
+                        .padding(vertical = 8.dp)
+                        .clickable {
+                            println("🚀 Get Started clicked!")
+                            onGetStarted()
+                        }
+                )
+
             } else {
                 // Other pages: Show dot indicator
                 DotIndicator(
@@ -115,7 +110,7 @@ fun OnboardingScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(340.dp), // Fixed height to maintain consistent layout
+                .height(320.dp), // Fixed height to maintain consistent layout
             contentAlignment = Alignment.Center
         ) {
             // Determine which ad position to show
@@ -136,7 +131,7 @@ fun OnboardingScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun OnboardingScreenPreview() {
     AdMobBaseTheme {

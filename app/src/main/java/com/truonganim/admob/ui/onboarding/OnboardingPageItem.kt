@@ -46,14 +46,17 @@ fun OnboardingPageItem(
         // Title at top
         Text(
             text = page.title,
+            style = MaterialTheme.typography.titleLarge.copy(
+                lineHeight = 30.sp
+            ),
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = page.hozizontalPadding)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         // Image content
         Image(
