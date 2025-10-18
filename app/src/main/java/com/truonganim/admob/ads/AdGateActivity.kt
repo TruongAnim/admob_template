@@ -9,7 +9,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,12 +23,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberAsyncImagePainter
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.truonganim.admob.BuildConfig
+import com.truonganim.admob.R
 import com.truonganim.admob.data.AdGateConfig
 import com.truonganim.admob.firebase.RemoteConfigKeys
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
+import com.truonganim.admob.utils.AdLogger
 import kotlinx.coroutines.launch
 
 /**
@@ -74,6 +84,9 @@ class AdGateActivity : ComponentActivity() {
         // Initialize managers
         adManager = InterstitialAdManager.getInstance(this)
         intervalTracker = AdIntervalTracker.getInstance(this)
+
+        // Set native ad enabled based on config
+        adManager.setNativeAdEnabled(config.nativeAdEnabled)
 
         setContent {
             AdMobBaseTheme {
@@ -125,58 +138,45 @@ class AdGateActivity : ComponentActivity() {
     }
 
     private fun showAd() {
-        // Set timeout
-        timeoutRunnable = Runnable {
-            if (!isFinishing) {
-                // Timeout reached
-                if (isRequired) {
-                    // Required ad failed to load
-                    finishWithResult(RESULT_AD_FAILED, false)
-                } else {
-                    // Optional ad failed, let user continue
+        // Check if ad is available
+        if (adManager.isInterstitialAdAvailable()) {
+            // Ad is ready, show it immediately
+            AdLogger.i(TAG, "Ad available, showing immediately")
+            showAdNow()
+        } else {
+            if(!isRequired) {
+                AdLogger.w(TAG, "Ad not available, close with RESULT_AD_SKIPPED")
+                finishWithResult(RESULT_AD_SKIPPED, false)
+                return
+            }
+            // Ad not available, wait 2 seconds then close
+            AdLogger.w(TAG, "Ad not available, waiting ${config.timeoutSeconds} second then close with RESULT_AD_FAILED")
+
+            timeoutRunnable = Runnable {
+                if (!isFinishing) {
+                    // Optional ad not available, let user continue
                     finishWithResult(RESULT_AD_SKIPPED, false)
                 }
             }
-        }
-        handler.postDelayed(timeoutRunnable!!, config.timeoutSeconds * 1000L)
-
-        // Check if ad is available
-        if (adManager.isAdAvailable()) {
-            // Ad is ready, show it
-            showAdNow()
-        } else {
-            // Ad not ready, try to load
-            adManager.loadAd(
-                onAdLoaded = {
-                    // Ad loaded, show it
-                    showAdNow()
-                },
-                onAdFailedToLoad = { error ->
-                    // Failed to load
-                    cancelTimeout()
-                    if (isRequired) {
-                        finishWithResult(RESULT_AD_FAILED, false)
-                    } else {
-                        finishWithResult(RESULT_AD_SKIPPED, false)
-                    }
-                }
-            )
+            handler.postDelayed(timeoutRunnable!!, config.timeoutSeconds * 1000L) // 2 seconds
         }
     }
 
     private fun showAdNow() {
-        adManager.showAdIfAvailable(
+        adManager.showInterstitialAdIfAvailable(
             activity = this,
             onAdDismissed = { adWasShown ->
                 // Ad dismissed
                 cancelTimeout()
-                
+
                 if (adWasShown) {
                     // Record ad shown time
                     lifecycleScope.launch {
                         intervalTracker.recordAdShown()
                     }
-                    finishWithResult(RESULT_AD_SHOWN, true)
+
+                    // Check if native ad is available
+                    showNativeAdOrFinish()
                 } else {
                     if (isRequired) {
                         finishWithResult(RESULT_AD_FAILED, false)
@@ -195,6 +195,32 @@ class AdGateActivity : ComponentActivity() {
                 }
             }
         )
+    }
+
+    private fun showNativeAdOrFinish() {
+        val nativeAd = adManager.getNativeAd()
+
+        if (nativeAd != null && config.nativeAdEnabled) {
+            // Native ad is ready, show it
+            AdLogger.i(TAG, "Showing native ad")
+            setContent {
+                AdMobBaseTheme {
+                    NativeAdFullScreen(
+                        nativeAd = nativeAd,
+                        config = config,
+                        onClose = {
+                            // Mark native ad as shown
+                            adManager.markNativeAdShown()
+                            finishWithResult(RESULT_AD_SHOWN, true)
+                        }
+                    )
+                }
+            }
+        } else {
+            // Native ad not available or disabled, finish
+            AdLogger.i(TAG, "Native ad not available or disabled, finishing")
+            finishWithResult(RESULT_AD_SHOWN, true)
+        }
     }
 
     private fun cancelTimeout() {
@@ -234,7 +260,7 @@ private fun AdGateScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
-                
+
                 // Dark overlay
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -282,5 +308,96 @@ private fun AdGateScreen(
             }
         }
     }
+}
+
+@Composable
+private fun NativeAdFullScreen(
+    nativeAd: NativeAd,
+    config: AdGateConfig,
+    onClose: () -> Unit
+) {
+    var showCloseButton by remember { mutableStateOf(false) }
+
+    // Show close button after delay
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(config.nativeAdCloseDelaySeconds * 1000L)
+        showCloseButton = true
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // Native Ad View
+        AndroidView(
+            factory = { context ->
+                val adView = android.view.LayoutInflater.from(context)
+                    .inflate(R.layout.native_ad_fullscreen, null) as NativeAdView
+
+                // Populate ad view
+                populateNativeAdView(nativeAd, adView)
+
+                adView
+            },
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // Close button
+        if (showCloseButton) {
+            val alignment = if (config.nativeAdClosePosition == "top_left") {
+                Alignment.TopStart
+            } else {
+                Alignment.TopEnd
+            }
+
+            IconButton(
+                onClick = onClose,
+                modifier = Modifier
+                    .align(alignment)
+                    .padding(16.dp)
+                    .background(
+                        color = Color.Black.copy(alpha = 0.6f),
+                        shape = CircleShape
+                    )
+                    .size(48.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close",
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+}
+
+private fun populateNativeAdView(nativeAd: NativeAd, adView: NativeAdView) {
+    // Set ad assets
+    adView.headlineView = adView.findViewById(R.id.ad_headline)
+    adView.bodyView = adView.findViewById(R.id.ad_body)
+    adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
+    adView.iconView = adView.findViewById(R.id.ad_app_icon)
+    adView.mediaView = adView.findViewById(R.id.ad_media)
+
+    // Populate views
+    (adView.headlineView as? android.widget.TextView)?.text = nativeAd.headline
+    (adView.bodyView as? android.widget.TextView)?.text = nativeAd.body
+    (adView.callToActionView as? android.widget.Button)?.text = nativeAd.callToAction
+
+    nativeAd.icon?.let { icon ->
+        (adView.iconView as? android.widget.ImageView)?.setImageDrawable(icon.drawable)
+        adView.iconView?.visibility = android.view.View.VISIBLE
+    } ?: run {
+        adView.iconView?.visibility = android.view.View.GONE
+    }
+
+    adView.mediaView?.let { mediaView ->
+        nativeAd.mediaContent?.let { mediaContent ->
+            mediaView.setMediaContent(mediaContent)
+        }
+    }
+
+    // Set native ad
+    adView.setNativeAd(nativeAd)
 }
 

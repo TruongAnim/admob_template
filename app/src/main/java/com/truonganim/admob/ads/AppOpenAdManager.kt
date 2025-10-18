@@ -2,13 +2,13 @@ package com.truonganim.admob.ads
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.truonganim.admob.data.AppOpenAdConfig
+import com.truonganim.admob.utils.AdLogger
 
 /**
  * App Open Ad Manager
@@ -48,14 +48,14 @@ class AppOpenAdManager(
             request,
             object : AppOpenAd.AppOpenAdLoadCallback() {
                 override fun onAdLoaded(ad: AppOpenAd) {
-                    Log.d(TAG, "App open ad loaded successfully")
+                    AdLogger.i(TAG, "App open ad loaded successfully")
                     appOpenAd = ad
                     isLoadingAd = false
                     onAdLoaded()
                 }
-                
+
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    Log.e(TAG, "App open ad failed to load: ${loadAdError.message}")
+                    AdLogger.e(TAG, "App open ad failed to load: ${loadAdError.message}")
                     isLoadingAd = false
                     onAdFailedToLoad(loadAdError.message)
                 }
@@ -72,33 +72,33 @@ class AppOpenAdManager(
         onAdFailedToShow: (String) -> Unit
     ) {
         if (!isAdAvailable()) {
-            Log.d(TAG, "App open ad is not available")
+            AdLogger.i(TAG, "App open ad is not available")
             onAdFailedToShow("Ad not available")
             return
         }
         
         if (isShowingAd) {
-            Log.d(TAG, "App open ad is already showing")
+            AdLogger.i(TAG, "App open ad is already showing")
             return
         }
         
         appOpenAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
-                Log.d(TAG, "App open ad dismissed")
+                AdLogger.i(TAG, "App open ad dismissed")
                 appOpenAd = null
                 isShowingAd = false
                 onAdDismissed()
             }
-            
+
             override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                Log.e(TAG, "App open ad failed to show: ${adError.message}")
+                AdLogger.e(TAG, "App open ad failed to show: ${adError.message}")
                 appOpenAd = null
                 isShowingAd = false
                 onAdFailedToShow(adError.message)
             }
-            
+
             override fun onAdShowedFullScreenContent() {
-                Log.d(TAG, "App open ad showed")
+                AdLogger.i(TAG, "App open ad showed")
                 isShowingAd = true
             }
         }

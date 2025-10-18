@@ -29,6 +29,7 @@ android {
         buildConfigField("String", "NATIVE_AD_LANGUAGE_SCREEN_2", "\"ca-app-pub-3940256099942544/2247696110\"")
         buildConfigField("String", "NATIVE_AD_ONBOARDING_PAGE_1", "\"ca-app-pub-3940256099942544/2247696110\"")
         buildConfigField("String", "NATIVE_AD_ONBOARDING_PAGE_3", "\"ca-app-pub-3940256099942544/2247696110\"")
+        buildConfigField("String", "NATIVE_AD_AFTER_INTERESTIAL", "\"ca-app-pub-3940256099942544/2247696110\"")
         buildConfigField("String", "NATIVE_AD_HOME_SCREEN", "\"ca-app-pub-3940256099942544/2247696110\"")
         buildConfigField("String", "NATIVE_AD_LIST_ITEM", "\"ca-app-pub-3940256099942544/2247696110\"")
     }

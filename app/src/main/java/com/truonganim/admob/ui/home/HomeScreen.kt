@@ -3,6 +3,7 @@ package com.truonganim.admob.ui.home
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -37,10 +38,17 @@ fun HomeScreen(
     val context = LocalContext.current
     val navController = rememberNavController()
 
-    // Load interstitial ad when entering home screen
+    // Start ad load timer when entering home screen
     LaunchedEffect(Unit) {
         val adManager = InterstitialAdManager.getInstance(context)
-        adManager.loadAd()
+        adManager.startAdLoadTimer()
+    }
+
+    // Stop timer when leaving home screen
+    DisposableEffect(Unit) {
+        onDispose {
+            // Don't stop timer - let it run in background
+        }
     }
     
     Scaffold(
