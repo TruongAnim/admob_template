@@ -1,15 +1,26 @@
 package com.truonganim.admob.ui.albums
 
+import android.R
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,19 +29,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.truonganim.admob.ads.AdGateActivity
 import com.truonganim.admob.ads.AdGateHelper
 import com.truonganim.admob.data.Album
 import com.truonganim.admob.data.AlbumCategory
+import com.truonganim.admob.ui.components.AdBadge
 
 /**
  * Albums Screen
@@ -83,7 +94,7 @@ fun AlbumsScreen(
             pendingAlbum = album.category
 
             // Show ad gate (optional - respects interval)
-            AdGateHelper.showOptionalAdGate(adGateLauncher, context as androidx.activity.ComponentActivity)
+            AdGateHelper.showOptionalAdGate(adGateLauncher, context as ComponentActivity)
         }
     )
 }
@@ -127,7 +138,7 @@ private fun AlbumCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(150.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -142,7 +153,7 @@ private fun AlbumCard(
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-            
+
             // Overlay gradient for better text visibility
             Box(
                 modifier = Modifier
@@ -152,54 +163,69 @@ private fun AlbumCard(
                 // Category Title (Center)
                 Text(
                     text = album.category.displayName,
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier.align(Alignment.BottomStart),
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        fontSize = 28.sp
+                        fontSize = 20.sp
                     )
                 )
-                
                 // Progress Indicator (Bottom Left)
                 if (album.totalCount > 0) {
-                    Row(
+                    // Add AD badge at bottom right
+                    AdBadge(
+                        progressText = album.progressText,
                         modifier = Modifier
-                            .align(Alignment.BottomStart),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        // Play Icon
-                        Surface(
-                            modifier = Modifier.size(32.dp),
-                            shape = RoundedCornerShape(4.dp),
-                            color = Color(0xFFFF9800) // Orange color
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "▶",
-                                    color = Color.White,
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                        
-                        // Progress Text
-                        Text(
-                            text = album.progressText,
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 18.sp
-                            )
-                        )
-                    }
+                            .align(Alignment.BottomEnd)
+                    )
                 }
             }
         }
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun AlbumsContentPreview() {
+    val sampleAlbums = listOf(
+        Album(
+            category = AlbumCategory.ROLE_PLAY,
+            imageRes = R.drawable.ic_menu_gallery,
+            totalCount = 100,
+            id = "album_1",
+            currentCount = 25
+        ),
+        Album(
+            category = AlbumCategory.FULL,
+            imageRes = R.drawable.ic_menu_camera,
+            totalCount = 80,
+            id = "album_2",
+            currentCount = 40
+        ),
+        Album(
+            category = AlbumCategory.NORMAL,
+            imageRes = R.drawable.ic_menu_gallery,
+            totalCount = 50,
+            id = "album_3",
+            currentCount = 10
+        )
+    )
+    AlbumsContent(
+        albums = sampleAlbums,
+        isLoading = false,
+        onAlbumClick = {}
+    )
+}
+
+@Preview
+@Composable
+fun AlbumCardPreview() {
+    val sampleAlbum = Album(
+        category = AlbumCategory.ROLE_PLAY,
+        imageRes = R.drawable.ic_menu_gallery,
+        totalCount = 100,
+        id = "sample_album_1",
+        currentCount = 1
+    )
+    AlbumCard(album = sampleAlbum, onClick = {})
+}
