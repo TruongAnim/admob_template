@@ -17,6 +17,8 @@ import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albumdetail.AlbumDetailScreen
 import com.truonganim.admob.ui.characterdetail.CharacterDetailScreen
+import com.truonganim.admob.ui.components.AppLoadingOverlay
+import com.truonganim.admob.ui.components.AppLoadingOverlayManager
 import com.truonganim.admob.ui.components.RewardAdLoadingOverlay
 import com.truonganim.admob.ui.home.HomeScreen
 import com.truonganim.admob.ui.photoviewer.PhotoViewerScreen
@@ -55,6 +57,10 @@ fun AppNavigation(
     // Reward Ad Manager
     val rewardAdManager = RewardAdManager.getInstance(context)
     val rewardAdLoadingState by rewardAdManager.loadingState.collectAsState()
+
+    // App Loading Overlay Manager
+    val appLoadingManager = AppLoadingOverlayManager.getInstance()
+    val appLoadingState by appLoadingManager.loadingState.collectAsState()
 
     Box {
         NavHost(
@@ -162,6 +168,14 @@ fun AppNavigation(
             loadingState = rewardAdLoadingState,
             onDismiss = {
                 rewardAdManager.cancelLoading()
+            }
+        )
+
+        // App Loading Overlay - covers entire app
+        AppLoadingOverlay(
+            loadingState = appLoadingState,
+            onCancel = {
+                appLoadingManager.cancel()
             }
         )
     }

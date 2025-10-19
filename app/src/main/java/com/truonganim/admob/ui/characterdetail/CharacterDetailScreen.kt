@@ -31,8 +31,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.ads.RewardAdHelper
 import com.truonganim.admob.ads.RewardAdPlace
 import com.truonganim.admob.data.AppCharacter
-import com.truonganim.admob.ui.components.GradientButton
 import com.truonganim.admob.ui.components.GradientPresets
+import com.truonganim.admob.ui.components.SetRandomWallpaperButton
 
 /**
  * Character Detail Screen
@@ -64,11 +64,8 @@ fun CharacterDetailScreen(
             photos = uiState.appCharacter?.photos ?: emptyList(),
             favouritePhotoUrls = uiState.favouritePhotoUrls,
             isLoading = uiState.isLoading,
-            isSettingWallpaper = uiState.isSettingWallpaper,
-            wallpaperProgress = uiState.wallpaperProgress,
             onPhotoClick = onPhotoClick,
             onPhotoFavoriteClick = viewModel::onPhotoFavoriteClick,
-            onSetRandomWallpaperClick = viewModel::onSetRandomWallpaperClick,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -126,11 +123,8 @@ private fun CharacterDetailContent(
     photos: List<String>,
     favouritePhotoUrls: Set<String>,
     isLoading: Boolean,
-    isSettingWallpaper: Boolean,
-    wallpaperProgress: Pair<Int, Int>?,
     onPhotoClick: (Int) -> Unit,
     onPhotoFavoriteClick: (String) -> Unit,
-    onSetRandomWallpaperClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -148,23 +142,15 @@ private fun CharacterDetailContent(
             ) {
                 // Random Wallpaper Button
                 if (photos.isNotEmpty()) {
-                    GradientButton(
-                        text = if (isSettingWallpaper) {
-                            wallpaperProgress?.let { (current, total) ->
-                                "DOWNLOADING $current/$total"
-                            } ?: "SETTING UP..."
-                        } else {
-                            "SET RANDOM WALLPAPER"
-                        },
-                        onClick = onSetRandomWallpaperClick,
-                        icon = Icons.Default.Wallpaper,
-                        isLoading = isSettingWallpaper,
-                        enabled = !isSettingWallpaper,
+                    SetRandomWallpaperButton(
+                        imageUrls = photos,
+                        text = "SET RANDOM WALLPAPER",
+                        intervalSeconds = 15,
                         gradientColors = GradientPresets.Aurora,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
-                            .height(56.dp),
+                            .padding(16.dp),
+                        height = 56.dp,
                         cornerRadius = 28.dp
                     )
                 }
