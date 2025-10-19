@@ -3,24 +3,28 @@ package com.truonganim.admob.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.truonganim.admob.R
 
 @Composable
 fun AdBadge(
     progressText: String,
     modifier: Modifier = Modifier,
     pillColor: Color = Color(0xFFFF6B6B),
-    adBg: Color = Color.White,
-    adTextColor: Color = pillColor
+    adTextColor: Color = Color.White
 ) {
     Surface(
         modifier = modifier,
@@ -31,28 +35,14 @@ fun AdBadge(
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            // Ô “AD” vuông bo góc
-            Surface(
-                shape = RoundedCornerShape(8.dp),
-                color = adBg
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    // Nếu có icon riêng thì dùng painterResource; không có thì để chữ “AD”
-                    // Icon(painterResource(R.drawable.ic_ad), contentDescription = null, tint = adTextColor, modifier = Modifier.size(14.dp))
-                    Text(
-                        text = "AD",
-                        color = adTextColor,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
+            Icon(
+                painter = painterResource(R.drawable.ic_ads),
+                contentDescription = null,
+                tint = adTextColor,
+                modifier = Modifier.size(16.dp)
+            )
 
             Text(
                 text = progressText,
@@ -62,4 +52,12 @@ fun AdBadge(
             )
         }
     }
+}
+
+
+
+@Preview
+@Composable
+fun AdBadgePreview() {
+    AdBadge(progressText = "3/10")
 }
