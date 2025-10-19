@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
 import com.truonganim.admob.data.PhotoRepository
+import com.truonganim.admob.wallpaper.AppWallpaperManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +21,8 @@ data class CharacterDetailUiState(
     val appCharacter: AppCharacter? = null,
     val favouritePhotoUrls: Set<String> = emptySet(),
     val isLoading: Boolean = false,
+    val isSettingWallpaper: Boolean = false,
+    val wallpaperProgress: Pair<Int, Int>? = null, // current, total
     val error: String? = null
 )
 
@@ -33,15 +36,20 @@ class CharacterDetailViewModel(
 
     private val characterRepository = CharacterRepository.getInstance(context)
     private val photoRepository = PhotoRepository.getInstance(context)
+    private val wallpaperManager = AppWallpaperManager.getInstance(context)
 
     private val _isLoading = MutableStateFlow(false)
+    private val _isSettingWallpaper = MutableStateFlow(false)
+    private val _wallpaperProgress = MutableStateFlow<Pair<Int, Int>?>(null)
 
     // Observe both characters and favourite photos from repositories
     val uiState: StateFlow<CharacterDetailUiState> = combine(
         characterRepository.characters,
         photoRepository.favouritePhotoUrls,
-        _isLoading
-    ) { characters, favouritePhotoUrls, isLoading ->
+        _isLoading,
+        _isSettingWallpaper,
+        _wallpaperProgress
+    ) { characters, favouritePhotoUrls, isLoading, isSettingWallpaper, wallpaperProgress ->
         val character = if (characterId == AppCharacter.FAVOURITE_PHOTOS_ID) {
             // Create special character for favourite photos
             AppCharacter(
@@ -63,7 +71,9 @@ class CharacterDetailViewModel(
         CharacterDetailUiState(
             appCharacter = character,
             favouritePhotoUrls = favouritePhotoUrls,
-            isLoading = isLoading
+            isLoading = isLoading,
+            isSettingWallpaper = isSettingWallpaper,
+            wallpaperProgress = wallpaperProgress
         )
     }.stateIn(
         scope = viewModelScope,
@@ -108,6 +118,41 @@ class CharacterDetailViewModel(
         viewModelScope.launch {
             photoRepository.toggleFavourite(photoUrl)
             // UI will auto-update via StateFlow
+        }
+    }
+
+    /**
+     * Set all photos in current character as random live wallpaper
+     */
+    fun onSetRandomWallpaperClick() {
+        val photos = uiState.value.appCharacter?.photos
+        if (photos.isNullOrEmpty()) {
+            return
+        }
+
+        viewModelScope.launch {
+            _isSettingWallpaper.value = true
+            _wallpaperProgress.value = null
+
+            try {
+                val success = wallpaperManager.setupRandomWallpaper(
+                    imageUrls = photos,
+                    intervalSeconds = 15, // Change wallpaper every 15 seconds
+                    onProgress = { current, total ->
+                        _wallpaperProgress.value = Pair(current, total)
+                    }
+                )
+
+                if (success) {
+                    // Launch wallpaper picker to set the live wallpaper
+                    wallpaperManager.launchWallpaperPicker()
+                }
+            } catch (e: Exception) {
+                // Handle error if needed
+            } finally {
+                _isSettingWallpaper.value = false
+                _wallpaperProgress.value = null
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,6 +31,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.ads.RewardAdHelper
 import com.truonganim.admob.ads.RewardAdPlace
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.ui.components.GradientButton
+import com.truonganim.admob.ui.components.GradientPresets
 
 /**
  * Character Detail Screen
@@ -61,8 +64,11 @@ fun CharacterDetailScreen(
             photos = uiState.appCharacter?.photos ?: emptyList(),
             favouritePhotoUrls = uiState.favouritePhotoUrls,
             isLoading = uiState.isLoading,
+            isSettingWallpaper = uiState.isSettingWallpaper,
+            wallpaperProgress = uiState.wallpaperProgress,
             onPhotoClick = onPhotoClick,
             onPhotoFavoriteClick = viewModel::onPhotoFavoriteClick,
+            onSetRandomWallpaperClick = viewModel::onSetRandomWallpaperClick,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -120,53 +126,65 @@ private fun CharacterDetailContent(
     photos: List<String>,
     favouritePhotoUrls: Set<String>,
     isLoading: Boolean,
+    isSettingWallpaper: Boolean,
+    wallpaperProgress: Pair<Int, Int>?,
     onPhotoClick: (Int) -> Unit,
     onPhotoFavoriteClick: (String) -> Unit,
+    onSetRandomWallpaperClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        if(true)
-            Button(
-                onClick = {
-                    RewardAdHelper.requestRewardAd(
-                        context = context,
-                        place = RewardAdPlace.UNLOCK_CHARACTER,
-                        onRewardEarned = { amount ->
-                            Toast.makeText(context, "Unlocked!", Toast.LENGTH_SHORT).show()
-                        },
-                        onAdClosed = {
-                            // Ad closed (regardless of reward)
-                        }
-                    )
-                }
-            ) {
-                Text("Watch Ad to Unlock")
-            }
-        else
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(4.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+            Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                itemsIndexed(photos) { index, photoUrl ->
-                    PhotoGridItem(
-                        photoUrl = photoUrl,
-                        isFavorite = favouritePhotoUrls.contains(photoUrl),
-                        onClick = { onPhotoClick(index) },
-                        onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
+                // Random Wallpaper Button
+                if (photos.isNotEmpty()) {
+                    GradientButton(
+                        text = if (isSettingWallpaper) {
+                            wallpaperProgress?.let { (current, total) ->
+                                "DOWNLOADING $current/$total"
+                            } ?: "SETTING UP..."
+                        } else {
+                            "SET RANDOM WALLPAPER"
+                        },
+                        onClick = onSetRandomWallpaperClick,
+                        icon = Icons.Default.Wallpaper,
+                        isLoading = isSettingWallpaper,
+                        enabled = !isSettingWallpaper,
+                        gradientColors = GradientPresets.Aurora,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .height(56.dp),
+                        cornerRadius = 28.dp
                     )
+                }
+
+                // Photos Grid
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    itemsIndexed(photos) { index, photoUrl ->
+                        PhotoGridItem(
+                            photoUrl = photoUrl,
+                            isFavorite = favouritePhotoUrls.contains(photoUrl),
+                            onClick = { onPhotoClick(index) },
+                            onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
+                        )
+                    }
                 }
             }
         }
