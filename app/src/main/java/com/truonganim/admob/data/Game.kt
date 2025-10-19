@@ -3,7 +3,6 @@ package com.truonganim.admob.data
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.activity.result.ActivityResultLauncher
 
 /**
  * Game Result
@@ -30,12 +29,12 @@ data class Game(
     companion object {
         // Request code for game activity result
         const val GAME_RESULT_CODE = 1001
-        
+
         // Intent extras keys
         const val EXTRA_GAME_ID = "extra_game_id"
         const val EXTRA_INPUT_IMAGES = "extra_input_images"
         const val EXTRA_GAME_RESULT = "extra_game_result"
-        
+
         /**
          * Create intent to start game
          */
@@ -45,12 +44,12 @@ data class Game(
                 putStringArrayListExtra(EXTRA_INPUT_IMAGES, ArrayList(game.inputImages))
             }
         }
-        
+
         /**
          * Parse game result from intent
          */
         fun parseResult(intent: Intent?): GameResult {
-            return intent?.getSerializableExtra(EXTRA_GAME_RESULT) as? GameResult 
+            return intent?.getSerializableExtra(EXTRA_GAME_RESULT) as? GameResult
                 ?: GameResult.CANCELLED
         }
     }
@@ -71,8 +70,18 @@ object SampleGames {
                 inputImages = listOf("https://picsum.photos/800/600?random=100"),
                 activityClass = com.truonganim.admob.games.taptozoom.TapToZoomGameActivity::class.java,
                 isUnlocked = true
-            )
+            ),
             // More games will be added here
+            Game(
+                id = "image_puzzle",
+                name = "Image Puzzle",
+                description = "Solve the image puzzle to win!",
+                thumbnailUrl = "https://picsum.photos/400/200?random=2",
+                adsRequired = 1,
+                inputImages = listOf("https://picsum.photos/800/600?random=200"),
+                activityClass = com.truonganim.admob.games.imagepuzzle.ImagePuzzleGameActivity::class.java,
+                isUnlocked = false
+            )
         )
     }
 }
