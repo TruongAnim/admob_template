@@ -37,7 +37,8 @@ class RemoteConfigHelper {
             RemoteConfigKeys.SPLASH_AD_TYPE to "interstitial", // Default: interstitial
             RemoteConfigKeys.SHOW_ADS to true,
             RemoteConfigKeys.AD_INTERVAL to 30,
-            RemoteConfigKeys.ALBUM_DATA to "[]" // Empty array as default
+            RemoteConfigKeys.ALBUM_DATA to "[]", // Empty array as default (character data)
+            RemoteConfigKeys.ALBUMS_DATA to "[]" // Empty array as default (albums list)
         )
         remoteConfig.setDefaultsAsync(defaults)
     }
@@ -97,6 +98,8 @@ class RemoteConfigHelper {
         println("  - ${RemoteConfigKeys.SPLASH_AD_TYPE}: ${getString(RemoteConfigKeys.SPLASH_AD_TYPE)}")
         println("  - ${RemoteConfigKeys.SHOW_ADS}: ${getBoolean(RemoteConfigKeys.SHOW_ADS)}")
         println("  - ${RemoteConfigKeys.AD_INTERVAL}: ${getLong(RemoteConfigKeys.AD_INTERVAL)}")
+        println("  - ${RemoteConfigKeys.ALBUM_DATA}: ${getString(RemoteConfigKeys.ALBUM_DATA)}")
+        println("  - ${RemoteConfigKeys.ALBUMS_DATA}: ${getString(RemoteConfigKeys.ALBUMS_DATA)}")
     }
     
     companion object {

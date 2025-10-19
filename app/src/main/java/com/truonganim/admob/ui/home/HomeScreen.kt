@@ -15,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.truonganim.admob.ads.InterstitialAdManager
-import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albums.AlbumsScreen
@@ -29,7 +28,7 @@ import com.truonganim.admob.ui.settings.SettingsScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onAlbumClick: (AlbumCategory) -> Unit = {},
+    onAlbumClick: (String) -> Unit = {}, // Now takes albumId instead of AlbumCategory
     onCharacterClick: (Int) -> Unit = {},
     onPhotoClick: (String) -> Unit = {},
     onFavouritePhotoClick: (String, List<String>) -> Unit = { _, _ -> },
@@ -101,7 +100,7 @@ fun HomeScreen(
                     onCharacterClick = onCharacterClick,
                     onPhotoClick = onFavouritePhotoClick,
                     onViewAllCharactersClick = {
-                        onAlbumClick(AlbumCategory.FAVOURITE)
+                        onAlbumClick("favourite") // Use albumId string
                     },
                     onViewAllPhotosClick = {
                         onCharacterClick(AppCharacter.FAVOURITE_PHOTOS_ID)

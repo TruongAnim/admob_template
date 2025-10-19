@@ -3,10 +3,10 @@ package com.truonganim.admob.ui.albumdetail
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.truonganim.admob.data.AlbumCategory
+import com.truonganim.admob.data.AlbumRepository
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.CharacterRepository
-import com.truonganim.admob.data.filterByAlbum
+import com.truonganim.admob.data.filterByAlbumId
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,8 @@ import kotlinx.coroutines.launch
  * Album Detail Screen UI State
  */
 data class AlbumDetailUiState(
-    val albumCategory: AlbumCategory = AlbumCategory.NORMAL,
+    val albumId: String = "",
+    val albumName: String = "",
     val appCharacters: List<AppCharacter> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
@@ -28,34 +29,38 @@ data class AlbumDetailUiState(
  * Album Detail ViewModel
  */
 class AlbumDetailViewModel(
-    private val albumCategory: AlbumCategory,
+    private val albumId: String,
     private val context: Context
 ) : ViewModel() {
 
     private val characterRepository = CharacterRepository.getInstance(context)
+    private val albumRepository = AlbumRepository.getInstance(context)
 
     private val _isLoading = MutableStateFlow(false)
 
-    // Observe characters from repository and filter by album category
+    // Observe characters from repository and filter by album ID
     val uiState: StateFlow<AlbumDetailUiState> = combine(
         characterRepository.characters,
+        albumRepository.albums,
         _isLoading
-    ) { characters, isLoading ->
-        val filteredCharacters = if (albumCategory == AlbumCategory.FAVOURITE) {
+    ) { characters, albums, isLoading ->
+        val album = albums.find { it.albumId == albumId }
+        val filteredCharacters = if (albumId == "favourite") {
             characters.filter { it.isFavorite }
         } else {
-            characters.filterByAlbum(albumCategory)
+            characters.filterByAlbumId(albumId)
         }
 
         AlbumDetailUiState(
-            albumCategory = albumCategory,
+            albumId = albumId,
+            albumName = album?.name ?: albumId.uppercase(),
             appCharacters = filteredCharacters,
             isLoading = isLoading
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = AlbumDetailUiState(albumCategory = albumCategory)
+        initialValue = AlbumDetailUiState(albumId = albumId)
     )
 
     init {
@@ -89,7 +94,7 @@ class AlbumDetailViewModel(
     }
 
     fun onUnlockAllClick() {
-        characterRepository.unlockAllInAlbum(albumCategory)
+        characterRepository.unlockAllInAlbum(albumId)
         // UI will auto-update via StateFlow
     }
 }
