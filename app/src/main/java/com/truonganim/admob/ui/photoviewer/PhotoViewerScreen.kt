@@ -7,25 +7,45 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Wallpaper
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.R
 import com.truonganim.admob.ui.components.GradientButton
 import com.truonganim.admob.ui.components.GradientPresets
 
@@ -43,7 +63,7 @@ fun PhotoViewerScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
-    
+
     // Permission launcher for storage (Android 9 and below)
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -52,7 +72,7 @@ fun PhotoViewerScreen(
             viewModel.onSaveClick(context) {}
         }
     }
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -66,13 +86,13 @@ fun PhotoViewerScreen(
                 onPageChanged = viewModel::onPhotoIndexChanged
             )
         }
-        
+
         // Top Bar with Back Button
         PhotoViewerTopBar(
             onBackClick = onBackClick,
             modifier = Modifier.align(Alignment.TopStart)
         )
-        
+
         // Bottom Action Buttons
         PhotoViewerBottomBar(
             onSaveClick = {
@@ -108,12 +128,12 @@ private fun PhotoPager(
         initialPage = initialPage,
         pageCount = { photos.size }
     )
-    
+
     // Track page changes
     LaunchedEffect(pagerState.currentPage) {
         onPageChanged(pagerState.currentPage)
     }
-    
+
     HorizontalPager(
         state = pagerState,
         modifier = Modifier.fillMaxSize()
@@ -178,20 +198,6 @@ private fun PhotoViewerBottomBar(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Row 1: Set Wallpaper Button (Gradient)
-        GradientButton(
-            text = "SET WALLPAPER",
-            onClick = onSetWallpaperClick,
-            icon = Icons.Default.Wallpaper,
-            isLoading = isSettingWallpaper,
-            gradientColors = GradientPresets.Aurora,
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .height(56.dp),
-            cornerRadius = 28.dp
-        )
-
-        // Row 2: Save and Share Buttons
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
@@ -200,9 +206,19 @@ private fun PhotoViewerBottomBar(
             // Save Button
             ActionButton(
                 onClick = onSaveClick,
-                icon = Icons.Default.Download,
+                imageRes = R.drawable.btn_save,
                 contentDescription = "Save",
                 isLoading = isSaving
+            )
+
+            Spacer(modifier = Modifier.width(32.dp))
+
+            // Set Button
+            ActionButton(
+                onClick = onSetWallpaperClick,
+                imageRes = R.drawable.btn_set_wallpaper,
+                contentDescription = "Save",
+                isLoading = isSettingWallpaper
             )
 
             Spacer(modifier = Modifier.width(32.dp))
@@ -210,7 +226,7 @@ private fun PhotoViewerBottomBar(
             // Share Button
             ActionButton(
                 onClick = onShareClick,
-                icon = Icons.Default.Share,
+                imageRes = R.drawable.btn_share,
                 contentDescription = "Share",
                 isLoading = isSharing
             )
@@ -221,29 +237,41 @@ private fun PhotoViewerBottomBar(
 @Composable
 private fun ActionButton(
     onClick: () -> Unit,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    imageRes: Int,
     contentDescription: String,
     isLoading: Boolean
 ) {
-    FloatingActionButton(
-        onClick = onClick,
-        containerColor = Color(0xFFFF9800), // Orange color
-        contentColor = Color.White,
-        modifier = Modifier.size(56.dp)
+    Box(
+        modifier = Modifier
+            .size(56.dp)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.fillMaxSize(),
                 color = Color.White,
                 strokeWidth = 2.dp
             )
         } else {
-            Icon(
-                imageVector = icon,
+            Image(
+                painter = painterResource(id = imageRes),
                 contentDescription = contentDescription,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.fillMaxSize()
             )
         }
     }
 }
 
+@Preview
+@Composable
+private fun PhotoViewerBottomBarPreview() {
+    PhotoViewerBottomBar(
+        onSaveClick = {},
+        onSetWallpaperClick = {},
+        onShareClick = {},
+        isSaving = false,
+        isSharing = false,
+        isSettingWallpaper = false
+    )
+}

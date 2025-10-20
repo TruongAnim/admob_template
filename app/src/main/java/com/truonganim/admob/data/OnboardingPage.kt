@@ -1,6 +1,8 @@
 package com.truonganim.admob.data
 
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.truonganim.admob.R
 
 /**
@@ -9,7 +11,8 @@ import com.truonganim.admob.R
  */
 data class OnboardingPage(
     val title: String,
-    @DrawableRes val imageRes: Int
+    @DrawableRes val imageRes: Int,
+    val hozizontalPadding: Dp = 0.dp
 )
 
 /**
@@ -19,20 +22,28 @@ data class OnboardingPage(
 object OnboardingPages {
     val pages = listOf(
         OnboardingPage(
-            title = "Welcome to AdMob Base",
-            imageRes = R.drawable.onboarding_1
+            title = "The Innocent\n" +
+                    "Little Devil Sister",
+            imageRes = R.drawable.onboarding_1,
+            hozizontalPadding = 88.dp
         ),
         OnboardingPage(
-            title = "Easy Integration",
-            imageRes = R.drawable.onboarding_2
+            title = "Practice With\n" +
+                    "The Beautiful Swimmer",
+            imageRes = R.drawable.onboarding_2,
+            hozizontalPadding = 54.dp
         ),
         OnboardingPage(
-            title = "Maximize Revenue",
-            imageRes = R.drawable.onboarding_3
+            title = "From Homeless Girl\n" +
+                    "to A Lovely Maid",
+            imageRes = R.drawable.onboarding_3,
+            hozizontalPadding = 74.dp
         ),
         OnboardingPage(
-            title = "Get Started Now",
-            imageRes = R.drawable.onboarding_4
+            title = "A Typical Day\n" +
+                    "of A School Girl",
+            imageRes = R.drawable.onboarding_4,
+            hozizontalPadding = 96.dp
         )
     )
 }

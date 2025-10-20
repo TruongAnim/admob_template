@@ -1,21 +1,31 @@
 package com.truonganim.admob.ui.language
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,22 +66,21 @@ fun LanguageItem(
             defaultElevation = if (isSelected) 4.dp else 1.dp
         )
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
             // Flag emoji
             Text(
                 text = language.flag,
-                fontSize = 48.sp,
-                textAlign = TextAlign.Center
+                fontSize = 28.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(end = 12.dp)
             )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Native name
             Text(
                 text = language.nativeName,
@@ -82,15 +91,14 @@ fun LanguageItem(
                 } else {
                     MaterialTheme.colorScheme.onSurface
                 },
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(end = 4.dp)
             )
-            
-            Spacer(modifier = Modifier.height(4.dp))
-            
+
             // English name
             Text(
-                text = language.name,
-                fontSize = 12.sp,
+                text = "(${language.code})",
+                fontSize = 14.sp,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                 } else {
@@ -98,6 +106,38 @@ fun LanguageItem(
                 },
                 textAlign = TextAlign.Center
             )
+
+            // Circular selection indicator at the end
+            Spacer(Modifier.weight(1f))
+
+            val indicatorSize = 24.dp
+            if (isSelected) {
+                Box(
+                    modifier = Modifier
+                        .size(indicatorSize)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(indicatorSize)
+                        .clip(CircleShape)
+                        .border(
+                            2.dp,
+                            MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
+                            CircleShape
+                        )
+                )
+            }
         }
     }
 }

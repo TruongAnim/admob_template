@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
@@ -28,22 +29,18 @@ fun DotIndicator(
     totalDots: Int,
     selectedIndex: Int,
     modifier: Modifier = Modifier,
+    dotSize: Dp = 8.dp,
+    spacing: Dp = 10.dp,
     selectedColor: Color = MaterialTheme.colorScheme.primary,
     unselectedColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(spacing)
     ) {
         repeat(totalDots) { index ->
             val isSelected = index == selectedIndex
-            
-            val width by animateDpAsState(
-                targetValue = if (isSelected) 32.dp else 8.dp,
-                animationSpec = tween(durationMillis = 300),
-                label = "dot_width"
-            )
-            
+
             val color by animateColorAsState(
                 targetValue = if (isSelected) selectedColor else unselectedColor,
                 animationSpec = tween(durationMillis = 300),
@@ -52,8 +49,8 @@ fun DotIndicator(
             
             Box(
                 modifier = Modifier
-                    .width(width)
-                    .height(8.dp)
+                    .width(dotSize)
+                    .height(dotSize)
                     .clip(CircleShape)
                     .background(color)
             )

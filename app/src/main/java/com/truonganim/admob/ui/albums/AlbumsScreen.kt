@@ -1,12 +1,21 @@
 package com.truonganim.admob.ui.albums
 
+import android.R
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +35,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -87,7 +98,7 @@ fun AlbumsScreen(
             pendingAlbumId = album.albumId
 
             // Show ad gate (optional - respects interval)
-            AdGateHelper.showOptionalAdGate(adGateLauncher, context as androidx.activity.ComponentActivity)
+            AdGateHelper.showOptionalAdGate(adGateLauncher, context as ComponentActivity)
         }
     )
 }
@@ -218,3 +229,45 @@ private fun AlbumCard(
     }
 }
 
+@Composable
+fun AdBadge(
+    progressText: String,
+    modifier: Modifier = Modifier,
+    pillColor: Color = Color(0xFFFF6B6B),
+    adTextColor: Color = Color.White
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(20.dp),
+        color = pillColor,
+        shadowElevation = 6.dp
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                painter = painterResource(com.truonganim.admob.R.drawable.ic_ads),
+                contentDescription = null,
+                tint = adTextColor,
+                modifier = Modifier.size(16.dp)
+            )
+
+            Text(
+                text = progressText,
+                color = Color.White,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+
+
+@Preview
+@Composable
+fun AdBadgePreview() {
+    AdBadge(progressText = "3/10")
+}
