@@ -29,6 +29,10 @@ object PreferencesKeys {
     // Albums
     val ALBUM_WATCHED_AD_COUNTS = stringPreferencesKey("album_watched_ad_counts")
 
+    // Notification Permission
+    val NOTIFICATION_PERMISSION_REQUESTED = booleanPreferencesKey("notification_permission_requested")
+    val NOTIFICATION_PERMISSION_DIALOG_SHOWN = booleanPreferencesKey("notification_permission_dialog_shown")
+
     // Add more keys as needed
 }
 

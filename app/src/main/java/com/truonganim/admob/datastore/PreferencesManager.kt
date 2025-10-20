@@ -231,5 +231,35 @@ class PreferencesManager private constructor(private val context: Context) {
     suspend fun saveAlbumWatchedAdCounts(json: String) {
         saveValue(PreferencesKeys.ALBUM_WATCHED_AD_COUNTS, json)
     }
+
+    // ==================== Notification Permission Methods ====================
+
+    /**
+     * Check if notification permission has been requested
+     */
+    suspend fun isNotificationPermissionRequested(): Boolean {
+        return getValueSync(PreferencesKeys.NOTIFICATION_PERMISSION_REQUESTED, false)
+    }
+
+    /**
+     * Mark notification permission as requested
+     */
+    suspend fun setNotificationPermissionRequested(requested: Boolean) {
+        saveValue(PreferencesKeys.NOTIFICATION_PERMISSION_REQUESTED, requested)
+    }
+
+    /**
+     * Check if notification permission dialog has been shown
+     */
+    suspend fun isNotificationPermissionDialogShown(): Boolean {
+        return getValueSync(PreferencesKeys.NOTIFICATION_PERMISSION_DIALOG_SHOWN, false)
+    }
+
+    /**
+     * Mark notification permission dialog as shown
+     */
+    suspend fun setNotificationPermissionDialogShown(shown: Boolean) {
+        saveValue(PreferencesKeys.NOTIFICATION_PERMISSION_DIALOG_SHOWN, shown)
+    }
 }
 
