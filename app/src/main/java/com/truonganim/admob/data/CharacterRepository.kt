@@ -48,18 +48,6 @@ class CharacterRepository private constructor(private val context: Context) {
     }
     
     /**
-     * Get characters by album category
-     */
-    fun getCharactersByAlbum(albumCategory: AlbumCategory): List<AppCharacter> {
-        return if (albumCategory == AlbumCategory.FAVOURITE) {
-            // Return favourite characters for special FAVOURITE category
-            _characters.value.filter { it.isFavorite }
-        } else {
-            _characters.value.filterByAlbum(albumCategory)
-        }
-    }
-    
-    /**
      * Get character by ID
      */
     fun getCharacterById(id: Int): AppCharacter? {
@@ -117,21 +105,20 @@ class CharacterRepository private constructor(private val context: Context) {
             }
         }
     }
-    
+
     /**
-     * Unlock all characters in an album
+     * Unlock all characters in an album by albumId
      */
-    fun unlockAllInAlbum(albumCategory: AlbumCategory) {
-        val albumName = when (albumCategory) {
-            AlbumCategory.NORMAL -> "normal"
-            AlbumCategory.ROLE_PLAY -> "role_play"
-            AlbumCategory.HARD -> "hard"
-            AlbumCategory.FULL -> "full"
-            AlbumCategory.FAVOURITE -> "favourite"
-        }
-        
+    fun unlockAllInAlbum(albumId: String) {
+        unlockAllInAlbumById(albumId)
+    }
+
+    /**
+     * Internal method to unlock all characters in an album
+     */
+    private fun unlockAllInAlbumById(albumId: String) {
         _characters.value = _characters.value.map { character ->
-            if (character.album == albumName) {
+            if (character.album == albumId) {
                 character.copy(isUnlocked = true)
             } else {
                 character

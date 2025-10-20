@@ -81,17 +81,10 @@ data class AppCharacter(
 }
 
 /**
- * Extension function to filter characters by album
+ * Extension function to filter characters by albumId
  */
-fun List<AppCharacter>.filterByAlbum(albumCategory: AlbumCategory): List<AppCharacter> {
-    val albumName = when (albumCategory) {
-        AlbumCategory.NORMAL -> "normal"
-        AlbumCategory.ROLE_PLAY -> "role_play"
-        AlbumCategory.HARD -> "hard"
-        AlbumCategory.FULL -> "full"
-        AlbumCategory.FAVOURITE -> return emptyList() // FAVOURITE is handled separately
-    }
-    return this.filter { it.album == albumName }
+fun List<AppCharacter>.filterByAlbumId(albumId: String): List<AppCharacter> {
+    return this.filter { it.album == albumId }
         .sortedBy { it.order }
 }
 

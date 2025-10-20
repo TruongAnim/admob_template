@@ -1,6 +1,9 @@
 package com.truonganim.admob.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,11 +11,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.truonganim.admob.data.AlbumCategory
+import com.truonganim.admob.ads.RewardAdManager
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albumdetail.AlbumDetailScreen
 import com.truonganim.admob.ui.characterdetail.CharacterDetailScreen
+import com.truonganim.admob.ui.components.AppLoadingOverlay
+import com.truonganim.admob.ui.components.AppLoadingOverlayManager
+import com.truonganim.admob.ui.components.RewardAdLoadingOverlay
 import com.truonganim.admob.ui.home.HomeScreen
 import com.truonganim.admob.ui.photoviewer.PhotoViewerScreen
 
@@ -21,12 +27,12 @@ import com.truonganim.admob.ui.photoviewer.PhotoViewerScreen
  */
 object Routes {
     const val HOME = "home"
-    const val ALBUM_DETAIL = "album_detail/{albumCategory}"
+    const val ALBUM_DETAIL = "album_detail/{albumId}"
     const val CHARACTER_DETAIL = "character_detail/{characterId}"
     const val PHOTO_VIEWER = "photo_viewer/{characterId}/{photoIndex}"
 
-    fun albumDetail(albumCategory: AlbumCategory): String {
-        return "album_detail/${albumCategory.name}"
+    fun albumDetail(albumId: String): String {
+        return "album_detail/$albumId"
     }
 
     fun characterDetail(characterId: Int): String {
@@ -46,15 +52,25 @@ fun AppNavigation(
     navController: NavHostController = rememberNavController()
 ) {
     val context = LocalContext.current
-    NavHost(
-        navController = navController,
-        startDestination = Routes.HOME
-    ) {
+
+    // Reward Ad Manager
+    val rewardAdManager = RewardAdManager.getInstance(context)
+    val rewardAdLoadingState by rewardAdManager.loadingState.collectAsState()
+
+    // App Loading Overlay Manager
+    val appLoadingManager = AppLoadingOverlayManager.getInstance()
+    val appLoadingState by appLoadingManager.loadingState.collectAsState()
+
+    Box {
+        NavHost(
+            navController = navController,
+            startDestination = Routes.HOME
+        ) {
         // Home Screen with Bottom Navigation
         composable(Routes.HOME) {
             HomeScreen(
-                onAlbumClick = { albumCategory ->
-                    navController.navigate(Routes.albumDetail(albumCategory))
+                onAlbumClick = { albumId ->
+                    navController.navigate(Routes.albumDetail(albumId))
                 },
                 onCharacterClick = { characterId ->
                     navController.navigate(Routes.characterDetail(characterId))
@@ -80,16 +96,15 @@ fun AppNavigation(
         composable(
             route = Routes.ALBUM_DETAIL,
             arguments = listOf(
-                navArgument("albumCategory") {
+                navArgument("albumId") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val albumCategoryName = backStackEntry.arguments?.getString("albumCategory")
-            val albumCategory = AlbumCategory.valueOf(albumCategoryName ?: AlbumCategory.NORMAL.name)
+            val albumId = backStackEntry.arguments?.getString("albumId") ?: ""
 
             AlbumDetailScreen(
-                albumCategory = albumCategory,
+                albumId = albumId,
                 onBackClick = {
                     navController.popBackStack()
                 },
@@ -144,6 +159,23 @@ fun AppNavigation(
                 }
             )
         }
+    }
+
+        // Reward Ad Loading Overlay - covers entire app
+        RewardAdLoadingOverlay(
+            loadingState = rewardAdLoadingState,
+            onDismiss = {
+                rewardAdManager.cancelLoading()
+            }
+        )
+
+        // App Loading Overlay - covers entire app
+        AppLoadingOverlay(
+            loadingState = appLoadingState,
+            onCancel = {
+                appLoadingManager.cancel()
+            }
+        )
     }
 }
 

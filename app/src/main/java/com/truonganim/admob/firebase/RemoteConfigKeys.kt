@@ -24,15 +24,11 @@ object RemoteConfigKeys {
 
     // Ad Gate config (JSON format)
     const val AD_GATE_CONFIG = "ad_gate_config"
-    // Expected JSON format:
-    // {
-    //   "enabled": true,
-    //   "timeout_seconds": 10,
-    //   "background_image_url": "https://picsum.photos/1080/1920?random=2",
-    //   "ad_interval_seconds": 30
-    // }
 
-    // Album data
+    // Album data (character data - legacy name)
     const val ALBUM_DATA = "album_data"
+
+    // Albums data (new album list)
+    const val ALBUMS_DATA = "albums_data"
 }
 

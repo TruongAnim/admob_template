@@ -215,5 +215,21 @@ class PreferencesManager private constructor(private val context: Context) {
         val urlsString = urls.joinToString("|||")
         saveValue(PreferencesKeys.FAVOURITE_PHOTO_URLS, urlsString)
     }
+
+    // ==================== Album Methods ====================
+
+    /**
+     * Get album watched ad counts (JSON string)
+     */
+    fun getAlbumWatchedAdCounts(): Flow<String> {
+        return getValue(PreferencesKeys.ALBUM_WATCHED_AD_COUNTS, "{}")
+    }
+
+    /**
+     * Save album watched ad counts (JSON string)
+     */
+    suspend fun saveAlbumWatchedAdCounts(json: String) {
+        saveValue(PreferencesKeys.ALBUM_WATCHED_AD_COUNTS, json)
+    }
 }
 

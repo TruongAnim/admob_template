@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.R
-import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
 
 /**
@@ -60,11 +59,11 @@ import com.truonganim.admob.data.AppCharacter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumDetailScreen(
-    albumCategory: AlbumCategory,
+    albumId: String,
     onBackClick: () -> Unit,
     onCharacterClick: (Int) -> Unit = {},
     viewModel: AlbumDetailViewModel = viewModel(
-        factory = AlbumDetailViewModelFactory(albumCategory, LocalContext.current)
+        factory = AlbumDetailViewModelFactory(albumId, LocalContext.current)
     )
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -72,9 +71,10 @@ fun AlbumDetailScreen(
     Scaffold(
         topBar = {
             AlbumDetailTopBar(
-                albumCategory = albumCategory,
+                albumName = uiState.albumName,
                 onBackClick = onBackClick,
-                onUnlockAllClick = viewModel::onUnlockAllClick
+                onUnlockAllClick = viewModel::onUnlockAllClick,
+                albumId = uiState.albumId
             )
         }
     ) { paddingValues ->
@@ -93,9 +93,10 @@ fun AlbumDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AlbumDetailTopBar(
-    albumCategory: AlbumCategory,
+    albumName: String,
     onBackClick: () -> Unit,
-    onUnlockAllClick: () -> Unit
+    onUnlockAllClick: () -> Unit,
+    albumId: String = ""
 ) {
     TopAppBar(
         title = {
@@ -104,7 +105,7 @@ private fun AlbumDetailTopBar(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "Albums",
+                    text = albumName,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     )
@@ -121,7 +122,7 @@ private fun AlbumDetailTopBar(
         },
         actions = {
             // Only show "UNLOCK ALL" button if not FAVOURITE category
-            if (albumCategory != AlbumCategory.FAVOURITE) {
+            if (albumId != "favourite") {
                 Button(
                     onClick = onUnlockAllClick,
                     colors = ButtonDefaults.buttonColors(

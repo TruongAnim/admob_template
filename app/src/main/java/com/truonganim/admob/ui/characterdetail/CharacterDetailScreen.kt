@@ -1,5 +1,6 @@
 package com.truonganim.admob.ui.characterdetail
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +28,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.ads.RewardAdHelper
+import com.truonganim.admob.ads.RewardAdPlace
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.ui.components.GradientPresets
+import com.truonganim.admob.ui.components.SetRandomWallpaperButton
 
 /**
  * Character Detail Screen
@@ -131,20 +137,40 @@ private fun CharacterDetailContent(
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(4.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+            Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                itemsIndexed(photos) { index, photoUrl ->
-                    PhotoGridItem(
-                        photoUrl = photoUrl,
-                        isFavorite = favouritePhotoUrls.contains(photoUrl),
-                        onClick = { onPhotoClick(index) },
-                        onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
+                // Random Wallpaper Button
+                if (photos.isNotEmpty()) {
+                    SetRandomWallpaperButton(
+                        imageUrls = photos,
+                        text = "SET RANDOM WALLPAPER",
+                        intervalSeconds = 15,
+                        gradientColors = GradientPresets.Aurora,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        height = 56.dp,
+                        cornerRadius = 28.dp
                     )
+                }
+
+                // Photos Grid
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    itemsIndexed(photos) { index, photoUrl ->
+                        PhotoGridItem(
+                            photoUrl = photoUrl,
+                            isFavorite = favouritePhotoUrls.contains(photoUrl),
+                            onClick = { onPhotoClick(index) },
+                            onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
+                        )
+                    }
                 }
             }
         }

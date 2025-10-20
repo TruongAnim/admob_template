@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,7 +32,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.truonganim.admob.R
 import com.truonganim.admob.ads.InterstitialAdManager
-import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albums.AlbumsScreen
@@ -45,7 +45,7 @@ import com.truonganim.admob.ui.settings.SettingsScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onAlbumClick: (AlbumCategory) -> Unit = {},
+    onAlbumClick: (String) -> Unit = {}, // Now takes albumId instead of AlbumCategory
     onCharacterClick: (Int) -> Unit = {},
     onPhotoClick: (String) -> Unit = {},
     onFavouritePhotoClick: (String, List<String>) -> Unit = { _, _ -> },
@@ -54,10 +54,17 @@ fun HomeScreen(
     val context = LocalContext.current
     val navController = rememberNavController()
 
-    // Load interstitial ad when entering home screen
+    // Start ad load timer when entering home screen
     LaunchedEffect(Unit) {
         val adManager = InterstitialAdManager.getInstance(context)
-        adManager.loadAd()
+        adManager.startAdLoadTimer()
+    }
+
+    // Stop timer when leaving home screen
+    DisposableEffect(Unit) {
+        onDispose {
+            // Don't stop timer - let it run in background
+        }
     }
 
     Scaffold(
@@ -131,7 +138,7 @@ fun HomeScreen(
                     onCharacterClick = onCharacterClick,
                     onPhotoClick = onFavouritePhotoClick,
                     onViewAllCharactersClick = {
-                        onAlbumClick(AlbumCategory.FAVOURITE)
+                        onAlbumClick("favourite") // Use albumId string
                     },
                     onViewAllPhotosClick = {
                         onCharacterClick(AppCharacter.FAVOURITE_PHOTOS_ID)

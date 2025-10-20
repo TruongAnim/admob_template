@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AdMob Base</string>
+
+    <!-- Wallpaper -->
+    <string name="wallpaper_description">Random wallpaper that changes every few seconds</string>
+    <string name="set_random_wallpaper">Set Random Wallpaper</string>
+    <string name="downloading_images">Downloading images…</string>
+    <string name="download_complete">Download complete!</string>
+    <string name="download_failed">Download failed. Please try again.</string>
 </resources>
