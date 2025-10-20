@@ -30,5 +30,11 @@ object RemoteConfigKeys {
 
     // Albums data (new album list)
     const val ALBUMS_DATA = "albums_data"
+
+    // Settings
+    const val PRIVACY_POLICY_URL = "privacy_policy_url"
+    const val FEEDBACK_EMAIL = "feedback_email"
+    const val FEEDBACK_FORM_URL = "feedback_form_url"
+    const val STORE_URL = "store_url"
 }
 

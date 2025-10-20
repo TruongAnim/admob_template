@@ -151,7 +151,17 @@ fun HomeScreen(
                 )
             }
             composable(BottomNavItem.Settings.route) {
-                SettingsScreen()
+                val context = LocalContext.current
+                SettingsScreen(
+                    onLanguageClick = {
+                        // Start LanguageActivity from Settings
+                        val intent = com.truonganim.admob.ui.language.LanguageActivity.createIntent(
+                            context = context,
+                            fromSettings = true
+                        )
+                        context.startActivity(intent)
+                    }
+                )
             }
         }
     }

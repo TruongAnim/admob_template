@@ -38,7 +38,11 @@ class RemoteConfigHelper {
             RemoteConfigKeys.SHOW_ADS to true,
             RemoteConfigKeys.AD_INTERVAL to 30,
             RemoteConfigKeys.ALBUM_DATA to "[]", // Empty array as default (character data)
-            RemoteConfigKeys.ALBUMS_DATA to "[]" // Empty array as default (albums list)
+            RemoteConfigKeys.ALBUMS_DATA to "[]", // Empty array as default (albums list)
+            RemoteConfigKeys.PRIVACY_POLICY_URL to "https://www.example.com/privacy",
+            RemoteConfigKeys.FEEDBACK_EMAIL to "feedback@example.com",
+            RemoteConfigKeys.FEEDBACK_FORM_URL to "https://forms.google.com/your-form-id",
+            RemoteConfigKeys.STORE_URL to "https://play.google.com/store/apps/details?id=com.truonganim.admob"
         )
         remoteConfig.setDefaultsAsync(defaults)
     }

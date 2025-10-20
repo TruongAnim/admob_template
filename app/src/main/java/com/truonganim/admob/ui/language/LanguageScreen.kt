@@ -17,9 +17,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +47,9 @@ import com.truonganim.admob.ui.theme.AdMobBaseTheme
 @Composable
 fun LanguageScreen(
     viewModel: LanguageViewModel = viewModel(),
+    showNativeAd: Boolean = true,
+    showBackButton: Boolean = false,
+    onBackClick: () -> Unit = {},
     onLanguageConfirmed: () -> Unit = {}
 ) {
     val languages by viewModel.languages.collectAsState()
@@ -66,6 +73,17 @@ fun LanguageScreen(
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Back Button (only visible when showBackButton is true)
+                if (showBackButton) {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                }
+
                 // Title
                 Text(
                     text = "Select Language",
@@ -91,7 +109,7 @@ fun LanguageScreen(
                         )
                     ) {
                         Text(
-                            text = "Apply",
+                            text = "Save",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -119,21 +137,22 @@ fun LanguageScreen(
             }
         }
 
-        // Native Ad at the bottom
-        // Show LANGUAGE_SCREEN if first selection, otherwise LANGUAGE_SCREEN_2
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-        ) {
-            NativeAdView(
-                position = if (isFirstSelection) {
-                    NativeAdPosition.LANGUAGE_SCREEN
-                } else {
-                    NativeAdPosition.LANGUAGE_SCREEN_2
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
+        // Native Ad at the bottom (only show if showNativeAd is true)
+        if (showNativeAd) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+            ) {
+                NativeAdView(
+                    position = if (isFirstSelection) {
+                        NativeAdPosition.LANGUAGE_SCREEN
+                    } else {
+                        NativeAdPosition.LANGUAGE_SCREEN_2
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
 
         // Loading overlay
