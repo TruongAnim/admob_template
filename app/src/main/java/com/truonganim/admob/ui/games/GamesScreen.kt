@@ -33,6 +33,8 @@ import com.truonganim.admob.R
 import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
+import com.truonganim.admob.ui.components.CharacterCardItem
+import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
  * Games Screen
@@ -48,12 +50,47 @@ fun GamesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Game launcher with result handling
+    val gameLauncher = rememberGameLauncher(
+        onGameWin = { gameId ->
+            // Unlock the pending character (saved when launching game)
+            viewModel.unlockCharacterByGameWin()
+        },
+        onGameLose = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        },
+        onGameCancelled = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        }
+    )
+
     GamesContent(
         games = uiState.games,
         gameAlbumCharacters = uiState.gameAlbumCharacters,
         isLoading = uiState.isLoading,
-        onGameClick = onGameClick,
-        onCharacterClick = onCharacterClick,
+        onGameClick = { game ->
+            // Launch game directly when clicking game card
+            gameLauncher.launch(game)
+        },
+        onCharacterClick = { character ->
+            val result = viewModel.onCharacterClick(character)
+            when (result) {
+                null -> {
+                    // Character is unlocked, navigate to detail
+                    onCharacterClick(character.id)
+                }
+                is Game -> {
+                    // Character locked by game, launch game
+                    gameLauncher.launch(result)
+                }
+                "ad" -> {
+                    // Character locked by ad, show reward ad
+                    viewModel.showRewardAdToUnlock(character)
+                }
+            }
+        },
         onCharacterFavoriteClick = viewModel::onCharacterFavoriteClick,
         onViewAllCharactersClick = onViewAllCharactersClick
     )
@@ -65,7 +102,7 @@ private fun GamesContent(
     gameAlbumCharacters: List<AppCharacter>,
     isLoading: Boolean,
     onGameClick: (Game) -> Unit,
-    onCharacterClick: (Int) -> Unit,
+    onCharacterClick: (AppCharacter) -> Unit,
     onCharacterFavoriteClick: (AppCharacter) -> Unit,
     onViewAllCharactersClick: () -> Unit
 ) {
@@ -205,7 +242,7 @@ private fun GameCard(
 @Composable
 private fun GameAlbumCharactersSection(
     characters: List<AppCharacter>,
-    onCharacterClick: (Int) -> Unit,
+    onCharacterClick: (AppCharacter) -> Unit,
     onCharacterFavoriteClick: (AppCharacter) -> Unit,
     onViewAllClick: () -> Unit
 ) {
@@ -238,143 +275,13 @@ private fun GameAlbumCharactersSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(characters) { character ->
-                GameAlbumCharacterItem(
+                CharacterCardItem(
                     character = character,
-                    onClick = { onCharacterClick(character.id) },
-                    onFavoriteClick = { onCharacterFavoriteClick(character) }
-                )
-            }
-        }
-    }
-}
-
-/**
- * Game Album Character Item
- */
-@Composable
-private fun GameAlbumCharacterItem(
-    character: AppCharacter,
-    onClick: () -> Unit,
-    onFavoriteClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .width(120.dp)
-            .aspectRatio(0.7f)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Thumbnail Image
-            Image(
-                painter = rememberAsyncImagePainter(character.thumbnail),
-                contentDescription = character.name,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-
-            // Gradient overlay
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.7f)
-                            ),
-                            startY = 200f,
-                            endY = Float.POSITIVE_INFINITY
-                        )
-                    )
-            )
-
-            // Lock overlay if character is locked
-            if (!character.isUnlocked) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        // Show different icon based on lock type
-                        when {
-                            character.isLockedByGame -> {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_game),
-                                    contentDescription = "Locked by Game",
-                                    tint = Color.Yellow,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-                            character.isLockedByAd -> {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_play_ads),
-                                    contentDescription = "Locked by Ad",
-                                    tint = Color.Red,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                                Text(
-                                    text = character.progressText,
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.White,
-                                        fontSize = 12.sp
-                                    ),
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Favorite Icon (Top Left)
-            Box(
-                modifier = Modifier
-                    .padding(top = 8.dp, start = 8.dp)
-                    .size(28.dp)
-                    .background(
-                        color = Color.Black.copy(alpha = 0.4f),
-                        shape = CircleShape
-                    )
-                    .clickable { onFavoriteClick() },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = if (character.isFavorite) {
-                        Icons.Filled.Favorite
-                    } else {
-                        Icons.Outlined.FavoriteBorder
-                    },
-                    contentDescription = "Favorite",
-                    tint = if (character.isFavorite) Color.Red else Color.White,
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-
-            // Character Name (Bottom)
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-                color = Color.Transparent
-            ) {
-                Text(
-                    text = character.name,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.Medium,
-                        color = Color.White
-                    ),
-                    maxLines = 1,
-                    modifier = Modifier.padding(8.dp)
+                    onClick = { onCharacterClick(character) },
+                    onFavoriteClick = { onCharacterFavoriteClick(character) },
+                    modifier = Modifier.width(120.dp),
+                    showLockOverlay = true,
+                    showName = true
                 )
             }
         }

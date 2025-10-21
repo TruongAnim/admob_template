@@ -52,6 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.R
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
  * Album Detail Screen
@@ -68,6 +69,22 @@ fun AlbumDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Game launcher with result handling
+    val gameLauncher = rememberGameLauncher(
+        onGameWin = { gameId ->
+            // Unlock the pending character (saved when launching game)
+            viewModel.unlockCharacterByGameWin()
+        },
+        onGameLose = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        },
+        onGameCancelled = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        }
+    )
+
     Scaffold(
         topBar = {
             AlbumDetailTopBar(
@@ -82,7 +99,21 @@ fun AlbumDetailScreen(
             appCharacters = uiState.appCharacters,
             isLoading = uiState.isLoading,
             onCharacterClick = { character ->
-                onCharacterClick(character.id)
+                val result = viewModel.onCharacterClick(character)
+                when (result) {
+                    null -> {
+                        // Character is unlocked, navigate to detail
+                        onCharacterClick(character.id)
+                    }
+                    is com.truonganim.admob.data.Game -> {
+                        // Character locked by game, launch game
+                        gameLauncher.launch(result)
+                    }
+                    "ad" -> {
+                        // Character locked by ad, show reward ad
+                        viewModel.showRewardAdToUnlock(character)
+                    }
+                }
             },
             onFavoriteClick = viewModel::onFavoriteClick,
             modifier = Modifier.padding(paddingValues)
