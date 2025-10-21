@@ -37,8 +37,9 @@ class RemoteConfigHelper {
             RemoteConfigKeys.SPLASH_AD_TYPE to "interstitial", // Default: interstitial
             RemoteConfigKeys.SHOW_ADS to true,
             RemoteConfigKeys.AD_INTERVAL to 30,
-            RemoteConfigKeys.ALBUM_DATA to "[]", // Empty array as default (character data)
+            RemoteConfigKeys.CHARACTERS_DATA to "[]", // Empty array as default (character data)
             RemoteConfigKeys.ALBUMS_DATA to "[]", // Empty array as default (albums list)
+            RemoteConfigKeys.GAMES_DATA to """[{"id":"tap_to_zoom","name":"Tap to Zoom","description":"Tap the image to zoom in and win!","thumbnail_url":"https://picsum.photos/400/200?random=1","ads_required":0,"input_images":["https://picsum.photos/800/600?random=100"],"activity_type":"tap_to_zoom","is_unlocked":true}]""", // Default games data
             RemoteConfigKeys.PRIVACY_POLICY_URL to "https://www.example.com/privacy",
             RemoteConfigKeys.FEEDBACK_EMAIL to "feedback@example.com",
             RemoteConfigKeys.FEEDBACK_FORM_URL to "https://forms.google.com/your-form-id",
@@ -102,8 +103,9 @@ class RemoteConfigHelper {
         println("  - ${RemoteConfigKeys.SPLASH_AD_TYPE}: ${getString(RemoteConfigKeys.SPLASH_AD_TYPE)}")
         println("  - ${RemoteConfigKeys.SHOW_ADS}: ${getBoolean(RemoteConfigKeys.SHOW_ADS)}")
         println("  - ${RemoteConfigKeys.AD_INTERVAL}: ${getLong(RemoteConfigKeys.AD_INTERVAL)}")
-        println("  - ${RemoteConfigKeys.ALBUM_DATA}: ${getString(RemoteConfigKeys.ALBUM_DATA)}")
+        println("  - ${RemoteConfigKeys.CHARACTERS_DATA}: ${getString(RemoteConfigKeys.CHARACTERS_DATA)}")
         println("  - ${RemoteConfigKeys.ALBUMS_DATA}: ${getString(RemoteConfigKeys.ALBUMS_DATA)}")
+        println("  - ${RemoteConfigKeys.GAMES_DATA}: ${getString(RemoteConfigKeys.GAMES_DATA)}")
     }
     
     companion object {

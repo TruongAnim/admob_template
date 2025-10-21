@@ -39,7 +39,7 @@ class CharacterRepository private constructor(private val context: Context) {
      * Load characters from Remote Config
      */
     suspend fun loadCharacters() {
-        val jsonString = remoteConfigHelper.getString(RemoteConfigKeys.ALBUM_DATA)
+        val jsonString = remoteConfigHelper.getString(RemoteConfigKeys.CHARACTERS_DATA)
         val appCharacterList = AppCharacter.fromJsonArray(jsonString)
         _characters.value = appCharacterList
 

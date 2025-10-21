@@ -26,10 +26,13 @@ object RemoteConfigKeys {
     const val AD_GATE_CONFIG = "ad_gate_config"
 
     // Album data (character data - legacy name)
-    const val ALBUM_DATA = "album_data"
+    const val CHARACTERS_DATA = "characters_data"
 
     // Albums data (new album list)
     const val ALBUMS_DATA = "albums_data"
+
+    // Games data
+    const val GAMES_DATA = "games_data"
 
     // Settings
     const val PRIVACY_POLICY_URL = "privacy_policy_url"
