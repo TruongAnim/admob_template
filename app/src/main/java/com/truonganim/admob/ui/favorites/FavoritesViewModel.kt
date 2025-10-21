@@ -40,6 +40,7 @@ class FavoritesViewModel(
         photoRepository.favouritePhotoUrls,
         _isLoading
     ) { characters, favouritePhotoUrls, isLoading ->
+        println("truonghehe 3 ${characterRepository.characters.value.size}")
         FavoritesUiState(
             favoriteAppCharacters = characters.filter { it.isFavorite },
             favoritePhotos = favouritePhotoUrls.toList(),

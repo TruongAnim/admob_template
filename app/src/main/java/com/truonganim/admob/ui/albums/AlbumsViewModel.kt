@@ -3,9 +3,12 @@ package com.truonganim.admob.ui.albums
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.data.Album
 import com.truonganim.admob.data.AlbumRepository
 import com.truonganim.admob.datastore.PreferencesManager
+import com.truonganim.admob.firebase.RemoteConfigHelper
+import com.truonganim.admob.firebase.RemoteConfigKeys
 import com.truonganim.admob.utils.NotificationPermissionHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,6 +35,7 @@ class AlbumsViewModel(private val context: Context) : ViewModel() {
 
     private val albumRepository = AlbumRepository.getInstance(context)
     private val preferencesManager = PreferencesManager.getInstance(context)
+    private val remoteConfigHelper = RemoteConfigHelper.getInstance()
 
     private val _isLoading = MutableStateFlow(false)
     private val _showNotificationDialog = MutableStateFlow(false)
@@ -44,8 +48,16 @@ class AlbumsViewModel(private val context: Context) : ViewModel() {
         _showNotificationDialog,
         _showNotificationBanner
     ) { albums, isLoading, showDialog, showBanner ->
+        // Filter out game album if SHOW_GAME_ALBUM is false
+        val showGameAlbum = remoteConfigHelper.getBoolean(RemoteConfigKeys.SHOW_GAME_ALBUM)
+        val filteredAlbums = if (showGameAlbum) {
+            albums
+        } else {
+            albums.filter { it.id != AppConfig.GAME.GAME_ALBUM_ID }
+        }
+
         AlbumsUiState(
-            albums = albums,
+            albums = filteredAlbums,
             isLoading = isLoading,
             showNotificationDialog = showDialog,
             showNotificationBanner = showBanner

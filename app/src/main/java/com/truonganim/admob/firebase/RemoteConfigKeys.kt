@@ -34,6 +34,9 @@ object RemoteConfigKeys {
     // Games data
     const val GAMES_DATA = "games_data"
 
+    // Show game album in Albums tab
+    const val SHOW_GAME_ALBUM = "show_game_album"
+
     // Settings
     const val PRIVACY_POLICY_URL = "privacy_policy_url"
     const val FEEDBACK_EMAIL = "feedback_email"

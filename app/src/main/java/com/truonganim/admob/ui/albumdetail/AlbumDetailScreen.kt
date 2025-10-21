@@ -222,7 +222,7 @@ private fun CharacterGridItem(
                     )
             )
 
-            // Lock Icon (Top Left) - if not unlocked
+            // Lock Icon - if not unlocked
             if (!appCharacter.isUnlocked) {
                 Box(
                     modifier = Modifier
@@ -235,23 +235,35 @@ private fun CharacterGridItem(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        // Show different icon based on lock type
+                        when {
+                            appCharacter.isLockedByGame -> {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_game),
+                                    contentDescription = "Locked by Game",
+                                    tint = Color.Yellow,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                            appCharacter.isLockedByAd -> {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_play_ads),
+                                    contentDescription = "Locked by Ad",
+                                    tint = Color.Red,
+                                    modifier = Modifier.size(24.dp)
+                                )
 
-                        Icon(
-                            painter = painterResource(R.drawable.ic_play_ads),
-                            contentDescription = "Play",
-                            tint = Color.Red,
-                            modifier = Modifier.size(24.dp)
-                        )
-
-                        Text(
-                            text = appCharacter.progressText,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 12.sp
-                            ),
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
+                                Text(
+                                    text = appCharacter.progressText,
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        fontSize = 12.sp
+                                    ),
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }

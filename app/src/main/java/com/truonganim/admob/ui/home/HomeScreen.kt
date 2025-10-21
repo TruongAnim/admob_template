@@ -138,7 +138,12 @@ fun HomeScreen(
             }
             composable(BottomNavItem.Games.route) {
                 GamesScreen(
-                    onGameClick = onGameClick
+                    onGameClick = onGameClick,
+                    onCharacterClick = onCharacterClick,
+                    onViewAllCharactersClick = {
+                        // Navigate to game album detail
+                        onAlbumClick(com.truonganim.admob.config.AppConfig.GAME.GAME_ALBUM_ID)
+                    }
                 )
             }
             composable(BottomNavItem.Settings.route) {
