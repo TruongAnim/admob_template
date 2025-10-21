@@ -25,7 +25,10 @@ object RemoteConfigKeys {
     // Ad Gate config (JSON format)
     const val AD_GATE_CONFIG = "ad_gate_config"
 
-    // Album data
+    // Album data (character data - legacy name)
     const val ALBUM_DATA = "album_data"
+
+    // Albums data (new album list)
+    const val ALBUMS_DATA = "albums_data"
 }
 

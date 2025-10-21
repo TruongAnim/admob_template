@@ -1,21 +1,20 @@
-package com.truonganim.admob.ui.albumdetail
+package com.truonganim.admob.ui.albums
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 /**
- * Factory for creating AlbumDetailViewModel with parameters
+ * Factory for creating AlbumsViewModel with parameters
  */
-class AlbumDetailViewModelFactory(
-    private val albumId: String,
+class AlbumsViewModelFactory(
     private val context: Context
 ) : ViewModelProvider.Factory {
-
+    
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AlbumDetailViewModel::class.java)) {
-            return AlbumDetailViewModel(albumId, context) as T
+        if (modelClass.isAssignableFrom(AlbumsViewModel::class.java)) {
+            return AlbumsViewModel(context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

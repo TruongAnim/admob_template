@@ -2,15 +2,35 @@ package com.truonganim.admob.ui.favorites
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,10 +39,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.R
 import com.truonganim.admob.data.AppCharacter
 
 /**
@@ -44,6 +69,7 @@ fun FavoritesScreen(
         favoriteAppCharacters = uiState.favoriteAppCharacters,
         favoritePhotos = uiState.favoritePhotos,
         isLoading = uiState.isLoading,
+        onExploreClick = {},
         onCharacterClick = { character ->
             onCharacterClick(character.id)
         },
@@ -60,6 +86,7 @@ private fun FavoritesContent(
     favoriteAppCharacters: List<AppCharacter>,
     favoritePhotos: List<String>,
     isLoading: Boolean,
+    onExploreClick: () -> Unit,
     onCharacterClick: (AppCharacter) -> Unit,
     onPhotoClick: (String, List<String>) -> Unit,
     onCharacterFavoriteClick: (AppCharacter) -> Unit,
@@ -86,25 +113,46 @@ private fun FavoritesContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
+                Image(
+                    painter = painterResource(R.drawable.ic_no_favorites),
                     contentDescription = "No Favorites",
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Text(
                     text = "No Favorites Yet",
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold
-                    )
+                    ),
+                    fontSize = 16.sp
                 )
 
                 Text(
-                    text = "Start adding your favorite characters and photos",
+                    text = "Your favorite wallpapers will appear here. Start exploring and add some to your collection!",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 72.dp),
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
                 )
+
+                Button(
+                    onClick = onExploreClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red
+                    ),
+                    shape = RoundedCornerShape(100.dp),
+                    contentPadding = PaddingValues(
+                        horizontal = 14.dp
+                    ),
+                    modifier = Modifier.padding(end = 8.dp)
+                ) {
+                    Text(
+                        text = "Explore now",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp
+                    )
+                }
+
             }
         }
     } else {
@@ -371,3 +419,19 @@ private fun FavouritePhotoItem(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun FavoritesContentEmptyPreview() {
+    FavoritesContent(
+        favoriteAppCharacters = emptyList(),
+        favoritePhotos = emptyList(),
+        isLoading = false,
+        onCharacterClick = {},
+        onPhotoClick = { _, _ -> },
+        onCharacterFavoriteClick = {},
+        onPhotoFavoriteClick = {},
+        onViewAllCharactersClick = {},
+        onViewAllPhotosClick = {},
+        onExploreClick = {}
+    )
+}

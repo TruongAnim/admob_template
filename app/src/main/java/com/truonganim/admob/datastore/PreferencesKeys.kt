@@ -26,6 +26,9 @@ object PreferencesKeys {
     val FAVOURITE_CHARACTER_IDS = stringPreferencesKey("favourite_character_ids")
     val FAVOURITE_PHOTO_URLS = stringPreferencesKey("favourite_photo_urls")
 
+    // Albums
+    val ALBUM_WATCHED_AD_COUNTS = stringPreferencesKey("album_watched_ad_counts")
+
     // Add more keys as needed
 }
 

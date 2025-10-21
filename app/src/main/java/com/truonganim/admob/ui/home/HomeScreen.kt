@@ -1,21 +1,37 @@
 package com.truonganim.admob.ui.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.truonganim.admob.R
 import com.truonganim.admob.ads.InterstitialAdManager
-import com.truonganim.admob.data.AlbumCategory
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.albums.AlbumsScreen
@@ -29,7 +45,7 @@ import com.truonganim.admob.ui.settings.SettingsScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onAlbumClick: (AlbumCategory) -> Unit = {},
+    onAlbumClick: (String) -> Unit = {}, // Now takes albumId instead of AlbumCategory
     onCharacterClick: (Int) -> Unit = {},
     onPhotoClick: (String) -> Unit = {},
     onFavouritePhotoClick: (String, List<String>) -> Unit = { _, _ -> },
@@ -50,13 +66,34 @@ fun HomeScreen(
             // Don't stop timer - let it run in background
         }
     }
-    
+
     Scaffold(
+        topBar = {
+            TopAppBar(
+                modifier = Modifier.statusBarsPadding(),
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(R.drawable.ic_category_title),
+                            contentDescription = "null",
+                            modifier = Modifier
+                                .size(24.dp)
+                                .padding(end = 2.dp)
+                        )
+                        Text(
+                            text = "Category",
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 24.sp
+                        )
+                    }
+                }
+            )
+        },
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
-                
+
                 BottomNavItem.items.forEach { item ->
                     NavigationBarItem(
                         icon = {
@@ -101,7 +138,7 @@ fun HomeScreen(
                     onCharacterClick = onCharacterClick,
                     onPhotoClick = onFavouritePhotoClick,
                     onViewAllCharactersClick = {
-                        onAlbumClick(AlbumCategory.FAVOURITE)
+                        onAlbumClick("favourite") // Use albumId string
                     },
                     onViewAllPhotosClick = {
                         onCharacterClick(AppCharacter.FAVOURITE_PHOTOS_ID)
@@ -118,5 +155,11 @@ fun HomeScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
 }
 
