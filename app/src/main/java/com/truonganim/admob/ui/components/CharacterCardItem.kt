@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.R
+import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.data.AppCharacter
 
 /**
@@ -130,36 +131,14 @@ fun CharacterCardItem(
                 }
             }
 
-            // Favorite Icon (Top Left)
-            Box(
-                modifier = Modifier
-                    .padding(top = 8.dp, start = 8.dp)
-                    .size(28.dp)
-                    .background(
-                        color = Color.Black.copy(alpha = 0.5f),
-                        shape = CircleShape
-                    )
-                    .align(Alignment.TopStart)
-            ) {
-                IconButton(
-                    onClick = onFavoriteClick,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Icon(
-                        imageVector = if (character.isFavorite) {
-                            Icons.Default.Favorite
-                        } else {
-                            Icons.Outlined.FavoriteBorder
-                        },
-                        contentDescription = if (character.isFavorite) "Remove from favorites" else "Add to favorites",
-                        tint = if (character.isFavorite) Color.Red else Color.White,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
+            FavoriteOverlayButton(
+                isFavorite = character.isFavorite,
+                onClick = onFavoriteClick,
+                modifier = Modifier.align(Alignment.TopStart)
+            )
 
             // Character Name (Bottom) - only if showName is true
-            if (showName) {
+            if (showName && AppConfig.UI.SHOW_CHARACTER_NAME) {
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()

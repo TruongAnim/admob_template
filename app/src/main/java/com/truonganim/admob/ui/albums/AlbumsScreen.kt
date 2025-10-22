@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,14 +35,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -257,28 +266,18 @@ private fun AlbumCard(
                     )
             )
 
-            // Content
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
-                // Name Label (Top Left)
-                Surface(
-                    modifier = Modifier.align(Alignment.TopStart),
-                    shape = RoundedCornerShape(4.dp),
-                    color = Color(0xFF2196F3) // Blue
-                ) {
-                    Text(
-                        text = album.name,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            fontSize = 12.sp
-                        )
-                    )
-                }
+                // Bóng (shadow giả) – cùng font size, dịch nhẹ
+                OutlinedText(
+                    text = album.name.uppercase(),
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(bottom = 24.dp)
+                )
 
                 // Ad Count Badge (Top Right) - Only show if not unlocked
                 if (!album.isUnlocked && album.requiredAdCount > 0) {
@@ -311,6 +310,39 @@ private fun AlbumCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun OutlinedText(
+    text: String,
+    modifier: Modifier = Modifier,
+    fillColor: Color = Color.White,
+    outlineColor: Color = Color.Black,
+    outlineWidth: Dp = 2.dp,
+    style: TextStyle = MaterialTheme.typography.labelMedium.copy(
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
+    )
+) {
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    val r = with(density) { outlineWidth.toPx() }
+
+    Canvas(modifier) {
+        val layout = measurer.measure(AnnotatedString(text), style = style)
+        val offsets = listOf(
+            Offset(-r, 0f), Offset(r, 0f),
+            Offset(0f, -r), Offset(0f, r),
+            Offset(-r, -r), Offset(-r, r),
+            Offset(r, -r), Offset(r, r)
+        )
+        // viền
+        offsets.forEach { o ->
+            drawText(textLayoutResult = layout, color = outlineColor, topLeft = o)
+        }
+        // chữ chính
+        drawText(textLayoutResult = layout, color = fillColor)
     }
 }
 

@@ -28,9 +28,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
-import com.truonganim.admob.ads.RewardAdHelper
-import com.truonganim.admob.ads.RewardAdPlace
+import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.ui.components.FavoriteOverlayButton
 import com.truonganim.admob.ui.components.GradientPresets
 import com.truonganim.admob.ui.components.SetRandomWallpaperButton
 
@@ -102,17 +102,10 @@ private fun CharacterDetailTopBar(
         actions = {
             // Only show favourite icon if not FAVOURITE_PHOTOS special character
             if (characterId != AppCharacter.FAVOURITE_PHOTOS_ID) {
-                IconButton(onClick = onFavoriteClick) {
-                    Icon(
-                        imageVector = if (isFavorite) {
-                            Icons.Default.Favorite
-                        } else {
-                            Icons.Default.FavoriteBorder
-                        },
-                        contentDescription = "Favorite",
-                        tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                FavoriteOverlayButton(
+                    isFavorite = isFavorite,
+                    onClick = onFavoriteClick,
+                )
             }
         }
     )
@@ -140,35 +133,36 @@ private fun CharacterDetailContent(
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                // Random Wallpaper Button
-                if (photos.isNotEmpty()) {
-                    SetRandomWallpaperButton(
-                        imageUrls = photos,
-                        text = "SET RANDOM WALLPAPER",
-                        intervalSeconds = 15,
-                        gradientColors = GradientPresets.Aurora,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        height = 56.dp,
-                        cornerRadius = 28.dp
-                    )
-                }
+                Box(modifier = Modifier.fillMaxSize()) {
+                    // 1️⃣ Photos Grid
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        itemsIndexed(photos) { index, photoUrl ->
+                            PhotoGridItem(
+                                photoUrl = photoUrl,
+                                isFavorite = favouritePhotoUrls.contains(photoUrl),
+                                onClick = { onPhotoClick(index) },
+                                onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
+                            )
+                        }
+                    }
 
-                // Photos Grid
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    itemsIndexed(photos) { index, photoUrl ->
-                        PhotoGridItem(
-                            photoUrl = photoUrl,
-                            isFavorite = favouritePhotoUrls.contains(photoUrl),
-                            onClick = { onPhotoClick(index) },
-                            onFavoriteClick = { onPhotoFavoriteClick(photoUrl) }
+                    if (photos.isNotEmpty() && AppConfig.UI.ENABLE_RANDOM_WALLPAPER_BUTTON) {
+                        SetRandomWallpaperButton(
+                            imageUrls = photos,
+                            text = "SET RANDOM WALLPAPER",
+                            intervalSeconds = 15,
+                            gradientColors = GradientPresets.Aurora,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter) // 👈 Nằm trên grid
+                                .padding(16.dp),
+                            height = 56.dp,
+                            cornerRadius = 28.dp
                         )
                     }
                 }
@@ -203,24 +197,11 @@ private fun PhotoGridItem(
                 contentScale = ContentScale.Crop
             )
 
-            // Favorite Icon (Top Right)
-            IconButton(
+            FavoriteOverlayButton(
+                isFavorite = isFavorite,
                 onClick = onFavoriteClick,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(32.dp)
-            ) {
-                Icon(
-                    imageVector = if (isFavorite) {
-                        Icons.Default.Favorite
-                    } else {
-                        Icons.Default.FavoriteBorder
-                    },
-                    contentDescription = "Favorite",
-                    tint = if (isFavorite) Color.Red else Color.White,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
+                modifier = Modifier.align(Alignment.TopStart)
+            )
         }
     }
 }

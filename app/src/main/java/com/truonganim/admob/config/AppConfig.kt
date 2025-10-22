@@ -65,11 +65,9 @@ object AppConfig {
          * Default: false (follow system)
          */
         const val FORCE_DARK_MODE = false
-
-        // TODO: Add UI configuration here
-        // Example:
-        // const val GRID_COLUMNS_PORTRAIT = 2
-        // const val GRID_COLUMNS_LANDSCAPE = 3
+        const val FORCE_UNLOCK = true
+        const val SHOW_CHARACTER_NAME = true
+        const val ENABLE_RANDOM_WALLPAPER_BUTTON = true
     }
 
     object GAME {

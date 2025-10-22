@@ -1,5 +1,6 @@
 package com.truonganim.admob.data
 
+import com.truonganim.admob.config.AppConfig
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -69,7 +70,7 @@ data class AppCharacter(
                 photos = photos,
                 lockedByGame = json.optString("locked_by_game").takeIf { it.isNotBlank() },
                 isFavorite = json.optBoolean("favourite", false),
-                isUnlocked = json.optBoolean("is_unlocked", false),
+                isUnlocked = if(AppConfig.UI.FORCE_UNLOCK) true else json.optBoolean("is_unlocked", false),
                 currentPhotoIndex = json.optInt("current_photo_index", 0)
             )
         }

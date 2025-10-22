@@ -51,6 +51,7 @@ import com.truonganim.admob.R
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.components.CharacterCardItem
+import com.truonganim.admob.ui.components.FavoriteOverlayButton
 import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
@@ -194,23 +195,9 @@ private fun FavoritesContent(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            // Header
-            item {
-                Text(
-                    text = "Favourites",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
 
             // Favourite Characters Section
             if (favoriteAppCharacters.isNotEmpty()) {
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-
                 item {
                     FavouriteCharactersSection(
                         appCharacters = favoriteAppCharacters,
@@ -376,20 +363,11 @@ private fun FavouritePhotoItem(
                 contentScale = ContentScale.Crop
             )
 
-            // Favorite Icon (Top Right)
-            IconButton(
+            FavoriteOverlayButton(
+                isFavorite = true,
                 onClick = onFavoriteClick,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(32.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorite",
-                    tint = Color.Red,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
+                modifier = Modifier.align(Alignment.TopStart)
+            )
         }
     }
 }
