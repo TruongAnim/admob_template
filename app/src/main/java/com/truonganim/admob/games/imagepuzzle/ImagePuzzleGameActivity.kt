@@ -7,13 +7,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -49,9 +51,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.createBitmap
 import coil.ImageLoader
@@ -61,24 +61,39 @@ import com.truonganim.admob.data.Game
 import com.truonganim.admob.data.GameResult
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-class ImagePuzzleGameActivity : ComponentActivity() {
+// ==============================
+// Single-file Sliding Puzzle Game
+// ==============================
 
-    private var gameId: String = ""
-    private var inputImages: List<String> = emptyList()
+private const val BLANK = -1
+
+private data class PuzzleState(
+    val grid: Int,
+    val tiles: List<Int>, // 0..(n-2) + BLANK
+    val moves: Int = 0,
+    val seconds: Int = 0,
+    val running: Boolean = true
+) {
+    val isSolved: Boolean
+        get() = tiles.withIndex().all { (i, v) ->
+            (i < tiles.lastIndex && v == i) || (i == tiles.lastIndex && v == BLANK)
+        }
+}
+
+class ImagePuzzleGameActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Get game data from intent
-        gameId = intent.getStringExtra(Game.EXTRA_GAME_ID) ?: ""
-        inputImages = intent.getStringArrayListExtra(Game.EXTRA_INPUT_IMAGES) ?: emptyList()
+        val inputImages = intent.getStringArrayListExtra(Game.EXTRA_INPUT_IMAGES) ?: emptyList()
 
         setContent {
             AdMobBaseTheme {
-                ImagePuzzleGameScreen(
+                ImagePuzzleScreen(
                     imageUrl = inputImages.firstOrNull() ?: "",
                     onWin = { finishWithResult(GameResult.WIN) },
                     onClose = { finishWithResult(GameResult.CANCELLED) }
@@ -88,9 +103,7 @@ class ImagePuzzleGameActivity : ComponentActivity() {
     }
 
     private fun finishWithResult(result: GameResult) {
-        val resultIntent = Intent().apply {
-            putExtra(Game.EXTRA_GAME_RESULT, result)
-        }
+        val resultIntent = Intent().apply { putExtra(Game.EXTRA_GAME_RESULT, result) }
         setResult(RESULT_OK, resultIntent)
         finish()
     }
@@ -98,110 +111,162 @@ class ImagePuzzleGameActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ImagePuzzleGameScreen(
+private fun ImagePuzzleScreen(
     imageUrl: String,
     onWin: () -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    imageOverride: ImageBitmap? = null
 ) {
-    var showWinDialog by remember { mutableStateOf(false) }
-
-    val context = LocalContext.current
-    val grid = 2
-    val tileSize = DpSize(200.dp, 200.dp)
-
+//    var grid by remember { mutableIntStateOf(3) }                  // 2..5
+    val grid = 5
     var img by remember { mutableStateOf<ImageBitmap?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
+    var showPreview by remember { mutableStateOf(true) }
+    var showTutorial by remember { mutableStateOf(true) }
+    var isStarted by remember { mutableStateOf(false) }
+    var showWinDialog by remember { mutableStateOf(false) }
 
-    // Tải ảnh từ URL -> ImageBitmap
-    LaunchedEffect(imageUrl) {
-        isLoading = true
-        error = null
+    val context = LocalContext.current
+
+    LaunchedEffect(imageUrl, imageOverride) {
+        isLoading = true; error = null
         img = try {
-            if (imageUrl.isBlank()) {
-                error = "Image URL is empty"
-                null
-            } else {
-                loadImageBitmap(context, imageUrl)
+            when {
+                imageOverride != null -> imageOverride
+                imageUrl.isBlank() -> null
+                else -> loadSquareImageBitmap(context, imageUrl)
             }
         } catch (e: Exception) {
-            error = e.message ?: "Load image error"
-            null
+            error = e.message; null
         }
         isLoading = false
     }
 
-    // tiles[pos] = tileIndex (mảnh đúng ở vị trí pos)
-    var tiles by remember { mutableStateOf((0 until grid * grid).toList().shuffled()) }
-    var firstPick by remember { mutableStateOf<Int?>(null) }
-    val solved = tiles.withIndex().all { (pos, idx) -> pos == idx }
 
-    // Gọi onWin khi hoàn thành lần đầu
-    var hasReportedWin by remember { mutableStateOf(false) }
-    LaunchedEffect(solved) {
-        if (solved && !hasReportedWin) {
-            hasReportedWin = true
-            showWinDialog = true
+    // Puzzle state
+    var state by remember(grid) {
+        mutableStateOf(PuzzleState(grid = grid, tiles = shuffleSolvable(grid)))
+    }
+
+    // Timer
+    LaunchedEffect(isStarted, state.running, state.isSolved) {
+        if (!isStarted || !state.running || state.isSolved) return@LaunchedEffect
+        while (true) {
+            delay(1000)
+            if (!isStarted || !state.running || state.isSolved) break
+            state = state.copy(seconds = state.seconds + 1)
         }
     }
 
-    fun shuffle() {
-        tiles = (0 until grid * grid).shuffled()
-        firstPick = null
-        hasReportedWin = false
+    // Win dialog trigger
+    LaunchedEffect(state.isSolved) {
+        if (state.isSolved) showWinDialog = true
     }
 
-    // Win Dialog
+    fun newGame() {
+        state = PuzzleState(grid = grid, tiles = shuffleSolvable(grid))
+        showWinDialog = false
+    }
+
+    if (showTutorial) {
+        AlertDialog(
+            onDismissRequest = { showTutorial = false },
+            title = {
+                Text(
+                    text = "🎮 Mini Game Challenge",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            },
+            text = {
+                Column {
+                    Text("A secret album is sealed away behind this puzzle.")
+                    Spacer(Modifier.height(6.dp))
+                    Text("🎯 Goal: Slide the tiles to rebuild the picture and unlock it!")
+                    Spacer(Modifier.height(6.dp))
+                    Text("🕹 Tap tiles beside the empty space to move them.")
+                    Spacer(Modifier.height(6.dp))
+                    Text("💡 Finish fast to prove your puzzle skills!")
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showTutorial = false
+                        isStarted = true
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Start Now!") }
+            }
+        )
+    }
+
     if (showWinDialog) {
         AlertDialog(
             onDismissRequest = { },
             title = {
                 Text(
-                    text = "🎉 You Win!",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    text = "🎉 Album Unlocked!",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
             },
             text = {
-                Text(
-                    text = "Congratulations! You successfully complete the image!",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        "Congratulations! You’ve solved the puzzle and unlocked the hidden photo album!",
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "✨ New memories have been added to your collection!",
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        "Moves: ${state.moves} • Time: ${state.seconds}s",
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             },
             confirmButton = {
                 Button(
                     onClick = onWin,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Continue")
+                    Text("View My Album")
                 }
             }
         )
     }
 
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "Image Puzzle",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            "Image Puzzle",
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                            modifier = Modifier.weight(1f)
                         )
-                    )
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onClose) {
                         Icon(
-                            imageVector = Icons.Default.Close,
+                            Icons.Default.Close,
                             contentDescription = "Close"
                         )
                     }
-                }
+                },
             )
         }
     ) { inner ->
@@ -216,118 +281,163 @@ private fun ImagePuzzleGameScreen(
                 error != null -> Text(error ?: "Error", color = MaterialTheme.colorScheme.error)
                 img == null -> Text("No image")
                 else -> {
-                    val image = img!!
-                    val tileW = image.width / grid
-                    val tileH = image.height / grid
-
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(12.dp)
                     ) {
-                        // Lưới 3x3
-                        for (row in 0 until grid) {
-                            Row {
-                                for (col in 0 until grid) {
-                                    val pos = row * grid + col
-                                    val tileIndex = tiles[pos]
-                                    val srcRow = tileIndex / grid
-                                    val srcCol = tileIndex % grid
 
-                                    // 🔹 Highlight logic
-                                    val isSelected = pos == firstPick
+                        // Preview ảnh to (bên dưới TopBar)
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            tonalElevation = 1.dp,
+                            border = BorderStroke(1.dp, Color.White.copy(0.4f)),
+                            modifier = Modifier
+                                .width(150.dp)
+                                .height(150.dp)
+                        ) {
+                            Image(
+                                bitmap = img!!,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                            )
+                        }
+                        Spacer(Modifier.height(12.dp))
 
 
-                                    val borderColor by animateColorAsState(
-                                        targetValue = when {
-                                            isSelected -> MaterialTheme.colorScheme.primary
-                                            else -> Color.White.copy(alpha = 0.6f)
-                                        },
-                                        animationSpec = tween(200)
-                                    )
+                        Spacer(Modifier.height(8.dp))
 
-                                    val overlayColor by animateColorAsState(
-                                        targetValue = when {
-                                            isSelected -> MaterialTheme.colorScheme.primary.copy(
-                                                alpha = 0.18f
-                                            )
-
-                                            else -> Color.Transparent
-                                        },
-                                        animationSpec = tween(200)
-                                    )
-
-                                    Surface(
-                                        modifier = Modifier
-                                            .size(tileSize.width, tileSize.height)
-                                            .padding(2.dp)
-                                            .clickable {
-                                                if (firstPick == null) {
-                                                    firstPick = pos
-                                                } else {
-                                                    val second = pos
-                                                    if (second != firstPick) {
-                                                        val a = firstPick!!
-                                                        if (isAdjacent(a, second, grid)) {
-                                                            val list = tiles.toMutableList()
-                                                            list[a] = tiles[second]
-                                                            list[second] = tiles[a]
-                                                            tiles = list
-                                                        }
-                                                    }
-                                                    firstPick = null
-                                                }
-                                            },
-                                        shape = RoundedCornerShape(6.dp),
-                                        border = BorderStroke(2.dp, borderColor),
-                                        color = Color.Transparent,
-                                        shadowElevation = 2.dp
-                                    ) {
-                                        Box {
-                                            Canvas(Modifier.fillMaxSize()) {
-                                                val src = Rect(
-                                                    (srcCol * tileW).toFloat(),
-                                                    (srcRow * tileH).toFloat(),
-                                                    ((srcCol + 1) * tileW).toFloat(),
-                                                    ((srcRow + 1) * tileH).toFloat()
-                                                )
-                                                drawImage(
-                                                    image = image,
-                                                    srcOffset = androidx.compose.ui.unit.IntOffset(
-                                                        src.left.toInt(),
-                                                        src.top.toInt()
-                                                    ),
-                                                    srcSize = androidx.compose.ui.unit.IntSize(
-                                                        (src.right - src.left).toInt(),
-                                                        (src.bottom - src.top).toInt()
-                                                    ),
-                                                    dstSize = androidx.compose.ui.unit.IntSize(
-                                                        size.width.toInt(), size.height.toInt()
-                                                    )
-                                                )
-                                            }
-
-                                            // 🔹 Overlay mờ highlight
-                                            Box(
-                                                Modifier
-                                                    .fillMaxSize()
-                                                    .background(overlayColor)
-                                            )
-                                        }
-                                    }
-                                }
-
-                            }
+                        // Status
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "Moves: ${state.moves}",
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                            )
+                            Spacer(Modifier.weight(1f))
+                            Text(
+                                "Time: ${state.seconds}s",
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
+                            )
                         }
 
                         Spacer(Modifier.height(12.dp))
 
-                        Button(onClick = ::shuffle) { Text("Shuffle") }
+                        // Board (square, responsive)
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            tonalElevation = 2.dp,
+                            shadowElevation = 2.dp
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(6.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                                    val boardSize = maxWidth
+                                    val tileSize = boardSize / grid
+                                    val image = img!!
+                                    val tileW = image.width / grid
+                                    val tileH = image.height / grid
 
-                        AnimatedVisibility(visible = solved) {
+                                    Column(modifier = Modifier.size(boardSize)) {
+                                        for (r in 0 until grid) {
+                                            Row {
+                                                for (c in 0 until grid) {
+                                                    val pos = r * grid + c
+                                                    val v = state.tiles[pos]
+
+                                                    Surface(
+                                                        modifier = Modifier
+                                                            .size(tileSize)
+                                                            .padding(1.dp)
+                                                            .clickable(enabled = !state.isSolved && v != BLANK) {
+                                                                val blank =
+                                                                    state.tiles.indexOf(BLANK)
+                                                                if (neighbors(pos, grid).contains(
+                                                                        blank
+                                                                    )
+                                                                ) {
+                                                                    val list =
+                                                                        state.tiles.toMutableList()
+                                                                    list[blank] = v
+                                                                    list[pos] = BLANK
+                                                                    state = state.copy(
+                                                                        tiles = list,
+                                                                        moves = state.moves + 1
+                                                                    )
+                                                                }
+                                                            },
+                                                        shape = RoundedCornerShape(4.dp),
+                                                        border = BorderStroke(
+                                                            1.dp,
+                                                            Color.White.copy(0.5f)
+                                                        ),
+                                                        color = if (v == BLANK) Color.Transparent else Color.Black
+                                                    ) {
+                                                        if (v != BLANK) {
+                                                            val srcRow = v / grid
+                                                            val srcCol = v % grid
+                                                            Canvas(Modifier.fillMaxSize()) {
+                                                                val src = Rect(
+                                                                    (srcCol * tileW).toFloat(),
+                                                                    (srcRow * tileH).toFloat(),
+                                                                    ((srcCol + 1) * tileW).toFloat(),
+                                                                    ((srcRow + 1) * tileH).toFloat()
+                                                                )
+                                                                drawImage(
+                                                                    image = image,
+                                                                    srcOffset = androidx.compose.ui.unit.IntOffset(
+                                                                        src.left.toInt(),
+                                                                        src.top.toInt()
+                                                                    ),
+                                                                    srcSize = androidx.compose.ui.unit.IntSize(
+                                                                        (src.width).toInt(),
+                                                                        (src.height).toInt()
+                                                                    ),
+                                                                    dstSize = androidx.compose.ui.unit.IntSize(
+                                                                        size.width.toInt(),
+                                                                        size.height.toInt()
+                                                                    )
+                                                                )
+                                                            }
+                                                        } else {
+                                                            Box(
+                                                                Modifier
+                                                                    .fillMaxSize()
+                                                                    .background(Color.Transparent)
+                                                            )
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        Spacer(Modifier.height(24.dp))
+
+
+                        // Controls: chỉ còn nút Shuffle
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Button(onClick = { newGame() }) { Text("Shuffle") }
+                        }
+
+                        AnimatedVisibility(visible = state.isSolved) {
                             Text(
                                 text = "🎉 Completed!",
                                 color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.padding(top = 10.dp),
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold
                             )
                         }
                     }
@@ -337,16 +447,68 @@ private fun ImagePuzzleGameScreen(
     }
 }
 
-/* ------------------- Helpers ------------------- */
+@Preview(showBackground = true)
+@Composable
+private fun ImagePuzzlePreview() {
+    AdMobBaseTheme {
+        ImagePuzzleScreen(
+            imageUrl = "",
+            onWin = {},
+            onClose = {},
+            imageOverride = makePreviewBitmap().asImageBitmap()
+        )
+    }
+}
 
-private suspend fun loadImageBitmap(
+/* ================= Helpers (logic + image) ================= */
+
+private fun solvedTiles(grid: Int): List<Int> {
+    val total = grid * grid
+    return (0 until total - 1).toList() + BLANK
+}
+
+private fun neighbors(index: Int, grid: Int): List<Int> {
+    val r = index / grid
+    val c = index % grid
+    val res = mutableListOf<Int>()
+    if (r > 0) res += index - grid
+    if (r < grid - 1) res += index + grid
+    if (c > 0) res += index - 1
+    if (c < grid - 1) res += index + 1
+    return res
+}
+
+private fun isSolvable(tiles: List<Int>, grid: Int): Boolean {
+    val arr = tiles.filter { it != BLANK }
+    var inv = 0
+    for (i in arr.indices) for (j in i + 1 until arr.size) if (arr[i] > arr[j]) inv++
+    return if (grid % 2 == 1) {
+        inv % 2 == 0
+    } else {
+        val blankRowFromBottom = grid - (tiles.indexOf(BLANK) / grid)
+        (blankRowFromBottom % 2 == 0) xor (inv % 2 == 0)
+    }
+}
+
+private fun shuffleSolvable(grid: Int): List<Int> {
+    val base = solvedTiles(grid)
+    var s: List<Int>
+    do {
+        s = base.shuffled()
+    } while (!isSolvable(s, grid) || s == base)
+    return s
+}
+
+private suspend fun loadSquareImageBitmap(
     context: android.content.Context,
-    url: String
+    url: String,
+    maxSize: Int = 2048
 ): ImageBitmap? = withContext(Dispatchers.IO) {
     val loader = ImageLoader(context)
     val req = ImageRequest.Builder(context)
         .data(url)
-        .allowHardware(false) // cần Bitmap thường để cắt
+        .allowHardware(false)
+        .size(maxSize) // downscale trước
         .build()
     val result = loader.execute(req)
     if (result is SuccessResult) {
@@ -356,7 +518,11 @@ private suspend fun loadImageBitmap(
             is android.graphics.drawable.VectorDrawable -> dr.toBitmapCompat()
             else -> dr.toBitmapCompat()
         }
-        bmp.asImageBitmap()
+        val size = minOf(bmp.width, bmp.height)
+        val left = (bmp.width - size) / 2
+        val top = (bmp.height - size) / 2
+        val square = Bitmap.createBitmap(bmp, left, top, size, size)
+        square.asImageBitmap()
     } else null
 }
 
@@ -370,11 +536,21 @@ private fun android.graphics.drawable.Drawable.toBitmapCompat(): Bitmap {
     return bmp
 }
 
-private fun isAdjacent(a: Int, b: Int, grid: Int): Boolean {
-    val r1 = a / grid;
-    val c1 = a % grid
-    val r2 = b / grid;
-    val c2 = b % grid
-    // Kề nhau nếu chênh 1 ô theo hàng hoặc cột (không chéo)
-    return (kotlin.math.abs(r1 - r2) + kotlin.math.abs(c1 - c2)) == 1
+
+private fun makePreviewBitmap(size: Int = 720): android.graphics.Bitmap {
+    val bmp = createBitmap(size, size)
+    val c = android.graphics.Canvas(bmp)
+    val p = android.graphics.Paint()
+    val cell = size / 6
+    for (r in 0 until 6) for (col in 0 until 6) {
+        p.color = if ((r + col) % 2 == 0) 0xFFE0E0E0.toInt() else 0xFFBDBDBD.toInt()
+        c.drawRect(
+            (col * cell).toFloat(),
+            (r * cell).toFloat(),
+            ((col + 1) * cell).toFloat(),
+            ((r + 1) * cell).toFloat(),
+            p
+        )
+    }
+    return bmp
 }
