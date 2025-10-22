@@ -60,12 +60,11 @@ class SplashActivity : ComponentActivity() {
      * - If onboarding not completed: Navigate to LanguageActivity
      */
     private fun checkOnboardingAndNavigate() {
-        return
         lifecycleScope.launch {
             val preferencesManager = PreferencesManager.getInstance(this@SplashActivity)
             val isOnboardingCompleted = preferencesManager.isOnboardingCompletedSync()
 
-            if (isOnboardingCompleted) {
+            if (isOnboardingCompleted && false) {
                 println("✅ Onboarding already completed, navigating to MainActivity")
                 navigateToMain()
             } else {

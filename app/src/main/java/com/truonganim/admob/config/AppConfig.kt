@@ -56,6 +56,16 @@ object AppConfig {
      * UI Settings
      */
     object UI {
+        /**
+         * Force Dark Mode
+         *
+         * If true, app will always use dark theme regardless of system settings
+         * If false, app will follow system dark mode settings
+         *
+         * Default: false (follow system)
+         */
+        const val FORCE_DARK_MODE = false
+
         // TODO: Add UI configuration here
         // Example:
         // const val GRID_COLUMNS_PORTRAIT = 2

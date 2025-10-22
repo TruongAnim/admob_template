@@ -52,18 +52,18 @@ fun LanguageItem(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) {
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.surface // White/Light surface for selected
             } else {
-                MaterialTheme.colorScheme.surface
+                MaterialTheme.colorScheme.surfaceVariant // Slightly darker for unselected
             }
         ),
         border = if (isSelected) {
-            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+            null // No border when selected
         } else {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f))
+            null // No border when unselected
         },
         elevation = CardDefaults.cardElevation(
-            defaultElevation = if (isSelected) 4.dp else 1.dp
+            defaultElevation = if (isSelected) 2.dp else 0.dp
         )
     ) {
         Row(
@@ -86,11 +86,7 @@ fun LanguageItem(
                 text = language.nativeName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (isSelected) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                },
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(end = 4.dp)
             )
@@ -99,18 +95,14 @@ fun LanguageItem(
             Text(
                 text = "(${language.code})",
                 fontSize = 14.sp,
-                color = if (isSelected) {
-                    MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                },
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 textAlign = TextAlign.Center
             )
 
             // Circular selection indicator at the end
             Spacer(Modifier.weight(1f))
 
-            val indicatorSize = 24.dp
+            val indicatorSize = 28.dp
             if (isSelected) {
                 Box(
                     modifier = Modifier
@@ -123,7 +115,7 @@ fun LanguageItem(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             } else {
@@ -133,7 +125,7 @@ fun LanguageItem(
                         .clip(CircleShape)
                         .border(
                             2.dp,
-                            MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                             CircleShape
                         )
                 )

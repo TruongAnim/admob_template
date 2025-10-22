@@ -9,35 +9,99 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.truonganim.admob.config.AppConfig
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+/**
+ * Light Color Scheme
+ * Based on white background with brand red accent
+ */
+private val LightColorScheme = lightColorScheme(
+    // Primary - Brand Red
+    primary = BrandRed,
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFFFFE5E9),
+    onPrimaryContainer = BrandRedDark,
+
+    // Secondary - Neutral
+    secondary = Color(0xFF757575),
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFFE0E0E0),
+    onSecondaryContainer = Color(0xFF424242),
+
+    // Tertiary - Accent
+    tertiary = BrandRedLight,
+    onTertiary = Color.White,
+    tertiaryContainer = Color(0xFFFFCDD2),
+    onTertiaryContainer = BrandRedDark,
+
+    // Background & Surface
+    background = LightBackground,
+    onBackground = LightOnBackground,
+    surface = LightSurface,
+    onSurface = LightOnSurface,
+    surfaceVariant = LightSurfaceVariant,
+    onSurfaceVariant = Color(0xFF424242),
+
+    // Outline & Border
+    outline = LightOutline,
+    outlineVariant = Color(0xFFF0F0F0),
+
+    // Error
+    error = Color(0xFFB00020),
+    onError = Color.White,
+    errorContainer = Color(0xFFFDEDED),
+    onErrorContainer = Color(0xFF8C0009)
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+/**
+ * Dark Color Scheme
+ * Based on black background with brand red accent
+ */
+private val DarkColorScheme = darkColorScheme(
+    // Primary - Brand Red
+    primary = BrandRedLight,
+    onPrimary = Color.Black,
+    primaryContainer = BrandRedDark,
+    onPrimaryContainer = Color(0xFFFFCDD2),
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
+    // Secondary - Neutral
+    secondary = Color(0xFFB0B0B0),
+    onSecondary = Color.Black,
+    secondaryContainer = Color(0xFF3C3C3C),
+    onSecondaryContainer = Color(0xFFE0E0E0),
+
+    // Tertiary - Accent
+    tertiary = BrandRed,
     onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    tertiaryContainer = BrandRedDark,
+    onTertiaryContainer = Color(0xFFFFCDD2),
+
+    // Background & Surface
+    background = DarkBackground,
+    onBackground = DarkOnBackground,
+    surface = DarkSurface,
+    onSurface = DarkOnSurface,
+    surfaceVariant = DarkSurfaceVariant,
+    onSurfaceVariant = Color(0xFFB0B0B0),
+
+    // Outline & Border
+    outline = DarkOutline,
+    outlineVariant = Color(0xFF2C2C2C),
+
+    // Error
+    error = Color(0xFFCF6679),
+    onError = Color.Black,
+    errorContainer = Color(0xFF8C0009),
+    onErrorContainer = Color(0xFFFFCDD2)
 )
 
 @Composable
 fun AdMobBaseTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    darkTheme: Boolean = if (AppConfig.UI.FORCE_DARK_MODE) true else isSystemInDarkTheme(),
+    // Dynamic color disabled to use custom brand colors
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

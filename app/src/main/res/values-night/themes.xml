@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.AdMobBase" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.AdMobBase" parent="android:Theme.Material.NoActionBar">
         <!-- Transparent status bar -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!-- Light status bar icons for light theme -->
-        <item name="android:windowLightStatusBar">true</item>
+        <!-- Dark status bar icons for dark theme -->
+        <item name="android:windowLightStatusBar">false</item>
         <!-- Transparent navigation bar -->
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 </resources>
+
