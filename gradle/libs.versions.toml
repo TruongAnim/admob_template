@@ -19,6 +19,7 @@ googleServices = "4.4.2"
 datastorePreferences = "1.1.1"
 coil = "2.5.0"
 foundation = "1.9.3"
+billingKtx = "7.1.1"
 
 [libraries]
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
@@ -48,6 +49,7 @@ firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx" 
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billingKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -98,4 +98,7 @@ dependencies {
 
     // Coil for image loading
     implementation(libs.coil.compose)
+
+    // Google Play Billing
+    implementation(libs.billing.ktx)
 }

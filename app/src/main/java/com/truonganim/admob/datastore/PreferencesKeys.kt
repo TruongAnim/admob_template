@@ -37,6 +37,12 @@ object PreferencesKeys {
     val NOTIFICATION_PERMISSION_REQUESTED = booleanPreferencesKey("notification_permission_requested")
     val NOTIFICATION_PERMISSION_DIALOG_SHOWN = booleanPreferencesKey("notification_permission_dialog_shown")
 
+    // Premium / IAP
+    val IS_PREMIUM = booleanPreferencesKey("is_premium")
+    val PREMIUM_PURCHASE_TOKEN = stringPreferencesKey("premium_purchase_token")
+    val PREMIUM_PRODUCT_ID = stringPreferencesKey("premium_product_id")
+    val PREMIUM_PURCHASE_TIME = longPreferencesKey("premium_purchase_time")
+
     // Add more keys as needed
 }
 

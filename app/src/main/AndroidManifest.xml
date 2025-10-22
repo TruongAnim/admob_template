@@ -17,6 +17,9 @@
     <!-- For notifications on Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- For Google Play Billing -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+
     <application
         android:name=".AdMobBaseApplication"
         android:allowBackup="true"
@@ -87,6 +90,15 @@
             android:theme="@style/Theme.AdMobBase"
             android:launchMode="singleTop">
         </activity>
+
+        <!-- Premium Activity -->
+        <activity
+            android:name=".ui.premium.PremiumActivity"
+            android:exported="false"
+            android:label="Premium"
+            android:theme="@style/Theme.AdMobBase">
+        </activity>
+
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
         android:name="com.google.android.gms.ads.APPLICATION_ID"
