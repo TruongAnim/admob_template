@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -185,7 +186,6 @@ private fun AlbumsContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         if (isLoading) {
             CircularProgressIndicator(
@@ -194,7 +194,6 @@ private fun AlbumsContent(
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Notification banner
                 if (showNotificationBanner) {
@@ -221,13 +220,15 @@ private fun AlbumCard(
     album: Album,
     onClick: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val cardHeight = screenHeight * 0.2f
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
+            .height(cardHeight)
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(0.dp),
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -243,12 +244,14 @@ private fun AlbumCard(
             // Dark overlay for better text visibility
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .height(60.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(
-                                Color.Black.copy(alpha = 0.3f),
-                                Color.Black.copy(alpha = 0.7f)
+                                Color.Black.copy(alpha = 0.0f),
+                                Color.Black.copy(alpha = 0.4f)
                             )
                         )
                     )

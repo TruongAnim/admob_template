@@ -64,7 +64,7 @@ class SplashActivity : ComponentActivity() {
             val preferencesManager = PreferencesManager.getInstance(this@SplashActivity)
             val isOnboardingCompleted = preferencesManager.isOnboardingCompletedSync()
 
-            if (isOnboardingCompleted && false) {
+            if (isOnboardingCompleted) {
                 println("✅ Onboarding already completed, navigating to MainActivity")
                 navigateToMain()
             } else {
