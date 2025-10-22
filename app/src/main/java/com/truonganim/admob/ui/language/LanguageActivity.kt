@@ -1,5 +1,6 @@
 package com.truonganim.admob.ui.language
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,27 +15,42 @@ import com.truonganim.admob.ui.theme.AdMobBaseTheme
  * Allows user to select their preferred language
  */
 class LanguageActivity : ComponentActivity() {
-    
+
     private lateinit var viewModel: LanguageViewModel
-    
+    private var isFromSettings = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
+
+        // Check if opened from Settings
+        isFromSettings = intent.getBooleanExtra(EXTRA_FROM_SETTINGS, false)
+
         viewModel = ViewModelProvider(this)[LanguageViewModel::class.java]
-        
+
         setContent {
             AdMobBaseTheme {
                 LanguageScreen(
                     viewModel = viewModel,
+                    showNativeAd = !isFromSettings,
+                    showBackButton = isFromSettings,
+                    onBackClick = {
+                        finish()
+                    },
                     onLanguageConfirmed = {
-                        navigateToOnboarding()
+                        if (isFromSettings) {
+                            // Just close the activity and go back
+                            finish()
+                        } else {
+                            // Navigate to onboarding (first time flow)
+                            navigateToOnboarding()
+                        }
                     }
                 )
             }
         }
     }
-    
+
     /**
      * Navigate to Onboarding after language is confirmed
      */
@@ -43,13 +59,30 @@ class LanguageActivity : ComponentActivity() {
         startActivity(intent)
         finish() // Close language activity
     }
-    
+
     /**
-     * Disable back button during language selection
+     * Handle back button
      */
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        // Do nothing - prevent user from going back
+        if (isFromSettings) {
+            // Allow back if from settings
+            super.onBackPressed()
+        }
+        // Otherwise do nothing - prevent user from going back during first time flow
+    }
+
+    companion object {
+        private const val EXTRA_FROM_SETTINGS = "extra_from_settings"
+
+        /**
+         * Create intent to open LanguageActivity from Settings
+         */
+        fun createIntent(context: Context, fromSettings: Boolean = false): Intent {
+            return Intent(context, LanguageActivity::class.java).apply {
+                putExtra(EXTRA_FROM_SETTINGS, fromSettings)
+            }
+        }
     }
 }
 

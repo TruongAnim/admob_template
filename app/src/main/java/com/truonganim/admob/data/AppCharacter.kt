@@ -14,6 +14,7 @@ data class AppCharacter(
     val adCount: Int,
     val thumbnail: String,
     val photos: List<String>,
+    val lockedByGame: String? = null, // Game ID that locks this character, null if not locked by game
     val isFavorite: Boolean = false,
     val isUnlocked: Boolean = false,
     val currentPhotoIndex: Int = 0
@@ -29,6 +30,18 @@ data class AppCharacter(
      */
     val isCompleted: Boolean
         get() = currentPhotoIndex >= photos.size
+
+    /**
+     * Check if character is locked by ad
+     */
+    val isLockedByAd: Boolean
+        get() = !isUnlocked && adCount > 0 && lockedByGame == null
+
+    /**
+     * Check if character is locked by game
+     */
+    val isLockedByGame: Boolean
+        get() = !isUnlocked && lockedByGame != null
     
     companion object {
         /**
@@ -54,6 +67,7 @@ data class AppCharacter(
                 adCount = json.getInt("ad_count"),
                 thumbnail = json.getString("thumbnail"),
                 photos = photos,
+                lockedByGame = json.optString("locked_by_game").takeIf { it.isNotBlank() },
                 isFavorite = json.optBoolean("favourite", false),
                 isUnlocked = json.optBoolean("is_unlocked", false),
                 currentPhotoIndex = json.optInt("current_photo_index", 0)

@@ -66,6 +66,7 @@ class TapToZoomGameActivity : ComponentActivity() {
     private fun finishWithResult(result: GameResult) {
         val resultIntent = Intent().apply {
             putExtra(Game.EXTRA_GAME_RESULT, result)
+            putExtra(Game.EXTRA_GAME_ID, gameId)
         }
         setResult(RESULT_OK, resultIntent)
         finish()

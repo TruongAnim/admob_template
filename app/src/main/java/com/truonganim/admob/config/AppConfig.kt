@@ -61,5 +61,9 @@ object AppConfig {
         // const val GRID_COLUMNS_PORTRAIT = 2
         // const val GRID_COLUMNS_LANDSCAPE = 3
     }
+
+    object GAME {
+        const val GAME_ALBUM_ID = "locked_by_game"
+    }
 }
 

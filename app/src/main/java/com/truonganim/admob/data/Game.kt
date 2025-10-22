@@ -3,6 +3,9 @@ package com.truonganim.admob.data
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
+import org.json.JSONArray
+import org.json.JSONObject
 
 /**
  * Game Result
@@ -52,37 +55,63 @@ data class Game(
             return intent?.getSerializableExtra(EXTRA_GAME_RESULT) as? GameResult
                 ?: GameResult.CANCELLED
         }
+
+        /**
+         * Map activity type string to Activity class
+         */
+        private fun getActivityClass(activityType: String): Class<out Activity> {
+            return when (activityType) {
+                "tap_to_zoom" -> com.truonganim.admob.games.taptozoom.TapToZoomGameActivity::class.java
+                // Add more game types here as they are created
+                else -> com.truonganim.admob.games.taptozoom.TapToZoomGameActivity::class.java // Default
+            }
+        }
+
+        /**
+         * Parse Game from JSON object
+         */
+        fun fromJson(json: JSONObject): Game {
+            val inputImagesArray = json.optJSONArray("input_images")
+            val inputImages = mutableListOf<String>()
+            if (inputImagesArray != null) {
+                for (i in 0 until inputImagesArray.length()) {
+                    inputImages.add(inputImagesArray.getString(i))
+                }
+            }
+
+            val activityType = json.getString("activity_type")
+
+            return Game(
+                id = json.getString("id"),
+                name = json.getString("name"),
+                description = json.getString("description"),
+                thumbnailUrl = json.getString("thumbnail_url"),
+                adsRequired = json.optInt("ads_required", 0),
+                inputImages = inputImages,
+                activityClass = getActivityClass(activityType),
+                isUnlocked = json.optBoolean("is_unlocked", false)
+            )
+        }
+
+        /**
+         * Parse list of Games from JSON array string
+         */
+        fun fromJsonArray(jsonString: String): List<Game> {
+            return try {
+                val jsonArray = JSONArray(jsonString)
+                val games = mutableListOf<Game>()
+                for (i in 0 until jsonArray.length()) {
+                    val jsonObject = jsonArray.getJSONObject(i)
+                    games.add(fromJson(jsonObject))
+                }
+                games
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyList()
+            }
+        }
     }
 }
 
-/**
- * Sample Games Data
- */
-object SampleGames {
-    fun getGames(): List<Game> {
-        return listOf(
-            Game(
-                id = "tap_to_zoom",
-                name = "Tap to Zoom",
-                description = "Tap the image to zoom in and win!",
-                thumbnailUrl = "https://picsum.photos/400/200?random=1",
-                adsRequired = 0,
-                inputImages = listOf("https://picsum.photos/800/600?random=100"),
-                activityClass = com.truonganim.admob.games.taptozoom.TapToZoomGameActivity::class.java,
-                isUnlocked = true
-            ),
-            // More games will be added here
-            Game(
-                id = "image_puzzle",
-                name = "Image Puzzle",
-                description = "Solve the image puzzle to win!",
-                thumbnailUrl = "https://picsum.photos/400/200?random=2",
-                adsRequired = 1,
-                inputImages = listOf("https://picsum.photos/800/600?random=200"),
-                activityClass = com.truonganim.admob.games.imagepuzzle.ImagePuzzleGameActivity::class.java,
-                isUnlocked = false
-            )
-        )
-    }
-}
+
 

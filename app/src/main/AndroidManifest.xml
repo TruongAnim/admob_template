@@ -14,6 +14,9 @@
     <!-- For setting wallpaper -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
+    <!-- For notifications on Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".AdMobBaseApplication"
         android:allowBackup="true"

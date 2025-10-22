@@ -52,6 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.R
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
  * Album Detail Screen
@@ -68,6 +69,22 @@ fun AlbumDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Game launcher with result handling
+    val gameLauncher = rememberGameLauncher(
+        onGameWin = { gameId ->
+            // Unlock the pending character (saved when launching game)
+            viewModel.unlockCharacterByGameWin()
+        },
+        onGameLose = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        },
+        onGameCancelled = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        }
+    )
+
     Scaffold(
         topBar = {
             AlbumDetailTopBar(
@@ -82,7 +99,21 @@ fun AlbumDetailScreen(
             appCharacters = uiState.appCharacters,
             isLoading = uiState.isLoading,
             onCharacterClick = { character ->
-                onCharacterClick(character.id)
+                val result = viewModel.onCharacterClick(character)
+                when (result) {
+                    null -> {
+                        // Character is unlocked, navigate to detail
+                        onCharacterClick(character.id)
+                    }
+                    is com.truonganim.admob.data.Game -> {
+                        // Character locked by game, launch game
+                        gameLauncher.launch(result)
+                    }
+                    "ad" -> {
+                        // Character locked by ad, show reward ad
+                        viewModel.showRewardAdToUnlock(character)
+                    }
+                }
             },
             onFavoriteClick = viewModel::onFavoriteClick,
             modifier = Modifier.padding(paddingValues)
@@ -222,7 +253,7 @@ private fun CharacterGridItem(
                     )
             )
 
-            // Lock Icon (Top Left) - if not unlocked
+            // Lock Icon - if not unlocked
             if (!appCharacter.isUnlocked) {
                 Box(
                     modifier = Modifier
@@ -235,23 +266,35 @@ private fun CharacterGridItem(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        // Show different icon based on lock type
+                        when {
+                            appCharacter.isLockedByGame -> {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_game),
+                                    contentDescription = "Locked by Game",
+                                    tint = Color.Yellow,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                            appCharacter.isLockedByAd -> {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_play_ads),
+                                    contentDescription = "Locked by Ad",
+                                    tint = Color.Red,
+                                    modifier = Modifier.size(24.dp)
+                                )
 
-                        Icon(
-                            painter = painterResource(R.drawable.ic_play_ads),
-                            contentDescription = "Play",
-                            tint = Color.Red,
-                            modifier = Modifier.size(24.dp)
-                        )
-
-                        Text(
-                            text = appCharacter.progressText,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                fontSize = 12.sp
-                            ),
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
+                                Text(
+                                    text = appCharacter.progressText,
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        fontSize = 12.sp
+                                    ),
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }

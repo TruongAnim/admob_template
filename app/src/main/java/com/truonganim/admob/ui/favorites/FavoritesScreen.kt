@@ -49,6 +49,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.R
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.data.Game
+import com.truonganim.admob.ui.components.CharacterCardItem
+import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
  * Favorites Screen
@@ -65,13 +68,43 @@ fun FavoritesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Game launcher with result handling
+    val gameLauncher = rememberGameLauncher(
+        onGameWin = { gameId ->
+            // Unlock the pending character (saved when launching game)
+            viewModel.unlockCharacterByGameWin()
+        },
+        onGameLose = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        },
+        onGameCancelled = { gameId ->
+            // Clear pending unlock
+            viewModel.clearPendingGameUnlock()
+        }
+    )
+
     FavoritesContent(
         favoriteAppCharacters = uiState.favoriteAppCharacters,
         favoritePhotos = uiState.favoritePhotos,
         isLoading = uiState.isLoading,
         onExploreClick = {},
         onCharacterClick = { character ->
-            onCharacterClick(character.id)
+            val result = viewModel.onCharacterClick(character)
+            when (result) {
+                null -> {
+                    // Character is unlocked, navigate to detail
+                    onCharacterClick(character.id)
+                }
+                is Game -> {
+                    // Character locked by game, launch game
+                    gameLauncher.launch(result)
+                }
+                "ad" -> {
+                    // Character locked by ad, show reward ad
+                    viewModel.showRewardAdToUnlock(character)
+                }
+            }
         },
         onPhotoClick = onPhotoClick,
         onCharacterFavoriteClick = viewModel::onCharacterFavoriteClick,
@@ -277,71 +310,13 @@ private fun FavouriteCharactersSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(appCharacters) { character ->
-                FavouriteCharacterItem(
-                    appCharacter = character,
+                CharacterCardItem(
+                    character = character,
                     onClick = { onCharacterClick(character) },
-                    onFavoriteClick = { onFavoriteClick(character) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun FavouriteCharacterItem(
-    appCharacter: AppCharacter,
-    onClick: () -> Unit,
-    onFavoriteClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .width(120.dp)
-            .aspectRatio(0.7f)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Thumbnail Image
-            Image(
-                painter = rememberAsyncImagePainter(appCharacter.thumbnail),
-                contentDescription = appCharacter.name,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-
-            // Favorite Icon (Top Right)
-            IconButton(
-                onClick = onFavoriteClick,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(32.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorite",
-                    tint = Color.Red,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-
-            // Character Name (Bottom)
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-                color = Color.Black.copy(alpha = 0.6f)
-            ) {
-                Text(
-                    text = appCharacter.name,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.Medium,
-                        color = Color.White
-                    ),
-                    maxLines = 1,
-                    modifier = Modifier.padding(8.dp)
+                    onFavoriteClick = { onFavoriteClick(character) },
+                    modifier = Modifier.width(120.dp),
+                    showLockOverlay = true,
+                    showName = true
                 )
             }
         }
