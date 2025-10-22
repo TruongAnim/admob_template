@@ -14,20 +14,20 @@ enum class NativeAdPosition(
 ) {
     /**
      * Native ad at the bottom of Language Selection screen (initial)
-     * Uses medium layout with image
+     * Uses language-specific layout with compact design
      */
     LANGUAGE_SCREEN(
         adUnitId = BuildConfig.NATIVE_AD_LANGUAGE_SCREEN,
-        layoutResId = R.layout.native_ad_medium
+        layoutResId = R.layout.native_ad_language
     ),
 
     /**
      * Native ad at the bottom of Language Selection screen (after language selected)
-     * Uses medium layout with image
+     * Uses language-specific layout with compact design
      */
     LANGUAGE_SCREEN_2(
         adUnitId = BuildConfig.NATIVE_AD_LANGUAGE_SCREEN_2,
-        layoutResId = R.layout.native_ad_medium
+        layoutResId = R.layout.native_ad_language
     ),
 
     /**

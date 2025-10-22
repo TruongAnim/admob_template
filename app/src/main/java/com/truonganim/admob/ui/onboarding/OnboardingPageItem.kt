@@ -33,39 +33,36 @@ import com.truonganim.admob.data.OnboardingPage
  * Ad and indicator are handled separately in OnboardingScreen
  */
 @Composable
-fun OnboardingPageItem(
-    page: OnboardingPage,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+fun OnboardingPageItem(page: OnboardingPage, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        // Title at top
-        Text(
-            text = page.title,
-            style = MaterialTheme.typography.titleLarge.copy(
-                lineHeight = 30.sp
-            ),
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = page.hozizontalPadding)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Image content
-        Image(
-            painter = painterResource(id = page.imageRes),
-            contentDescription = page.title,
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
+        Column(
+            modifier = modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = page.title,
+                style = MaterialTheme.typography.titleLarge.copy(lineHeight = 30.sp),
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = page.hozizontalPadding)
+            )
+            Spacer(Modifier.weight(1f))
+            Image(
+                painter = painterResource(id = page.imageRes),
+                contentDescription = page.title,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.weight(1f))
+        }
     }
 }
 

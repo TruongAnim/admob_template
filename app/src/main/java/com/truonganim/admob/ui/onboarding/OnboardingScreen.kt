@@ -106,20 +106,20 @@ fun OnboardingScreen(
             }
         }
 
+        // Determine which ad position to show
+        val adPosition = when (currentPage) {
+            0 -> NativeAdPosition.ONBOARDING_PAGE_1  // Page 1 (index 0)
+            2 -> NativeAdPosition.ONBOARDING_PAGE_3  // Page 3 (index 2)
+            else -> null  // Pages 2 and 4 have no ads
+        }
+
         // Native Ad at the bottom (for pages 1 and 3)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(320.dp), // Fixed height to maintain consistent layout
+                .height(if(adPosition != null) 300.dp else 30.dp),
             contentAlignment = Alignment.Center
         ) {
-            // Determine which ad position to show
-            val adPosition = when (currentPage) {
-                0 -> NativeAdPosition.ONBOARDING_PAGE_1  // Page 1 (index 0)
-                2 -> NativeAdPosition.ONBOARDING_PAGE_3  // Page 3 (index 2)
-                else -> null  // Pages 2 and 4 have no ads
-            }
-
             if (adPosition != null) {
                 NativeAdView(
                     position = adPosition,
