@@ -2,7 +2,6 @@ package com.truonganim.admob.games.taptozoom
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.animateFloatAsState
@@ -29,17 +28,18 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.data.GameResult
+import com.truonganim.admob.ui.base.BaseActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
 /**
  * Tap to Zoom Game Activity
- * 
+ *
  * Game rules:
  * - User sees an image
  * - Tap the image to zoom in
  * - Successfully zooming in = WIN
  */
-class TapToZoomGameActivity : ComponentActivity() {
+class TapToZoomGameActivity : BaseActivity() {
 
     private var gameId: String = ""
     private var inputImages: List<String> = emptyList()

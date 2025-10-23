@@ -1,11 +1,11 @@
 package com.truonganim.admob.utils
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
+import android.content.res.Configuration
+import android.os.LocaleList
+import com.truonganim.admob.datastore.PreferencesKeys
+import com.truonganim.admob.datastore.PreferencesManager
+import kotlinx.coroutines.runBlocking
 import java.util.Locale
 
 /**
@@ -14,46 +14,40 @@ import java.util.Locale
 object LocaleHelper {
 
     /**
-     * Apply locale to the app using AppCompatDelegate
-     * This is the recommended way for Android 13+ (API 33+)
+     * Wrap context with locale for activities
+     * This is called in attachBaseContext() of BaseActivity
      */
-    fun applyLocale(languageCode: String) {
-        val localeList = LocaleListCompat.forLanguageTags(languageCode)
-        AppCompatDelegate.setApplicationLocales(localeList)
-        println("🌍 Applied locale: $languageCode")
-    }
-
-    /**
-     * Get current app locale
-     */
-    fun getCurrentLocale(context: Context): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13+ (API 33+)
-            val locales = AppCompatDelegate.getApplicationLocales()
-            if (locales.isEmpty) {
-                Locale.getDefault().language
-            } else {
-                locales[0]?.toLanguageTag() ?: Locale.getDefault().language
-            }
-        } else {
-            // Older Android versions
-            val locales = AppCompatDelegate.getApplicationLocales()
-            if (locales.isEmpty) {
-                Locale.getDefault().language
-            } else {
-                locales[0]?.language ?: Locale.getDefault().language
-            }
+    fun wrapContext(context: Context): Context {
+        val languageCode = runBlocking {
+            getSavedLanguage(context)
         }
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+
+        val config = Configuration(context.resources.configuration)
+        updateLocaleConfiguration(config, locale)
+
+        return context.createConfigurationContext(config)
     }
 
     /**
-     * Restart activity to apply locale change
+     * Update locale configuration for all Android versions
      */
-    fun restartActivity(activity: Activity) {
-        val intent = activity.intent
-        activity.finish()
-        activity.startActivity(intent)
-        activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    private fun updateLocaleConfiguration(configuration: Configuration, newLocale: Locale) {
+        Locale.setDefault(newLocale)
+        configuration.setLocale(newLocale)
+
+        val localeList = LocaleList(newLocale)
+        LocaleList.setDefault(localeList)
+        configuration.setLocales(localeList)
+    }
+
+    /**
+     * Get saved language from preferences
+     */
+    suspend fun getSavedLanguage(context: Context): String {
+        val preferencesManager = PreferencesManager.getInstance(context)
+        return preferencesManager.getValueSync(PreferencesKeys.SELECTED_LANGUAGE_CODE, "en")
     }
 }
 

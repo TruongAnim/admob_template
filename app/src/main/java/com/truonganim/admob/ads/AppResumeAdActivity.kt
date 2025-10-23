@@ -3,7 +3,6 @@ package com.truonganim.admob.ads
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
@@ -21,13 +20,14 @@ import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.truonganim.admob.data.AppOpenAdConfig
 import com.truonganim.admob.firebase.RemoteConfigKeys
+import com.truonganim.admob.ui.base.BaseActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
 /**
  * App Resume Ad Activity
  * Shows a loading screen while loading and displaying app open ad
  */
-class AppResumeAdActivity : ComponentActivity() {
+class AppResumeAdActivity : BaseActivity() {
 
     private lateinit var config: AppOpenAdConfig
     private lateinit var adManager: AppOpenAdManager

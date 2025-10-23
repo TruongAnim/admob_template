@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
@@ -33,6 +32,7 @@ import com.truonganim.admob.BuildConfig
 import com.truonganim.admob.R
 import com.truonganim.admob.data.AdGateConfig
 import com.truonganim.admob.firebase.RemoteConfigKeys
+import com.truonganim.admob.ui.base.BaseActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 import com.truonganim.admob.utils.AdLogger
 import kotlinx.coroutines.launch
@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
  * Ad Gate Activity
  * Shows a loading screen while loading and displaying interstitial ad
  */
-class AdGateActivity : ComponentActivity() {
+class AdGateActivity : BaseActivity() {
 
     private lateinit var config: AdGateConfig
     private lateinit var adManager: InterstitialAdManager

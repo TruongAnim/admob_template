@@ -89,7 +89,8 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
 
     /**
      * Confirm language selection
-     * Saves to preferences and applies locale
+     * Saves to preferences
+     * Locale will be applied automatically when activity recreates via BaseActivity.attachBaseContext()
      */
     fun confirmLanguage(): Language? {
         val selected = _selectedLanguage.value
@@ -98,10 +99,6 @@ class LanguageViewModel(application: Application) : AndroidViewModel(application
                 // Save to preferences
                 preferencesManager.setSelectedLanguageCode(selected.code)
                 println("💾 Saved language to preferences: ${selected.code}")
-
-                // Apply locale
-                LocaleHelper.applyLocale(selected.code)
-                println("✅ Language confirmed and applied: ${selected.name} (${selected.code})")
 
                 // Mark as not first selection anymore
                 _isFirstSelection.value = false

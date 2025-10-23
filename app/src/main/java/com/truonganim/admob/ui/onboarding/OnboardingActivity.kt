@@ -2,7 +2,6 @@ package com.truonganim.admob.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.truonganim.admob.MainActivity
 import com.truonganim.admob.datastore.PreferencesManager
+import com.truonganim.admob.ui.base.BaseActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 import kotlinx.coroutines.launch
 
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  * Onboarding Activity
  * Displays onboarding flow with 4 pages
  */
-class OnboardingActivity : ComponentActivity() {
+class OnboardingActivity : BaseActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,10 +3,11 @@ package com.truonganim.admob.ui.language
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
+import com.truonganim.admob.MainActivity
+import com.truonganim.admob.ui.base.BaseActivity
 import com.truonganim.admob.ui.onboarding.OnboardingActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 
@@ -14,7 +15,7 @@ import com.truonganim.admob.ui.theme.AdMobBaseTheme
  * Language Selection Activity
  * Allows user to select their preferred language
  */
-class LanguageActivity : ComponentActivity() {
+class LanguageActivity : BaseActivity() {
 
     private lateinit var viewModel: LanguageViewModel
     private var isFromSettings = false
@@ -39,10 +40,8 @@ class LanguageActivity : ComponentActivity() {
                     },
                     onLanguageConfirmed = {
                         if (isFromSettings) {
-                            // Close and let MainActivity recreate itself
-                            // The locale change will be applied automatically
-                            setResult(RESULT_OK)
-                            finish()
+                            // Close this activity and recreate MainActivity to apply locale change
+                            recreateMainActivity()
                         } else {
                             // Navigate to onboarding (first time flow)
                             navigateToOnboarding()
@@ -60,6 +59,18 @@ class LanguageActivity : ComponentActivity() {
         val intent = Intent(this, OnboardingActivity::class.java)
         startActivity(intent)
         finish() // Close language activity
+    }
+
+    /**
+     * Recreate MainActivity to apply locale change
+     */
+    private fun recreateMainActivity() {
+        // Close all activities and restart MainActivity
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 
     /**

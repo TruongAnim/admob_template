@@ -3,7 +3,6 @@ package com.truonganim.admob.ui.premium
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.truonganim.admob.MainActivity
 import com.truonganim.admob.billing.BillingState
 import com.truonganim.admob.billing.PremiumPreferencesManager
+import com.truonganim.admob.ui.base.BaseActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  * Standalone activity for IAP subscription
  * Can be started from anywhere in the app
  */
-class PremiumActivity : ComponentActivity() {
+class PremiumActivity : BaseActivity() {
 
     private lateinit var viewModel: PremiumViewModel
     private lateinit var premiumPrefs: PremiumPreferencesManager
