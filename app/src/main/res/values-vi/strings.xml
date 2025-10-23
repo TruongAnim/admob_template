@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">AdMob Base</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_albums">Album</string>
+    <string name="nav_favorites">Yêu thích</string>
+    <string name="nav_games">Trò chơi</string>
+    <string name="nav_settings">Cài đặt</string>
+    <string name="nav_albums_emoji">🏠 Danh mục</string>
+    <string name="nav_favorites_emoji">🔥 Yêu thích</string>
+    <string name="nav_games_emoji">🎮 Trò chơi</string>
+    <string name="nav_settings_emoji">⚙️ Cài đặt</string>
+
+    <!-- Common -->
+    <string name="back">Quay lại</string>
+    <string name="navigate">Điều hướng</string>
+    <string name="view_all">Xem tất cả (%1$d)</string>
+    <string name="ads_count">%1$d quảng cáo</string>
+    <string name="ad_progress">%1$d/%2$d</string>
+
+    <!-- Language Screen -->
+    <string name="select_language">Chọn ngôn ngữ</string>
+
+    <!-- Settings Screen -->
+    <string name="language">Ngôn ngữ</string>
+    <string name="feedback">Phản hồi</string>
+    <string name="share_app">Chia sẻ ứng dụng</string>
+    <string name="privacy_policy">Chính sách bảo mật</string>
+    <string name="version">Phiên bản %1$s</string>
+    <string name="premium_plans">Gói Premium</string>
+    <string name="unlock_exclusive_features">Mở khóa tất cả tính năng premium độc quyền!</string>
+    <string name="upgrade">Nâng cấp</string>
+    <string name="premium_member">Thành viên Premium</string>
+    <string name="enjoying_premium">Tận hưởng tất cả tính năng premium</string>
+    <string name="vip">VIP</string>
+
+    <!-- Favorites Screen -->
+    <string name="no_favorites_yet">Chưa có mục yêu thích</string>
+    <string name="no_favorites_description">Hình nền yêu thích của bạn sẽ xuất hiện ở đây. Bắt đầu khám phá và thêm một số vào bộ sưu tập của bạn!</string>
+    <string name="explore_now">Khám phá ngay</string>
+    <string name="favourite_characters">Nhân vật yêu thích</string>
+    <string name="favourite_photos">Ảnh yêu thích</string>
+
+    <!-- Album Detail Screen -->
+    <string name="unlock_all">MỞ KHÓA TẤT CẢ</string>
+
+    <!-- Games Screen -->
+    <string name="locked">Đã khóa</string>
+    <string name="game_album">Album trò chơi</string>
+
+    <!-- Notification Banner -->
+    <string name="dont_miss_out">Đừng bỏ lỡ</string>
+    <string name="enable_alerts">Bật thông báo cho album mới và hình ảnh độc quyền.</string>
+    <string name="enable">Bật</string>
+
+    <!-- Photo Viewer -->
+    <string name="photo">Ảnh</string>
+    <string name="photo_number">Ảnh %1$d</string>
+
+    <!-- Wallpaper -->
+    <string name="wallpaper_description">Hình nền ngẫu nhiên thay đổi sau vài giây</string>
+    <string name="set_random_wallpaper">Đặt hình nền ngẫu nhiên</string>
+    <string name="downloading_images">Đang tải hình ảnh…</string>
+    <string name="download_complete">Tải xuống hoàn tất!</string>
+    <string name="download_failed">Tải xuống thất bại. Vui lòng thử lại.</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_no_favorites">Không có mục yêu thích</string>
+    <string name="cd_notification_icon">Biểu tượng thông báo</string>
+    <string name="cd_ad">Quảng cáo</string>
+</resources>
+

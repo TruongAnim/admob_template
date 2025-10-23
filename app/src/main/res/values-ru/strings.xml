@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">AdMob Base</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_albums">Альбомы</string>
+    <string name="nav_favorites">Избранное</string>
+    <string name="nav_games">Игры</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_albums_emoji">🏠 Категории</string>
+    <string name="nav_favorites_emoji">🔥 Избранное</string>
+    <string name="nav_games_emoji">🎮 Игры</string>
+    <string name="nav_settings_emoji">⚙️ Настройки</string>
+
+    <!-- Common -->
+    <string name="back">Назад</string>
+    <string name="navigate">Навигация</string>
+    <string name="view_all">Посмотреть все (%1$d)</string>
+    <string name="ads_count">%1$d объявлений</string>
+    <string name="ad_progress">%1$d/%2$d</string>
+
+    <!-- Language Screen -->
+    <string name="select_language">Выбрать язык</string>
+
+    <!-- Settings Screen -->
+    <string name="language">Язык</string>
+    <string name="feedback">Обратная связь</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="version">Версия %1$s</string>
+    <string name="premium_plans">Премиум-планы</string>
+    <string name="unlock_exclusive_features">Разблокируйте все эксклюзивные премиум-функции!</string>
+    <string name="upgrade">Обновить</string>
+    <string name="premium_member">Премиум-участник</string>
+    <string name="enjoying_premium">Наслаждайтесь всеми премиум-функциями</string>
+    <string name="vip">VIP</string>
+
+    <!-- Favorites Screen -->
+    <string name="no_favorites_yet">Пока нет избранного</string>
+    <string name="no_favorites_description">Ваши любимые обои появятся здесь. Начните исследовать и добавьте некоторые в свою коллекцию!</string>
+    <string name="explore_now">Исследовать сейчас</string>
+    <string name="favourite_characters">Избранные персонажи</string>
+    <string name="favourite_photos">Избранные фото</string>
+
+    <!-- Album Detail Screen -->
+    <string name="unlock_all">РАЗБЛОКИРОВАТЬ ВСЕ</string>
+
+    <!-- Games Screen -->
+    <string name="locked">Заблокировано</string>
+    <string name="game_album">Игровой альбом</string>
+
+    <!-- Notification Banner -->
+    <string name="dont_miss_out">Не пропустите</string>
+    <string name="enable_alerts">Включите оповещения о новых альбомах и эксклюзивных изображениях.</string>
+    <string name="enable">Включить</string>
+
+    <!-- Photo Viewer -->
+    <string name="photo">Фото</string>
+    <string name="photo_number">Фото %1$d</string>
+
+    <!-- Wallpaper -->
+    <string name="wallpaper_description">Случайные обои, которые меняются каждые несколько секунд</string>
+    <string name="set_random_wallpaper">Установить случайные обои</string>
+    <string name="downloading_images">Загрузка изображений…</string>
+    <string name="download_complete">Загрузка завершена!</string>
+    <string name="download_failed">Ошибка загрузки. Пожалуйста, попробуйте еще раз.</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_no_favorites">Нет избранного</string>
+    <string name="cd_notification_icon">Значок уведомления</string>
+    <string name="cd_ad">Реклама</string>
+</resources>
+

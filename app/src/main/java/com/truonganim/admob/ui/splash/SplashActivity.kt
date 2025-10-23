@@ -12,6 +12,7 @@ import com.truonganim.admob.datastore.PreferencesManager
 import com.truonganim.admob.ui.language.LanguageActivity
 import com.truonganim.admob.ui.onboarding.OnboardingActivity
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
+import com.truonganim.admob.utils.LocaleHelper
 import kotlinx.coroutines.launch
 
 /**
@@ -28,6 +29,9 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        // Apply saved locale
+        applySavedLocale()
+
         viewModel = ViewModelProvider(this)[SplashViewModel::class.java]
 
         setContent {
@@ -38,6 +42,24 @@ class SplashActivity : ComponentActivity() {
                         showAdAndNavigate()
                     }
                 )
+            }
+        }
+    }
+
+    /**
+     * Apply saved locale from preferences
+     */
+    private fun applySavedLocale() {
+        lifecycleScope.launch {
+            val preferencesManager = PreferencesManager.getInstance(this@SplashActivity)
+            val savedLanguageCode = preferencesManager.getValueSync(
+                com.truonganim.admob.datastore.PreferencesKeys.SELECTED_LANGUAGE_CODE,
+                ""
+            )
+
+            if (savedLanguageCode.isNotEmpty()) {
+                LocaleHelper.applyLocale(savedLanguageCode)
+                println("🌍 Applied saved locale on app start: $savedLanguageCode")
             }
         }
     }

@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">AdMob Base</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_albums">Alben</string>
+    <string name="nav_favorites">Favoriten</string>
+    <string name="nav_games">Spiele</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_albums_emoji">🏠 Kategorien</string>
+    <string name="nav_favorites_emoji">🔥 Favoriten</string>
+    <string name="nav_games_emoji">🎮 Spiele</string>
+    <string name="nav_settings_emoji">⚙️ Einstellungen</string>
+
+    <!-- Common -->
+    <string name="back">Zurück</string>
+    <string name="navigate">Navigieren</string>
+    <string name="view_all">Alle anzeigen (%1$d)</string>
+    <string name="ads_count">%1$d Anzeigen</string>
+    <string name="ad_progress">%1$d/%2$d</string>
+
+    <!-- Language Screen -->
+    <string name="select_language">Sprache auswählen</string>
+
+    <!-- Settings Screen -->
+    <string name="language">Sprache</string>
+    <string name="feedback">Feedback</string>
+    <string name="share_app">App teilen</string>
+    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="version">Version %1$s</string>
+    <string name="premium_plans">Premium-Pläne</string>
+    <string name="unlock_exclusive_features">Schalten Sie alle exklusiven Premium-Funktionen frei!</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="premium_member">Premium-Mitglied</string>
+    <string name="enjoying_premium">Genießen Sie alle Premium-Funktionen</string>
+    <string name="vip">VIP</string>
+
+    <!-- Favorites Screen -->
+    <string name="no_favorites_yet">Noch keine Favoriten</string>
+    <string name="no_favorites_description">Ihre Lieblings-Hintergrundbilder werden hier angezeigt. Beginnen Sie zu erkunden und fügen Sie einige zu Ihrer Sammlung hinzu!</string>
+    <string name="explore_now">Jetzt erkunden</string>
+    <string name="favourite_characters">Lieblingscharaktere</string>
+    <string name="favourite_photos">Lieblingsfotos</string>
+
+    <!-- Album Detail Screen -->
+    <string name="unlock_all">ALLE FREISCHALTEN</string>
+
+    <!-- Games Screen -->
+    <string name="locked">Gesperrt</string>
+    <string name="game_album">Spiele-Album</string>
+
+    <!-- Notification Banner -->
+    <string name="dont_miss_out">Verpassen Sie nichts</string>
+    <string name="enable_alerts">Aktivieren Sie Benachrichtigungen für neue Alben und exklusive Bilder.</string>
+    <string name="enable">Aktivieren</string>
+
+    <!-- Photo Viewer -->
+    <string name="photo">Foto</string>
+    <string name="photo_number">Foto %1$d</string>
+
+    <!-- Wallpaper -->
+    <string name="wallpaper_description">Zufälliges Hintergrundbild, das sich alle paar Sekunden ändert</string>
+    <string name="set_random_wallpaper">Zufälliges Hintergrundbild festlegen</string>
+    <string name="downloading_images">Bilder werden heruntergeladen…</string>
+    <string name="download_complete">Download abgeschlossen!</string>
+    <string name="download_failed">Download fehlgeschlagen. Bitte versuchen Sie es erneut.</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_no_favorites">Keine Favoriten</string>
+    <string name="cd_notification_icon">Benachrichtigungssymbol</string>
+    <string name="cd_ad">Anzeige</string>
+</resources>
+

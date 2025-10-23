@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">AdMob Base</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_albums">앨범</string>
+    <string name="nav_favorites">즐겨찾기</string>
+    <string name="nav_games">게임</string>
+    <string name="nav_settings">설정</string>
+    <string name="nav_albums_emoji">🏠 카테고리</string>
+    <string name="nav_favorites_emoji">🔥 즐겨찾기</string>
+    <string name="nav_games_emoji">🎮 게임</string>
+    <string name="nav_settings_emoji">⚙️ 설정</string>
+
+    <!-- Common -->
+    <string name="back">뒤로</string>
+    <string name="navigate">탐색</string>
+    <string name="view_all">모두 보기 (%1$d)</string>
+    <string name="ads_count">%1$d 광고</string>
+    <string name="ad_progress">%1$d/%2$d</string>
+
+    <!-- Language Screen -->
+    <string name="select_language">언어 선택</string>
+
+    <!-- Settings Screen -->
+    <string name="language">언어</string>
+    <string name="feedback">피드백</string>
+    <string name="share_app">앱 공유</string>
+    <string name="privacy_policy">개인정보 보호정책</string>
+    <string name="version">버전 %1$s</string>
+    <string name="premium_plans">프리미엄 플랜</string>
+    <string name="unlock_exclusive_features">모든 독점 프리미엄 기능을 잠금 해제하세요!</string>
+    <string name="upgrade">업그레이드</string>
+    <string name="premium_member">프리미엄 회원</string>
+    <string name="enjoying_premium">모든 프리미엄 기능 즐기기</string>
+    <string name="vip">VIP</string>
+
+    <!-- Favorites Screen -->
+    <string name="no_favorites_yet">아직 즐겨찾기가 없습니다</string>
+    <string name="no_favorites_description">좋아하는 배경화면이 여기에 표시됩니다. 탐색을 시작하고 컬렉션에 추가하세요!</string>
+    <string name="explore_now">지금 탐색</string>
+    <string name="favourite_characters">즐겨찾는 캐릭터</string>
+    <string name="favourite_photos">즐겨찾는 사진</string>
+
+    <!-- Album Detail Screen -->
+    <string name="unlock_all">모두 잠금 해제</string>
+
+    <!-- Games Screen -->
+    <string name="locked">잠김</string>
+    <string name="game_album">게임 앨범</string>
+
+    <!-- Notification Banner -->
+    <string name="dont_miss_out">놓치지 마세요</string>
+    <string name="enable_alerts">새 앨범 및 독점 이미지에 대한 알림을 활성화합니다.</string>
+    <string name="enable">활성화</string>
+
+    <!-- Photo Viewer -->
+    <string name="photo">사진</string>
+    <string name="photo_number">사진 %1$d</string>
+
+    <!-- Wallpaper -->
+    <string name="wallpaper_description">몇 초마다 변경되는 랜덤 배경화면</string>
+    <string name="set_random_wallpaper">랜덤 배경화면 설정</string>
+    <string name="downloading_images">이미지 다운로드 중…</string>
+    <string name="download_complete">다운로드 완료!</string>
+    <string name="download_failed">다운로드 실패. 다시 시도해 주세요.</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_no_favorites">즐겨찾기 없음</string>
+    <string name="cd_notification_icon">알림 아이콘</string>
+    <string name="cd_ad">광고</string>
+</resources>
+

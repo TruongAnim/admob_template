@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">AdMob Base</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_albums">アルバム</string>
+    <string name="nav_favorites">お気に入り</string>
+    <string name="nav_games">ゲーム</string>
+    <string name="nav_settings">設定</string>
+    <string name="nav_albums_emoji">🏠 カテゴリー</string>
+    <string name="nav_favorites_emoji">🔥 お気に入り</string>
+    <string name="nav_games_emoji">🎮 ゲーム</string>
+    <string name="nav_settings_emoji">⚙️ 設定</string>
+
+    <!-- Common -->
+    <string name="back">戻る</string>
+    <string name="navigate">ナビゲート</string>
+    <string name="view_all">すべて表示 (%1$d)</string>
+    <string name="ads_count">%1$d 広告</string>
+    <string name="ad_progress">%1$d/%2$d</string>
+
+    <!-- Language Screen -->
+    <string name="select_language">言語を選択</string>
+
+    <!-- Settings Screen -->
+    <string name="language">言語</string>
+    <string name="feedback">フィードバック</string>
+    <string name="share_app">アプリを共有</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="version">バージョン %1$s</string>
+    <string name="premium_plans">プレミアムプラン</string>
+    <string name="unlock_exclusive_features">すべての限定プレミアム機能をアンロック！</string>
+    <string name="upgrade">アップグレード</string>
+    <string name="premium_member">プレミアム会員</string>
+    <string name="enjoying_premium">すべてのプレミアム機能をお楽しみください</string>
+    <string name="vip">VIP</string>
+
+    <!-- Favorites Screen -->
+    <string name="no_favorites_yet">お気に入りはまだありません</string>
+    <string name="no_favorites_description">お気に入りの壁紙がここに表示されます。探索を開始して、コレクションに追加してください！</string>
+    <string name="explore_now">今すぐ探索</string>
+    <string name="favourite_characters">お気に入りのキャラクター</string>
+    <string name="favourite_photos">お気に入りの写真</string>
+
+    <!-- Album Detail Screen -->
+    <string name="unlock_all">すべてアンロック</string>
+
+    <!-- Games Screen -->
+    <string name="locked">ロック済み</string>
+    <string name="game_album">ゲームアルバム</string>
+
+    <!-- Notification Banner -->
+    <string name="dont_miss_out">お見逃しなく</string>
+    <string name="enable_alerts">新しいアルバムと限定画像のアラートを有効にします。</string>
+    <string name="enable">有効にする</string>
+
+    <!-- Photo Viewer -->
+    <string name="photo">写真</string>
+    <string name="photo_number">写真 %1$d</string>
+
+    <!-- Wallpaper -->
+    <string name="wallpaper_description">数秒ごとに変わるランダムな壁紙</string>
+    <string name="set_random_wallpaper">ランダムな壁紙を設定</string>
+    <string name="downloading_images">画像をダウンロード中…</string>
+    <string name="download_complete">ダウンロード完了！</string>
+    <string name="download_failed">ダウンロードに失敗しました。もう一度お試しください。</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_no_favorites">お気に入りなし</string>
+    <string name="cd_notification_icon">通知アイコン</string>
+    <string name="cd_ad">広告</string>
+</resources>
+

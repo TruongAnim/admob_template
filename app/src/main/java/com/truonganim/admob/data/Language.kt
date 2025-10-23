@@ -36,6 +36,12 @@ object SupportedLanguages {
             flag = "🇨🇳"
         ),
         Language(
+            code = "zh-Hant",
+            name = "Chinese (Traditional)",
+            nativeName = "繁體中文",
+            flag = "🇹🇼"
+        ),
+        Language(
             code = "fr",
             name = "French",
             nativeName = "Français",

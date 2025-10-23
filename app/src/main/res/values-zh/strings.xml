@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">AdMob Base</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_albums">相册</string>
+    <string name="nav_favorites">收藏</string>
+    <string name="nav_games">游戏</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_albums_emoji">🏠 分类</string>
+    <string name="nav_favorites_emoji">🔥 收藏</string>
+    <string name="nav_games_emoji">🎮 游戏</string>
+    <string name="nav_settings_emoji">⚙️ 设置</string>
+
+    <!-- Common -->
+    <string name="back">返回</string>
+    <string name="navigate">导航</string>
+    <string name="view_all">查看全部 (%1$d)</string>
+    <string name="ads_count">%1$d 个广告</string>
+    <string name="ad_progress">%1$d/%2$d</string>
+
+    <!-- Language Screen -->
+    <string name="select_language">选择语言</string>
+
+    <!-- Settings Screen -->
+    <string name="language">语言</string>
+    <string name="feedback">反馈</string>
+    <string name="share_app">分享应用</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="version">版本 %1$s</string>
+    <string name="premium_plans">高级计划</string>
+    <string name="unlock_exclusive_features">解锁所有独家高级功能！</string>
+    <string name="upgrade">升级</string>
+    <string name="premium_member">高级会员</string>
+    <string name="enjoying_premium">享受所有高级功能</string>
+    <string name="vip">VIP</string>
+
+    <!-- Favorites Screen -->
+    <string name="no_favorites_yet">还没有收藏</string>
+    <string name="no_favorites_description">您喜欢的壁纸将显示在这里。开始探索并将一些添加到您的收藏中！</string>
+    <string name="explore_now">立即探索</string>
+    <string name="favourite_characters">收藏角色</string>
+    <string name="favourite_photos">收藏照片</string>
+
+    <!-- Album Detail Screen -->
+    <string name="unlock_all">全部解锁</string>
+
+    <!-- Games Screen -->
+    <string name="locked">已锁定</string>
+    <string name="game_album">游戏相册</string>
+
+    <!-- Notification Banner -->
+    <string name="dont_miss_out">不要错过</string>
+    <string name="enable_alerts">启用新相册和独家图片的提醒。</string>
+    <string name="enable">启用</string>
+
+    <!-- Photo Viewer -->
+    <string name="photo">照片</string>
+    <string name="photo_number">照片 %1$d</string>
+
+    <!-- Wallpaper -->
+    <string name="wallpaper_description">每隔几秒钟更换的随机壁纸</string>
+    <string name="set_random_wallpaper">设置随机壁纸</string>
+    <string name="downloading_images">正在下载图片…</string>
+    <string name="download_complete">下载完成！</string>
+    <string name="download_failed">下载失败。请重试。</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_no_favorites">没有收藏</string>
+    <string name="cd_notification_icon">通知图标</string>
+    <string name="cd_ad">广告</string>
+</resources>
+

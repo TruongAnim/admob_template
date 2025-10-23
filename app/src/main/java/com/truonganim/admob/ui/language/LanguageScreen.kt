@@ -42,11 +42,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.truonganim.admob.R
 import com.truonganim.admob.ads.native_ads.NativeAdPosition
 import com.truonganim.admob.ads.native_ads.NativeAdView
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
@@ -90,7 +92,7 @@ fun LanguageScreen(
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.back),
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
@@ -98,7 +100,7 @@ fun LanguageScreen(
 
             // Title
             Text(
-                text = "Select Language",
+                text = stringResource(R.string.select_language),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -180,7 +182,7 @@ fun LanguageScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Loading...",
+                        text = stringResource(R.string.downloading_images),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -216,7 +218,7 @@ fun ConfirmLanguageButton(
             content = {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Confirm language",
+                    contentDescription = stringResource(R.string.select_language),
                     tint = iconTint,
                     modifier = Modifier.size(18.dp)
                 )

@@ -39,7 +39,9 @@ class LanguageActivity : ComponentActivity() {
                     },
                     onLanguageConfirmed = {
                         if (isFromSettings) {
-                            // Just close the activity and go back
+                            // Close and let MainActivity recreate itself
+                            // The locale change will be applied automatically
+                            setResult(RESULT_OK)
                             finish()
                         } else {
                             // Navigate to onboarding (first time flow)
