@@ -19,10 +19,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.truonganim.admob.R
 import com.truonganim.admob.billing.PremiumHelper
 import com.truonganim.admob.billing.PremiumPreferencesManager
 import com.truonganim.admob.firebase.RemoteConfigHelper
@@ -118,7 +120,7 @@ private fun SettingsContent(
         // Language
         SettingClickableItem(
             icon = Icons.Default.Language,
-            title = "Language",
+            title = stringResource(R.string.language),
             onClick = onLanguageClick
         )
 
@@ -127,7 +129,7 @@ private fun SettingsContent(
         // Feedback
         SettingClickableItem(
             icon = Icons.Default.Feedback,
-            title = "Feedback",
+            title = stringResource(R.string.feedback),
             onClick = onFeedbackClick
         )
 
@@ -136,7 +138,7 @@ private fun SettingsContent(
         // Share app
         SettingClickableItem(
             icon = Icons.Default.Share,
-            title = "Share app",
+            title = stringResource(R.string.share_app),
             onClick = onShareAppClick
         )
 
@@ -145,7 +147,7 @@ private fun SettingsContent(
         // Privacy policy
         SettingClickableItem(
             icon = Icons.Default.PrivacyTip,
-            title = "Privacy policy",
+            title = stringResource(R.string.privacy_policy),
             onClick = onPrivacyPolicyClick
         )
 
@@ -153,7 +155,7 @@ private fun SettingsContent(
 
         // Version Info
         Text(
-            text = "Version ${uiState.version}",
+            text = stringResource(R.string.version, uiState.version),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -191,7 +193,7 @@ private fun SettingClickableItem(
 
         Icon(
             imageVector = Icons.Default.ChevronRight,
-            contentDescription = "Navigate",
+            contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -231,13 +233,13 @@ private fun PremiumBanner(onClick: () -> Unit) {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Premium Plans",
+                text = stringResource(R.string.premium_plans),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF8B4513) // Brown color
             )
             Text(
-                text = "Unlock all exclusive premium features!",
+                text = stringResource(R.string.unlock_exclusive_features),
                 fontSize = 12.sp,
                 color = Color(0xFF8B4513).copy(alpha = 0.8f)
             )
@@ -254,7 +256,7 @@ private fun PremiumBanner(onClick: () -> Unit) {
             modifier = Modifier.height(36.dp)
         ) {
             Text(
-                text = "Upgrade",
+                text = stringResource(R.string.upgrade),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -296,13 +298,13 @@ private fun VipBadge() {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Premium Member",
+                text = stringResource(R.string.premium_member),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Text(
-                text = "Enjoying all premium features",
+                text = stringResource(R.string.enjoying_premium),
                 fontSize = 12.sp,
                 color = Color.White.copy(alpha = 0.9f)
             )
@@ -315,7 +317,7 @@ private fun VipBadge() {
             modifier = Modifier.padding(start = 8.dp)
         ) {
             Text(
-                text = "VIP",
+                text = stringResource(R.string.vip),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,

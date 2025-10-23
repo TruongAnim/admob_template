@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -87,7 +88,7 @@ fun HomeScreen(
                 modifier = Modifier.statusBarsPadding(),
                 title = {
                     Text(
-                        text = currentTab.titleWithEmoji,
+                        text = stringResource(currentTab.titleWithEmojiResId),
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 24.sp
                     )
@@ -112,10 +113,10 @@ fun HomeScreen(
                         icon = {
                             Icon(
                                 imageVector = item.icon,
-                                contentDescription = item.title
+                                contentDescription = stringResource(item.titleResId)
                             )
                         },
-                        label = { Text(item.title) },
+                        label = { Text(stringResource(item.titleResId)) },
                         selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                         onClick = {
                             navController.navigate(item.route) {

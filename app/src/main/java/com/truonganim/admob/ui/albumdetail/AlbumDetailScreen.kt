@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -151,7 +152,7 @@ private fun AlbumDetailTopBar(
             IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.back)
                 )
             }
         },
@@ -170,7 +171,7 @@ private fun AlbumDetailTopBar(
                     modifier = Modifier.padding(end = 8.dp)
                 ) {
                     Text(
-                        text = "UNLOCK ALL",
+                        text = stringResource(R.string.unlock_all),
                         fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     )
@@ -280,7 +281,7 @@ private fun CharacterGridItem(
                             appCharacter.isLockedByGame -> {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_game),
-                                    contentDescription = "Locked by Game",
+                                    contentDescription = stringResource(R.string.locked),
                                     tint = Color.Yellow,
                                     modifier = Modifier.size(32.dp)
                                 )
@@ -288,7 +289,7 @@ private fun CharacterGridItem(
                             appCharacter.isLockedByAd -> {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_play_ads),
-                                    contentDescription = "Locked by Ad",
+                                    contentDescription = stringResource(R.string.locked),
                                     tint = Color.Red,
                                     modifier = Modifier.size(24.dp)
                                 )

@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -156,11 +157,11 @@ private fun FavoritesContent(
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_no_favorites),
-                    contentDescription = "No Favorites",
+                    contentDescription = stringResource(R.string.no_favorites_yet),
                 )
 
                 Text(
-                    text = "No Favorites Yet",
+                    text = stringResource(R.string.no_favorites_yet),
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold
                     ),
@@ -168,7 +169,7 @@ private fun FavoritesContent(
                 )
 
                 Text(
-                    text = "Your favorite wallpapers will appear here. Start exploring and add some to your collection!",
+                    text = stringResource(R.string.no_favorites_description),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 72.dp),
@@ -188,7 +189,7 @@ private fun FavoritesContent(
                     modifier = Modifier.padding(end = 8.dp)
                 ) {
                     Text(
-                        text = "Explore now",
+                        text = stringResource(R.string.explore_now),
                         fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     )
@@ -284,14 +285,14 @@ private fun FavouriteCharactersSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Favourite Characters",
+                text = stringResource(R.string.favourite_characters),
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 )
             )
 
             Text(
-                text = "View All (${appCharacters.size})",
+                text = stringResource(R.string.view_all, appCharacters.size),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable(onClick = onViewAllClick)
@@ -332,14 +333,14 @@ private fun FavouritePhotosSectionHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Favourite Photos",
+            text = stringResource(R.string.favourite_photos),
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.SemiBold
             )
         )
 
         Text(
-            text = "View All ($photoCount)",
+            text = stringResource(R.string.view_all, photoCount),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable(onClick = onViewAllClick)
@@ -367,7 +368,7 @@ private fun FavouritePhotoItem(
             // Photo Image
             Image(
                 painter = rememberAsyncImagePainter(photoUrl),
-                contentDescription = "Photo",
+                contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )

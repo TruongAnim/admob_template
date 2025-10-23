@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -203,12 +204,12 @@ private fun GameCard(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Lock,
-                                    contentDescription = "Locked",
+                                    contentDescription = stringResource(R.string.locked),
                                     tint = Color.White,
                                     modifier = Modifier.size(16.dp)
                                 )
                                 Text(
-                                    text = "${game.adsRequired} ads",
+                                    text = stringResource(R.string.ads_count, game.adsRequired),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = Color.White
                                 )
@@ -260,14 +261,14 @@ private fun GameAlbumCharactersSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Game Album",
+                text = stringResource(R.string.game_album),
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 )
             )
 
             Text(
-                text = "View All (${characters.size})",
+                text = stringResource(R.string.view_all, characters.size),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable(onClick = onViewAllClick)
