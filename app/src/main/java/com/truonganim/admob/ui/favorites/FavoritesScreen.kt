@@ -1,6 +1,7 @@
 package com.truonganim.admob.ui.favorites
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -52,6 +53,7 @@ import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.components.CharacterCardItem
 import com.truonganim.admob.ui.components.FavoriteOverlayButton
+import com.truonganim.admob.ui.theme.LocalAppColors
 import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
@@ -128,9 +130,13 @@ private fun FavoritesContent(
     onViewAllCharactersClick: () -> Unit,
     onViewAllPhotosClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     if (isLoading) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(appColors.imageScreenBackground),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
@@ -140,6 +146,7 @@ private fun FavoritesContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(appColors.imageScreenBackground)
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -192,7 +199,9 @@ private fun FavoritesContent(
     } else {
         // Content with favorites
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(appColors.imageScreenBackground),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
 

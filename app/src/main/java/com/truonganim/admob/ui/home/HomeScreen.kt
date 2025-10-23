@@ -34,6 +34,7 @@ import com.truonganim.admob.ui.albums.AlbumsScreen
 import com.truonganim.admob.ui.favorites.FavoritesScreen
 import com.truonganim.admob.ui.games.GamesScreen
 import com.truonganim.admob.ui.settings.SettingsScreen
+import com.truonganim.admob.ui.theme.LocalAppColors
 
 /**
  * Home Screen with Bottom Navigation
@@ -70,6 +71,16 @@ fun HomeScreen(
     // Find current tab item
     val currentTab = BottomNavItem.items.find { it.route == currentRoute } ?: BottomNavItem.Albums
 
+    val appColors = LocalAppColors.current
+
+    // Determine background color based on current tab
+    // Settings tab uses normal background, other tabs use image screen background
+    val barBackgroundColor = if (currentTab == BottomNavItem.Settings) {
+        MaterialTheme.colorScheme.background
+    } else {
+        appColors.imageScreenBackground
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -82,7 +93,7 @@ fun HomeScreen(
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
+                    containerColor = barBackgroundColor,
                     titleContentColor = MaterialTheme.colorScheme.onBackground,
                     navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
                     actionIconContentColor = MaterialTheme.colorScheme.onBackground
@@ -91,7 +102,7 @@ fun HomeScreen(
         },
         bottomBar = {
             NavigationBar(
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = barBackgroundColor
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
@@ -118,7 +129,7 @@ fun HomeScreen(
                             selectedTextColor = MaterialTheme.colorScheme.primary,
                             unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            indicatorColor = MaterialTheme.colorScheme.surfaceVariant
+                            indicatorColor = MaterialTheme.colorScheme.background
                         )
                     )
                 }

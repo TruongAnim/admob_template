@@ -48,6 +48,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.R
 import com.truonganim.admob.ui.components.GradientButton
 import com.truonganim.admob.ui.components.GradientPresets
+import com.truonganim.admob.ui.theme.LocalAppColors
 
 /**
  * Photo Viewer Screen - Full screen photo viewer with swipe
@@ -63,6 +64,7 @@ fun PhotoViewerScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val appColors = LocalAppColors.current
 
     // Permission launcher for storage (Android 9 and below)
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -76,7 +78,7 @@ fun PhotoViewerScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(appColors.imageScreenBackground)
     ) {
         // Photo Pager
         if (uiState.photos.isNotEmpty()) {
@@ -146,7 +148,7 @@ private fun PhotoPager(
                 painter = rememberAsyncImagePainter(photos[page]),
                 contentDescription = "Photo ${page + 1}",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Crop
             )
         }
     }

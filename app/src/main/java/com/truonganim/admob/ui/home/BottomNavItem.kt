@@ -19,7 +19,7 @@ sealed class BottomNavItem(
     object Albums : BottomNavItem(
         route = "albums",
         title = "Albums",
-        titleWithEmoji = "🏠 Albums",
+        titleWithEmoji = "🏠 Categories",
         icon = Icons.Default.Home
     )
 

@@ -61,6 +61,7 @@ import com.truonganim.admob.data.Album
 import com.truonganim.admob.datastore.PreferencesManager
 import com.truonganim.admob.ui.components.NotificationBanner
 import com.truonganim.admob.ui.components.NotificationPermissionBottomSheet
+import com.truonganim.admob.ui.theme.LocalAppColors
 import com.truonganim.admob.utils.NotificationPermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -192,9 +193,12 @@ private fun AlbumsContent(
     onNotificationBannerClick: () -> Unit,
     onAlbumClick: (Album) -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(appColors.imageScreenBackground)
     ) {
         if (isLoading) {
             CircularProgressIndicator(

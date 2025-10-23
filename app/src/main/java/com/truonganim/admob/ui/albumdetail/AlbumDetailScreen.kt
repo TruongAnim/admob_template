@@ -34,6 +34,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -52,6 +53,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.truonganim.admob.R
 import com.truonganim.admob.data.AppCharacter
+import com.truonganim.admob.ui.theme.LocalAppColors
 import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
@@ -129,6 +131,8 @@ private fun AlbumDetailTopBar(
     onUnlockAllClick: () -> Unit,
     albumId: String = ""
 ) {
+    val appColors = LocalAppColors.current
+
     TopAppBar(
         title = {
             Row(
@@ -172,7 +176,10 @@ private fun AlbumDetailTopBar(
                     )
                 }
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = appColors.imageScreenBackground
+        )
     )
 }
 
@@ -184,10 +191,12 @@ private fun AlbumDetailContent(
     onFavoriteClick: (AppCharacter) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(appColors.imageScreenBackground)
     ) {
         if (isLoading) {
             CircularProgressIndicator(

@@ -33,6 +33,7 @@ import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.ui.components.FavoriteOverlayButton
 import com.truonganim.admob.ui.components.GradientPresets
 import com.truonganim.admob.ui.components.SetRandomWallpaperButton
+import com.truonganim.admob.ui.theme.LocalAppColors
 
 /**
  * Character Detail Screen
@@ -80,6 +81,8 @@ private fun CharacterDetailTopBar(
     onBackClick: () -> Unit,
     onFavoriteClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     TopAppBar(
         title = {
             Text(
@@ -107,7 +110,10 @@ private fun CharacterDetailTopBar(
                     onClick = onFavoriteClick,
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = appColors.imageScreenBackground
+        )
     )
 }
 
@@ -120,10 +126,12 @@ private fun CharacterDetailContent(
     onPhotoFavoriteClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(appColors.imageScreenBackground)
     ) {
         if (isLoading) {
             CircularProgressIndicator(

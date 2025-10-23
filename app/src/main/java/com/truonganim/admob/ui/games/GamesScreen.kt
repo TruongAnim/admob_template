@@ -34,6 +34,7 @@ import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.ui.components.CharacterCardItem
+import com.truonganim.admob.ui.theme.LocalAppColors
 import com.truonganim.admob.ui.utils.rememberGameLauncher
 
 /**
@@ -106,9 +107,12 @@ private fun GamesContent(
     onCharacterFavoriteClick: (AppCharacter) -> Unit,
     onViewAllCharactersClick: () -> Unit
 ) {
+    val appColors = LocalAppColors.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(appColors.imageScreenBackground)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         if (isLoading) {
