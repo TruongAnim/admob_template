@@ -103,9 +103,9 @@
     <string name="cancel">Cancel</string>
 
     <!-- Reward Ad Loading -->
-    <string name="showing_ad">Đang hiển thị quảng cáo…</string>
-    <string name="watch_ad_to_earn">Vui lòng xem hết quảng cáo để nhận phần thưởng</string>
-    <string name="close">Đóng</string>
+    <string name="showing_ad">Showing ad…</string>
+    <string name="watch_ad_to_earn">Please watch the entire ad to earn your reward</string>
+    <string name="close">Close</string>
 
     <!-- Character Detail -->
     <string name="set_random_wallpaper_button">SET RANDOM WALLPAPER</string>

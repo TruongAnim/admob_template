@@ -68,5 +68,63 @@
     <string name="cd_no_favorites">즐겨찾기 없음</string>
     <string name="cd_notification_icon">알림 아이콘</string>
     <string name="cd_ad">광고</string>
+    <string name="cd_background">배경</string>
+    <string name="cd_splash_background">스플래시 배경</string>
+    <string name="cd_app_icon">앱 아이콘</string>
+    <string name="cd_close">닫기</string>
+
+    <!-- Notification Permission Bottom Sheet -->
+    <string name="later">나중에</string>
+    <string name="allow_notifications">알림 허용</string>
+    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="dont_miss_notification">알림을 놓치지 마세요</string>
+    <string name="notification_description">알림을 활성화하여 새로운 배경화면, 특별 이벤트 및 독점 혜택을 실시간으로 받아보세요!</string>
+    <string name="allow">허용</string>
+
+    <!-- Onboarding Pages -->
+    <string name="onboarding_page_1_title">순진한\n작은 악마 여동생</string>
+    <string name="onboarding_page_2_title">아름다운 수영 선수와\n연습하기</string>
+    <string name="onboarding_page_3_title">노숙자 소녀에서\n사랑스러운 메이드로</string>
+    <string name="onboarding_page_4_title">여학생의\n평범한 하루</string>
+    <string name="get_started">시작하기</string>
+
+    <!-- Ad Gate -->
+    <string name="unlocking_feature">기능 잠금 해제 중</string>
+    <string name="please_wait">잠시만 기다려주세요…</string>
+
+    <!-- App Resume Ad -->
+    <string name="welcome_back">다시 오신 것을 환영합니다!</string>
+    <string name="loading">로딩 중…</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_ad_notice">이 작업에는 광고가 포함될 수 있습니다…</string>
+
+    <!-- Loading Overlay -->
+    <string name="cancel">취소</string>
+
+    <!-- Reward Ad Loading -->
+    <string name="showing_ad">광고 표시 중…</string>
+    <string name="watch_ad_to_earn">보상을 받으려면 광고를 끝까지 시청해주세요</string>
+    <string name="close">닫기</string>
+
+    <!-- Character Detail -->
+    <string name="set_random_wallpaper_button">랜덤 배경화면 설정</string>
+
+    <!-- Premium Screen -->
+    <string name="crown_emoji">👑</string>
+    <string name="premium_title">Beauty Wallpaper Premium</string>
+    <string name="premium_subtitle">모든 독점 기능에 액세스하세요!</string>
+    <string name="premium_price_format">%1$s / %2$s</string>
+    <string name="continue_button">계속</string>
+    <string name="cancel_anytime">언제든지 취소 가능</string>
+    <string name="terms_of_use">이용 약관</string>
+    <string name="separator">  |  </string>
+
+    <!-- Tap to Zoom Game -->
+    <string name="tap_to_zoom">탭하여 확대</string>
+    <string name="tap_instruction">이미지를 탭하여 확대하세요!</string>
+    <string name="tap_here">👆 여기를 탭하세요</string>
+    <string name="you_win">🎉 승리!</string>
+    <string name="congratulations">축하합니다! 이미지를 성공적으로 확대했습니다!</string>
 </resources>
 

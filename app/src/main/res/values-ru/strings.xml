@@ -68,5 +68,63 @@
     <string name="cd_no_favorites">Нет избранного</string>
     <string name="cd_notification_icon">Значок уведомления</string>
     <string name="cd_ad">Реклама</string>
+    <string name="cd_background">Фон</string>
+    <string name="cd_splash_background">Фон заставки</string>
+    <string name="cd_app_icon">Значок приложения</string>
+    <string name="cd_close">Закрыть</string>
+
+    <!-- Notification Permission Bottom Sheet -->
+    <string name="later">Позже</string>
+    <string name="allow_notifications">Разрешить уведомления</string>
+    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="dont_miss_notification">Не пропустите уведомление</string>
+    <string name="notification_description">Включите уведомления, чтобы получать новые обои, специальные события и эксклюзивные предложения—в момент их появления!</string>
+    <string name="allow">РАЗРЕШИТЬ</string>
+
+    <!-- Onboarding Pages -->
+    <string name="onboarding_page_1_title">Невинная\nмаленькая сестрёнка-дьяволёнок</string>
+    <string name="onboarding_page_2_title">Тренировка с\nкрасивой пловчихой</string>
+    <string name="onboarding_page_3_title">От бездомной девушки\nк милой горничной</string>
+    <string name="onboarding_page_4_title">Обычный день\nшкольницы</string>
+    <string name="get_started">НАЧАТЬ</string>
+
+    <!-- Ad Gate -->
+    <string name="unlocking_feature">Разблокировка функции</string>
+    <string name="please_wait">Пожалуйста, подождите…</string>
+
+    <!-- App Resume Ad -->
+    <string name="welcome_back">С возвращением!</string>
+    <string name="loading">Загрузка…</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_ad_notice">Это действие может содержать рекламу…</string>
+
+    <!-- Loading Overlay -->
+    <string name="cancel">Отмена</string>
+
+    <!-- Reward Ad Loading -->
+    <string name="showing_ad">Показ рекламы…</string>
+    <string name="watch_ad_to_earn">Пожалуйста, просмотрите всю рекламу, чтобы получить награду</string>
+    <string name="close">Закрыть</string>
+
+    <!-- Character Detail -->
+    <string name="set_random_wallpaper_button">УСТАНОВИТЬ СЛУЧАЙНЫЕ ОБОИ</string>
+
+    <!-- Premium Screen -->
+    <string name="crown_emoji">👑</string>
+    <string name="premium_title">Beauty Wallpaper Premium</string>
+    <string name="premium_subtitle">Доступ ко всем эксклюзивным функциям!</string>
+    <string name="premium_price_format">%1$s / %2$s</string>
+    <string name="continue_button">ПРОДОЛЖИТЬ</string>
+    <string name="cancel_anytime">Отменить в любое время</string>
+    <string name="terms_of_use">Условия использования</string>
+    <string name="separator">  |  </string>
+
+    <!-- Tap to Zoom Game -->
+    <string name="tap_to_zoom">Нажмите для увеличения</string>
+    <string name="tap_instruction">Нажмите на изображение, чтобы увеличить!</string>
+    <string name="tap_here">👆 Нажмите здесь</string>
+    <string name="you_win">🎉 Вы выиграли!</string>
+    <string name="congratulations">Поздравляем! Вы успешно увеличили изображение!</string>
 </resources>
 

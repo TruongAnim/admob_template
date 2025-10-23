@@ -68,5 +68,63 @@
     <string name="cd_no_favorites">お気に入りなし</string>
     <string name="cd_notification_icon">通知アイコン</string>
     <string name="cd_ad">広告</string>
+    <string name="cd_background">背景</string>
+    <string name="cd_splash_background">スプラッシュ背景</string>
+    <string name="cd_app_icon">アプリアイコン</string>
+    <string name="cd_close">閉じる</string>
+
+    <!-- Notification Permission Bottom Sheet -->
+    <string name="later">後で</string>
+    <string name="allow_notifications">通知を許可</string>
+    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="dont_miss_notification">通知をお見逃しなく</string>
+    <string name="notification_description">通知を有効にして、新しい壁紙、特別イベント、限定オファーをリアルタイムで受け取りましょう！</string>
+    <string name="allow">許可</string>
+
+    <!-- Onboarding Pages -->
+    <string name="onboarding_page_1_title">無邪気な\n小悪魔妹</string>
+    <string name="onboarding_page_2_title">美しい水泳選手と\n練習</string>
+    <string name="onboarding_page_3_title">ホームレスの少女から\n可愛いメイドへ</string>
+    <string name="onboarding_page_4_title">女子高生の\n典型的な一日</string>
+    <string name="get_started">始める</string>
+
+    <!-- Ad Gate -->
+    <string name="unlocking_feature">機能のロック解除中</string>
+    <string name="please_wait">お待ちください…</string>
+
+    <!-- App Resume Ad -->
+    <string name="welcome_back">おかえりなさい！</string>
+    <string name="loading">読み込み中…</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_ad_notice">このアクションには広告が含まれる場合があります…</string>
+
+    <!-- Loading Overlay -->
+    <string name="cancel">キャンセル</string>
+
+    <!-- Reward Ad Loading -->
+    <string name="showing_ad">広告を表示中…</string>
+    <string name="watch_ad_to_earn">報酬を獲得するには広告を最後までご覧ください</string>
+    <string name="close">閉じる</string>
+
+    <!-- Character Detail -->
+    <string name="set_random_wallpaper_button">ランダム壁紙を設定</string>
+
+    <!-- Premium Screen -->
+    <string name="crown_emoji">👑</string>
+    <string name="premium_title">Beauty Wallpaper Premium</string>
+    <string name="premium_subtitle">すべての限定機能にアクセス！</string>
+    <string name="premium_price_format">%1$s / %2$s</string>
+    <string name="continue_button">続ける</string>
+    <string name="cancel_anytime">いつでもキャンセル可能</string>
+    <string name="terms_of_use">利用規約</string>
+    <string name="separator">  |  </string>
+
+    <!-- Tap to Zoom Game -->
+    <string name="tap_to_zoom">タップしてズーム</string>
+    <string name="tap_instruction">画像をタップしてズームイン！</string>
+    <string name="tap_here">👆 ここをタップ</string>
+    <string name="you_win">🎉 勝利！</string>
+    <string name="congratulations">おめでとうございます！画像のズームインに成功しました！</string>
 </resources>
 

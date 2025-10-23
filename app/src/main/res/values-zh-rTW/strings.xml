@@ -68,5 +68,63 @@
     <string name="cd_no_favorites">沒有收藏</string>
     <string name="cd_notification_icon">通知圖示</string>
     <string name="cd_ad">廣告</string>
+    <string name="cd_background">背景</string>
+    <string name="cd_splash_background">啟動背景</string>
+    <string name="cd_app_icon">應用程式圖示</string>
+    <string name="cd_close">關閉</string>
+
+    <!-- Notification Permission Bottom Sheet -->
+    <string name="later">稍後</string>
+    <string name="allow_notifications">允許通知</string>
+    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="dont_miss_notification">不要錯過通知</string>
+    <string name="notification_description">啟用通知以獲取新桌布、特別活動和獨家優惠——就在它們發生時！</string>
+    <string name="allow">允許</string>
+
+    <!-- Onboarding Pages -->
+    <string name="onboarding_page_1_title">天真無邪的\n小惡魔妹妹</string>
+    <string name="onboarding_page_2_title">與美麗的\n游泳運動員一起練習</string>
+    <string name="onboarding_page_3_title">從流浪女孩\n到可愛女僕</string>
+    <string name="onboarding_page_4_title">女學生的\n典型一天</string>
+    <string name="get_started">開始</string>
+
+    <!-- Ad Gate -->
+    <string name="unlocking_feature">正在解鎖功能</string>
+    <string name="please_wait">請稍候…</string>
+
+    <!-- App Resume Ad -->
+    <string name="welcome_back">歡迎回來！</string>
+    <string name="loading">載入中…</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_ad_notice">此操作可能包含廣告…</string>
+
+    <!-- Loading Overlay -->
+    <string name="cancel">取消</string>
+
+    <!-- Reward Ad Loading -->
+    <string name="showing_ad">正在顯示廣告…</string>
+    <string name="watch_ad_to_earn">請觀看完整廣告以獲得獎勵</string>
+    <string name="close">關閉</string>
+
+    <!-- Character Detail -->
+    <string name="set_random_wallpaper_button">設定隨機桌布</string>
+
+    <!-- Premium Screen -->
+    <string name="crown_emoji">👑</string>
+    <string name="premium_title">Beauty Wallpaper Premium</string>
+    <string name="premium_subtitle">存取所有獨家功能！</string>
+    <string name="premium_price_format">%1$s / %2$s</string>
+    <string name="continue_button">繼續</string>
+    <string name="cancel_anytime">隨時取消</string>
+    <string name="terms_of_use">使用條款</string>
+    <string name="separator">  |  </string>
+
+    <!-- Tap to Zoom Game -->
+    <string name="tap_to_zoom">點擊放大</string>
+    <string name="tap_instruction">點擊圖片放大！</string>
+    <string name="tap_here">👆 點擊這裡</string>
+    <string name="you_win">🎉 你贏了！</string>
+    <string name="congratulations">恭喜！你成功放大了圖片！</string>
 </resources>
 

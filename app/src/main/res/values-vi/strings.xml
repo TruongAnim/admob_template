@@ -68,5 +68,63 @@
     <string name="cd_no_favorites">Không có mục yêu thích</string>
     <string name="cd_notification_icon">Biểu tượng thông báo</string>
     <string name="cd_ad">Quảng cáo</string>
+    <string name="cd_background">Hình nền</string>
+    <string name="cd_splash_background">Hình nền màn hình chờ</string>
+    <string name="cd_app_icon">Biểu tượng ứng dụng</string>
+    <string name="cd_close">Đóng</string>
+
+    <!-- Notification Permission Bottom Sheet -->
+    <string name="later">Để sau</string>
+    <string name="allow_notifications">Cho phép thông báo</string>
+    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="dont_miss_notification">Đừng bỏ lỡ thông báo</string>
+    <string name="notification_description">Bật thông báo để nhận hình nền mới, sự kiện đặc biệt và ưu đãi độc quyền—ngay khi chúng xảy ra!</string>
+    <string name="allow">CHO PHÉP</string>
+
+    <!-- Onboarding Pages -->
+    <string name="onboarding_page_1_title">Cô em gái\nQuỷ nhỏ ngây thơ</string>
+    <string name="onboarding_page_2_title">Luyện tập cùng\nVận động viên bơi lội xinh đẹp</string>
+    <string name="onboarding_page_3_title">Từ cô gái vô gia cư\nđến người hầu đáng yêu</string>
+    <string name="onboarding_page_4_title">Một ngày bình thường\ncủa nữ sinh</string>
+    <string name="get_started">BẮT ĐẦU</string>
+
+    <!-- Ad Gate -->
+    <string name="unlocking_feature">Đang mở khóa tính năng</string>
+    <string name="please_wait">Vui lòng đợi…</string>
+
+    <!-- App Resume Ad -->
+    <string name="welcome_back">Chào mừng trở lại!</string>
+    <string name="loading">Đang tải…</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_ad_notice">Hành động này có thể chứa quảng cáo…</string>
+
+    <!-- Loading Overlay -->
+    <string name="cancel">Hủy</string>
+
+    <!-- Reward Ad Loading -->
+    <string name="showing_ad">Đang hiển thị quảng cáo…</string>
+    <string name="watch_ad_to_earn">Vui lòng xem hết quảng cáo để nhận phần thưởng</string>
+    <string name="close">Đóng</string>
+
+    <!-- Character Detail -->
+    <string name="set_random_wallpaper_button">ĐẶT HÌNH NỀN NGẪU NHIÊN</string>
+
+    <!-- Premium Screen -->
+    <string name="crown_emoji">👑</string>
+    <string name="premium_title">Beauty Wallpaper Premium</string>
+    <string name="premium_subtitle">Truy cập tất cả tính năng độc quyền!</string>
+    <string name="premium_price_format">%1$s / %2$s</string>
+    <string name="continue_button">TIẾP TỤC</string>
+    <string name="cancel_anytime">Hủy bất cứ lúc nào</string>
+    <string name="terms_of_use">Điều khoản sử dụng</string>
+    <string name="separator">  |  </string>
+
+    <!-- Tap to Zoom Game -->
+    <string name="tap_to_zoom">Chạm để phóng to</string>
+    <string name="tap_instruction">Chạm vào hình ảnh để phóng to!</string>
+    <string name="tap_here">👆 Chạm vào đây</string>
+    <string name="you_win">🎉 Bạn thắng!</string>
+    <string name="congratulations">Chúc mừng! Bạn đã phóng to hình ảnh thành công!</string>
 </resources>
 

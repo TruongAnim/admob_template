@@ -68,5 +68,63 @@
     <string name="cd_no_favorites">Keine Favoriten</string>
     <string name="cd_notification_icon">Benachrichtigungssymbol</string>
     <string name="cd_ad">Anzeige</string>
+    <string name="cd_background">Hintergrund</string>
+    <string name="cd_splash_background">Splash-Hintergrund</string>
+    <string name="cd_app_icon">App-Symbol</string>
+    <string name="cd_close">Schließen</string>
+
+    <!-- Notification Permission Bottom Sheet -->
+    <string name="later">Später</string>
+    <string name="allow_notifications">Benachrichtigungen zulassen</string>
+    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="dont_miss_notification">Verpassen Sie keine Benachrichtigung</string>
+    <string name="notification_description">Aktivieren Sie Benachrichtigungen, um neue Hintergrundbilder, besondere Events und exklusive Angebote zu erhalten—genau dann, wenn sie passieren!</string>
+    <string name="allow">ZULASSEN</string>
+
+    <!-- Onboarding Pages -->
+    <string name="onboarding_page_1_title">Die unschuldige\nkleine Teufelsschwester</string>
+    <string name="onboarding_page_2_title">Training mit der\nschönen Schwimmerin</string>
+    <string name="onboarding_page_3_title">Vom obdachlosen Mädchen\nzur liebevollen Magd</string>
+    <string name="onboarding_page_4_title">Ein typischer Tag\neines Schulmädchens</string>
+    <string name="get_started">LOSLEGEN</string>
+
+    <!-- Ad Gate -->
+    <string name="unlocking_feature">Funktion wird freigeschaltet</string>
+    <string name="please_wait">Bitte warten…</string>
+
+    <!-- App Resume Ad -->
+    <string name="welcome_back">Willkommen zurück!</string>
+    <string name="loading">Lädt…</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_ad_notice">Diese Aktion kann Werbung enthalten…</string>
+
+    <!-- Loading Overlay -->
+    <string name="cancel">Abbrechen</string>
+
+    <!-- Reward Ad Loading -->
+    <string name="showing_ad">Anzeige wird angezeigt…</string>
+    <string name="watch_ad_to_earn">Bitte sehen Sie sich die gesamte Anzeige an, um Ihre Belohnung zu erhalten</string>
+    <string name="close">Schließen</string>
+
+    <!-- Character Detail -->
+    <string name="set_random_wallpaper_button">ZUFÄLLIGES HINTERGRUNDBILD FESTLEGEN</string>
+
+    <!-- Premium Screen -->
+    <string name="crown_emoji">👑</string>
+    <string name="premium_title">Beauty Wallpaper Premium</string>
+    <string name="premium_subtitle">Zugriff auf alle exklusiven Funktionen!</string>
+    <string name="premium_price_format">%1$s / %2$s</string>
+    <string name="continue_button">WEITER</string>
+    <string name="cancel_anytime">Jederzeit kündbar</string>
+    <string name="terms_of_use">Nutzungsbedingungen</string>
+    <string name="separator">  |  </string>
+
+    <!-- Tap to Zoom Game -->
+    <string name="tap_to_zoom">Tippen zum Zoomen</string>
+    <string name="tap_instruction">Tippen Sie auf das Bild, um hineinzuzoomen!</string>
+    <string name="tap_here">👆 Hier tippen</string>
+    <string name="you_win">🎉 Sie haben gewonnen!</string>
+    <string name="congratulations">Herzlichen Glückwunsch! Sie haben das Bild erfolgreich vergrößert!</string>
 </resources>
 
