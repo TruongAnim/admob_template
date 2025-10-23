@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,7 +59,7 @@ fun SplashScreen(
         // Background image
         Image(
             painter = painterResource(id = R.drawable.splash_bg),
-            contentDescription = "Splash Background",
+            contentDescription = stringResource(R.string.cd_splash_background),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
@@ -82,7 +83,7 @@ fun SplashScreen(
 
             // Ad notice text
             Text(
-                text = "This action can contain ads...",
+                text = stringResource(R.string.splash_ad_notice),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color.White.copy(alpha = 0.8f),

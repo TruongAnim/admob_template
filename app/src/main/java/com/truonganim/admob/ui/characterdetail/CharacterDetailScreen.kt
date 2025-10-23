@@ -23,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.R
 import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.ui.components.FavoriteOverlayButton
@@ -163,7 +165,7 @@ private fun CharacterDetailContent(
                     if (photos.isNotEmpty() && AppConfig.UI.ENABLE_RANDOM_WALLPAPER_BUTTON) {
                         SetRandomWallpaperButton(
                             imageUrls = photos,
-                            text = "SET RANDOM WALLPAPER",
+                            text = stringResource(R.string.set_random_wallpaper_button),
                             intervalSeconds = 15,
                             gradientColors = GradientPresets.Aurora,
                             modifier = Modifier

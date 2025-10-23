@@ -21,11 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.truonganim.admob.R
 import com.truonganim.admob.ads.native_ads.NativeAdPosition
 import com.truonganim.admob.ads.native_ads.NativeAdView
 import com.truonganim.admob.ui.theme.AdMobBaseTheme
@@ -85,7 +87,7 @@ fun OnboardingScreen(
                 // Last page: Show "Get Started" button
 
                 Text(
-                    text = "GET STARTED",
+                    text = stringResource(R.string.get_started),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier

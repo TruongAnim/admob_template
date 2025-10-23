@@ -15,11 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.truonganim.admob.R
 import com.truonganim.admob.ads.LoadingStatus
 import com.truonganim.admob.ads.RewardAdLoadingState
 import com.truonganim.admob.utils.findActivity
@@ -95,7 +97,7 @@ fun RewardAdLoadingOverlay(
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Close,
-                                            contentDescription = "Close",
+                                            contentDescription = stringResource(R.string.cd_close),
                                             tint = MaterialTheme.colorScheme.onSurface
                                         )
                                     }
@@ -136,14 +138,14 @@ fun RewardAdLoadingOverlay(
                                 
                                 LoadingStatus.SHOWING -> {
                                     Text(
-                                        text = "Đang hiển thị quảng cáo...",
+                                        text = stringResource(R.string.showing_ad),
                                         style = MaterialTheme.typography.bodyLarge,
                                         textAlign = TextAlign.Center,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
 
                                     Text(
-                                        text = "Vui lòng xem hết quảng cáo để nhận phần thưởng",
+                                        text = stringResource(R.string.watch_ad_to_earn),
                                         style = MaterialTheme.typography.bodyMedium,
                                         textAlign = TextAlign.Center,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -155,7 +157,7 @@ fun RewardAdLoadingOverlay(
                                         state.onShow?.invoke(context.findActivity())
                                     }
                                 }
-                                
+
                                 LoadingStatus.ERROR -> {
                                     Icon(
                                         imageVector = Icons.Default.Error,
@@ -163,19 +165,19 @@ fun RewardAdLoadingOverlay(
                                         tint = MaterialTheme.colorScheme.error,
                                         modifier = Modifier.size(48.dp)
                                     )
-                                    
+
                                     Text(
                                         text = state.message,
                                         style = MaterialTheme.typography.bodyLarge,
                                         textAlign = TextAlign.Center,
                                         color = MaterialTheme.colorScheme.error
                                     )
-                                    
+
                                     Button(
                                         onClick = onDismiss,
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        Text("Đóng")
+                                        Text(stringResource(R.string.close))
                                     }
                                 }
                             }

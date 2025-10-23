@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -256,7 +257,7 @@ private fun AdGateScreen(
             if (config.backgroundImageUrl.isNotEmpty()) {
                 Image(
                     painter = rememberAsyncImagePainter(config.backgroundImageUrl),
-                    contentDescription = "Background",
+                    contentDescription = stringResource(R.string.cd_background),
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
@@ -278,7 +279,7 @@ private fun AdGateScreen(
             ) {
                 // Unlocking message
                 Text(
-                    text = "Unlocking Feature",
+                    text = stringResource(R.string.unlocking_feature),
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = if (config.backgroundImageUrl.isNotEmpty()) Color.White else MaterialTheme.colorScheme.onBackground
@@ -299,7 +300,7 @@ private fun AdGateScreen(
 
                 // Loading text
                 Text(
-                    text = "Please wait...",
+                    text = stringResource(R.string.please_wait),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = if (config.backgroundImageUrl.isNotEmpty()) Color.White.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
                     ),
@@ -362,7 +363,7 @@ private fun NativeAdFullScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.cd_close),
                     tint = Color.White,
                     modifier = Modifier.size(24.dp)
                 )

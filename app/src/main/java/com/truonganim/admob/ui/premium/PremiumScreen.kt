@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -78,7 +79,7 @@ fun PremiumScreen(
 
                 // Title
                 Text(
-                    text = "Beauty Wallpaper Premium",
+                    text = stringResource(R.string.premium_title),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -89,7 +90,7 @@ fun PremiumScreen(
 
                 // Subtitle
                 Text(
-                    text = "Access all exclusive features!",
+                    text = stringResource(R.string.premium_subtitle),
                     fontSize = 16.sp,
                     color = Color.White.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center
@@ -200,7 +201,7 @@ private fun CloseButton(onClick: () -> Unit) {
 @Composable
 private fun CrownIcon() {
     Text(
-        text = "👑",
+        text = stringResource(R.string.crown_emoji),
         fontSize = 64.sp
     )
 }
@@ -302,7 +303,7 @@ private fun PlanCard(
             }
 
             Text(
-                text = "${plan.price} / ${plan.period}",
+                text = stringResource(R.string.premium_price_format, plan.price, plan.period),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -330,7 +331,7 @@ fun ContinueButton(
         shape = RoundedCornerShape(28.dp)
     ) {
         Text(
-            text = "CONTINUE",
+            text = stringResource(R.string.continue_button),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
@@ -346,7 +347,7 @@ private fun FooterLinks() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Cancel anytime",
+            text = stringResource(R.string.cancel_anytime),
             fontSize = 12.sp,
             color = Color.White.copy(alpha = 0.6f)
         )
@@ -360,18 +361,18 @@ private fun FooterLinks() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Terms of use",
+            text = stringResource(R.string.terms_of_use),
             fontSize = 12.sp,
             color = Color.White.copy(alpha = 0.6f),
             modifier = Modifier.clickable { /* Handle click */ }
         )
         Text(
-            text = "  |  ",
+            text = stringResource(R.string.separator),
             fontSize = 12.sp,
             color = Color.White.copy(alpha = 0.6f)
         )
         Text(
-            text = "Privacy policy",
+            text = stringResource(R.string.privacy_policy),
             fontSize = 12.sp,
             color = Color.White.copy(alpha = 0.6f),
             modifier = Modifier.clickable { /* Handle click */ }

@@ -13,10 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.R
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.truonganim.admob.data.AppOpenAdConfig
 import com.truonganim.admob.firebase.RemoteConfigKeys
@@ -139,11 +141,11 @@ private fun AppResumeAdScreen(
             if (config.backgroundImageUrl.isNotEmpty()) {
                 Image(
                     painter = rememberAsyncImagePainter(config.backgroundImageUrl),
-                    contentDescription = "Background",
+                    contentDescription = stringResource(R.string.cd_background),
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
-                
+
                 // Dark overlay
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -161,7 +163,7 @@ private fun AppResumeAdScreen(
             ) {
                 // Welcome message
                 Text(
-                    text = "Welcome back!",
+                    text = stringResource(R.string.welcome_back),
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = if (config.backgroundImageUrl.isNotEmpty()) Color.White else MaterialTheme.colorScheme.onBackground
@@ -182,7 +184,7 @@ private fun AppResumeAdScreen(
 
                 // Loading text
                 Text(
-                    text = "Loading...",
+                    text = stringResource(R.string.loading),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = if (config.backgroundImageUrl.isNotEmpty()) Color.White.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onBackground
                     ),

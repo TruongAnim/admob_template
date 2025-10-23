@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,34 +56,34 @@ fun NotificationBanner(
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Notification Icon",
+                    contentDescription = stringResource(R.string.cd_notification_icon),
                     modifier = Modifier.size(40.dp)
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(16.dp))
-            
+
             // Text Content
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Don't Miss Out",
+                    text = stringResource(R.string.dont_miss_out),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Enable alerts for new albums & exclusive images.",
+                    text = stringResource(R.string.enable_alerts),
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 18.sp
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(12.dp))
-            
+
             // Enable Button
             Button(
                 onClick = onEnableClick,
@@ -93,7 +94,7 @@ fun NotificationBanner(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Text(
-                    text = "Enable",
+                    text = stringResource(R.string.enable),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White

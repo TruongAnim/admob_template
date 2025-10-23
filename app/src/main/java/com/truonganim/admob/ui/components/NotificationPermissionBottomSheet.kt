@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -61,7 +62,7 @@ fun NotificationPermissionBottomSheet(
                 // Back Arrow
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                     tint = Color.White,
                     modifier = Modifier
                         .size(24.dp)
@@ -70,7 +71,7 @@ fun NotificationPermissionBottomSheet(
 
                 // Later Text
                 Text(
-                    text = "Later",
+                    text = stringResource(R.string.later),
                     fontSize = 16.sp,
                     color = Color.White.copy(alpha = 0.7f),
                     modifier = Modifier.clickable(onClick = onDismiss)
@@ -81,7 +82,7 @@ fun NotificationPermissionBottomSheet(
 
             // Title
             Text(
-                text = "Allow notifications",
+                text = stringResource(R.string.allow_notifications),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -99,7 +100,7 @@ fun NotificationPermissionBottomSheet(
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "App Icon",
+                    contentDescription = stringResource(R.string.cd_app_icon),
                     modifier = Modifier.size(64.dp)
                 )
             }
@@ -108,7 +109,7 @@ fun NotificationPermissionBottomSheet(
 
             // App Name
             Text(
-                text = "AI Girl Chat: Call & Wallpaper",
+                text = stringResource(R.string.app_name_full),
                 fontSize = 14.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center
@@ -132,7 +133,7 @@ fun NotificationPermissionBottomSheet(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Allow notifications",
+                        text = stringResource(R.string.allow_notifications),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Black
@@ -153,7 +154,7 @@ fun NotificationPermissionBottomSheet(
 
             // Description Title
             Text(
-                text = "Don't miss a notification",
+                text = stringResource(R.string.dont_miss_notification),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -164,7 +165,7 @@ fun NotificationPermissionBottomSheet(
 
             // Description
             Text(
-                text = "Enable notifications to get new wallpapers, special events, and exclusive offers—right when they happen!",
+                text = stringResource(R.string.notification_description),
                 fontSize = 14.sp,
                 color = Color.White.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center,
@@ -185,7 +186,7 @@ fun NotificationPermissionBottomSheet(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "ALLOW",
+                    text = stringResource(R.string.allow),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White

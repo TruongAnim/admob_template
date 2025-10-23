@@ -21,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.R
 import com.truonganim.admob.data.Game
 import com.truonganim.admob.data.GameResult
 import com.truonganim.admob.ui.base.BaseActivity
@@ -103,7 +105,7 @@ private fun TapToZoomGameScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Tap to Zoom",
+                        text = stringResource(R.string.tap_to_zoom),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -136,7 +138,7 @@ private fun TapToZoomGameScreen(
                 // Instructions
                 if (!isZoomed) {
                     Text(
-                        text = "Tap the image to zoom in!",
+                        text = stringResource(R.string.tap_instruction),
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -171,9 +173,9 @@ private fun TapToZoomGameScreen(
 
                 if (!isZoomed) {
                     Spacer(modifier = Modifier.height(32.dp))
-                    
+
                     Text(
-                        text = "👆 Tap here",
+                        text = stringResource(R.string.tap_here),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -188,7 +190,7 @@ private fun TapToZoomGameScreen(
             onDismissRequest = { },
             title = {
                 Text(
-                    text = "🎉 You Win!",
+                    text = stringResource(R.string.you_win),
                     style = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.Bold
                     ),
@@ -198,7 +200,7 @@ private fun TapToZoomGameScreen(
             },
             text = {
                 Text(
-                    text = "Congratulations! You successfully zoomed in the image!",
+                    text = stringResource(R.string.congratulations),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
