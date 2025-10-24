@@ -58,7 +58,7 @@ fun SplashScreen(
     ) {
         // Background image
         Image(
-            painter = painterResource(id = R.drawable.splash_bg),
+            painter = painterResource(id = R.drawable.splash_bg2),
             contentDescription = stringResource(R.string.cd_splash_background),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop

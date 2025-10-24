@@ -172,7 +172,7 @@ private fun FavoritesContent(
                     text = stringResource(R.string.no_favorites_description),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 72.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                 )

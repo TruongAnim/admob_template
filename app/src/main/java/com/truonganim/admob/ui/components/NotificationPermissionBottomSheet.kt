@@ -99,7 +99,7 @@ fun NotificationPermissionBottomSheet(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    painter = painterResource(R.drawable.logo),
                     contentDescription = stringResource(R.string.cd_app_icon),
                     modifier = Modifier.size(64.dp)
                 )

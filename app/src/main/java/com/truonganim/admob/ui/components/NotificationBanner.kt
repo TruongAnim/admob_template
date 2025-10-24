@@ -45,12 +45,13 @@ fun NotificationBanner(
             // Icon
             Box(
                 modifier = Modifier
-                    .size(44.dp)
-                    .background(Color(0xFF211532)),
+                    .size(52.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    painter = painterResource(R.drawable.ic_noti_permission),
                     contentDescription = stringResource(R.string.cd_notification_icon),
                     modifier = Modifier.size(40.dp)
                 )
