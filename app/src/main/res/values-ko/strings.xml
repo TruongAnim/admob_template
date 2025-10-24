@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AdMob Base</string>
+    <string name="app_name">AI Wallpaper</string>
 
     <!-- Bottom Navigation -->
     <string name="nav_albums">앨범</string>
@@ -76,7 +76,7 @@
     <!-- Notification Permission Bottom Sheet -->
     <string name="later">나중에</string>
     <string name="allow_notifications">알림 허용</string>
-    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="app_name_full">AI Wallpaper: Cute Anime Waifu</string>
     <string name="dont_miss_notification">알림을 놓치지 마세요</string>
     <string name="notification_description">알림을 활성화하여 새로운 배경화면, 특별 이벤트 및 독점 혜택을 실시간으로 받아보세요!</string>
     <string name="allow">허용</string>

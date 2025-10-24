@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AdMob Base</string>
+    <string name="app_name">AI Wallpaper</string>
 
     <!-- Bottom Navigation -->
     <string name="nav_albums">相簿</string>
@@ -76,7 +76,7 @@
     <!-- Notification Permission Bottom Sheet -->
     <string name="later">稍後</string>
     <string name="allow_notifications">允許通知</string>
-    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="app_name_full">AI Wallpaper: Cute Anime Waifu</string>
     <string name="dont_miss_notification">不要錯過通知</string>
     <string name="notification_description">啟用通知以獲取新桌布、特別活動和獨家優惠——就在它們發生時！</string>
     <string name="allow">允許</string>

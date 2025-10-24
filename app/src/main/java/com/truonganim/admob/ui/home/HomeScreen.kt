@@ -156,6 +156,14 @@ fun HomeScreen(
                     },
                     onViewAllPhotosClick = {
                         onCharacterClick(AppCharacter.FAVOURITE_PHOTOS_ID)
+                    },
+                    onExploreClick = {
+                        // Navigate to Albums tab
+                        navController.navigate(BottomNavItem.Albums.route) {
+                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 )
             }

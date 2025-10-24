@@ -66,6 +66,7 @@ fun FavoritesScreen(
     onPhotoClick: (String, List<String>) -> Unit = { _, _ -> },
     onViewAllCharactersClick: () -> Unit = {},
     onViewAllPhotosClick: () -> Unit = {},
+    onExploreClick: () -> Unit = {},
     viewModel: FavoritesViewModel = viewModel(
         factory = FavoritesViewModelFactory(LocalContext.current)
     )
@@ -92,7 +93,7 @@ fun FavoritesScreen(
         favoriteAppCharacters = uiState.favoriteAppCharacters,
         favoritePhotos = uiState.favoritePhotos,
         isLoading = uiState.isLoading,
-        onExploreClick = {},
+        onExploreClick = onExploreClick,
         onCharacterClick = { character ->
             val result = viewModel.onCharacterClick(character)
             when (result) {

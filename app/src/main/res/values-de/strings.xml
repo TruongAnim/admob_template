@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AdMob Base</string>
+    <string name="app_name">AI Wallpaper</string>
 
     <!-- Bottom Navigation -->
     <string name="nav_albums">Alben</string>
@@ -76,7 +76,7 @@
     <!-- Notification Permission Bottom Sheet -->
     <string name="later">Später</string>
     <string name="allow_notifications">Benachrichtigungen zulassen</string>
-    <string name="app_name_full">AI Girl Chat: Call &amp; Wallpaper</string>
+    <string name="app_name_full">AI Wallpaper: Cute Anime Waifu</string>
     <string name="dont_miss_notification">Verpassen Sie keine Benachrichtigung</string>
     <string name="notification_description">Aktivieren Sie Benachrichtigungen, um neue Hintergrundbilder, besondere Events und exklusive Angebote zu erhalten—genau dann, wenn sie passieren!</string>
     <string name="allow">ZULASSEN</string>
