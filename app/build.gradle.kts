@@ -41,7 +41,19 @@ android {
     }
 
     buildTypes {
+        debug {
+            // App config
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("boolean", "IS_RELEASE", "false")
+            buildConfigField("boolean", "IS_LITE_MODE", "true")
+        }
+
         release {
+            // App config
+            buildConfigField("boolean", "IS_DEBUG", "false")
+            buildConfigField("boolean", "IS_RELEASE", "true")
+            buildConfigField("boolean", "IS_LITE_MODE", "true")
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

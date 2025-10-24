@@ -24,10 +24,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.truonganim.admob.BuildConfig
 import com.truonganim.admob.R
 import com.truonganim.admob.billing.PremiumHelper
 import com.truonganim.admob.billing.PremiumPreferencesManager
+import com.truonganim.admob.config.AppConfig
 import com.truonganim.admob.firebase.RemoteConfigHelper
+import com.truonganim.admob.firebase.RemoteConfigKeys
 
 /**
  * Settings Screen
@@ -45,10 +48,10 @@ fun SettingsScreen(
     val isPremium by premiumPrefs.isPremium.collectAsState()
 
     val remoteConfig = RemoteConfigHelper.getInstance()
-    val privacyPolicyUrl = remoteConfig.getString(com.truonganim.admob.firebase.RemoteConfigKeys.PRIVACY_POLICY_URL)
-    val feedbackEmail = remoteConfig.getString(com.truonganim.admob.firebase.RemoteConfigKeys.FEEDBACK_EMAIL)
-    val feedbackFormUrl = remoteConfig.getString(com.truonganim.admob.firebase.RemoteConfigKeys.FEEDBACK_FORM_URL)
-    val storeUrl = remoteConfig.getString(com.truonganim.admob.firebase.RemoteConfigKeys.STORE_URL)
+    val privacyPolicyUrl = remoteConfig.getString(RemoteConfigKeys.PRIVACY_POLICY_URL)
+    val feedbackEmail = remoteConfig.getString(RemoteConfigKeys.FEEDBACK_EMAIL)
+    val feedbackFormUrl = remoteConfig.getString(RemoteConfigKeys.FEEDBACK_FORM_URL)
+    val storeUrl = remoteConfig.getString(RemoteConfigKeys.STORE_URL)
 
     SettingsContent(
         uiState = uiState,
@@ -109,9 +112,9 @@ private fun SettingsContent(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Premium Banner / VIP Badge
-        if (isPremium) {
+        if (isPremium && !BuildConfig.IS_LITE_MODE) {
             VipBadge()
-        } else {
+        } else if(!BuildConfig.IS_LITE_MODE) {
             PremiumBanner(onClick = onPremiumClick)
         }
 

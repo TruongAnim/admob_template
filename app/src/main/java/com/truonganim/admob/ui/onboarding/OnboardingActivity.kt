@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
+import com.truonganim.admob.BuildConfig
 import com.truonganim.admob.MainActivity
 import com.truonganim.admob.datastore.PreferencesManager
 import com.truonganim.admob.ui.base.BaseActivity
@@ -24,6 +25,11 @@ class OnboardingActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        if(BuildConfig.IS_LITE_MODE){
+            navigateToMainActivity()
+            return
+        }
         
         setContent {
             AdMobBaseTheme {
@@ -33,7 +39,7 @@ class OnboardingActivity : BaseActivity() {
                 ) {
                     OnboardingScreen(
                         onGetStarted = {
-                            navigateToLanguageScreen()
+                            navigateToMainActivity()
                         }
                     )
                 }
@@ -44,7 +50,7 @@ class OnboardingActivity : BaseActivity() {
     /**
      * Navigate to Main screen and mark onboarding as completed
      */
-    private fun navigateToLanguageScreen() {
+    private fun navigateToMainActivity() {
         lifecycleScope.launch {
             // Mark onboarding as completed
             val preferencesManager = PreferencesManager.getInstance(this@OnboardingActivity)

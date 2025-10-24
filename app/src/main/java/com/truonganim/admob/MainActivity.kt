@@ -17,4 +17,12 @@ class MainActivity : BaseActivity() {
             }
         }
     }
+
+    /**
+     * Disable back button during splash screen
+     */
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        // Do nothing - prevent user from going back during splash
+    }
 }

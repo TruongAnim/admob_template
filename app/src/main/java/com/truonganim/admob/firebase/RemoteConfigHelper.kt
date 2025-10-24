@@ -2,6 +2,7 @@ package com.truonganim.admob.firebase
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
+import com.truonganim.admob.BuildConfig
 import com.truonganim.admob.data.NativeAdConfig
 import kotlinx.coroutines.tasks.await
 
@@ -16,7 +17,7 @@ class RemoteConfigHelper {
     init {
         // Configure Remote Config settings
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600 // 1 hour in production
+            minimumFetchIntervalInSeconds = if(BuildConfig.IS_DEBUG) 60 else 3600
             // For testing, you can set it to 0: minimumFetchIntervalInSeconds = 0
         }
         remoteConfig.setConfigSettingsAsync(configSettings)

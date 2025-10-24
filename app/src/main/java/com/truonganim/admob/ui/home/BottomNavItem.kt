@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.truonganim.admob.BuildConfig
 import com.truonganim.admob.R
 
 /**
@@ -47,7 +48,7 @@ sealed class BottomNavItem(
     )
 
     companion object {
-        val items = listOf(Albums, Favorites, Games, Settings)
+        val items = listOfNotNull(Albums, Favorites, Games.takeIf { !BuildConfig.IS_LITE_MODE }, Settings)
     }
 }
 

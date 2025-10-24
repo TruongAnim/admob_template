@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.truonganim.admob.BuildConfig
 import com.truonganim.admob.R
 import com.truonganim.admob.data.AppCharacter
 import com.truonganim.admob.ui.theme.LocalAppColors
@@ -158,17 +160,18 @@ private fun AlbumDetailTopBar(
         },
         actions = {
             // Only show "UNLOCK ALL" button if not FAVOURITE category
-            if (albumId != "favourite") {
+            if (albumId != "favourite" && !BuildConfig.IS_LITE_MODE) {
                 Button(
                     onClick = onUnlockAllClick,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFF9800) // Orange
+                        containerColor = MaterialTheme.colorScheme.primary
                     ),
                     shape = RoundedCornerShape(100.dp),
                     contentPadding = PaddingValues(
-                        horizontal = 14.dp
+                        horizontal = 12.dp,
+                        vertical = 2.dp
                     ),
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = 8.dp).heightIn(min = 28.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.unlock_all),

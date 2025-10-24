@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
+import com.truonganim.admob.BuildConfig
 import com.truonganim.admob.MainActivity
 import com.truonganim.admob.ui.base.BaseActivity
 import com.truonganim.admob.ui.onboarding.OnboardingActivity

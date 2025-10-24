@@ -67,7 +67,7 @@ object AppConfig {
         const val FORCE_DARK_MODE = false
         const val FORCE_UNLOCK = true
         const val SHOW_CHARACTER_NAME = true
-        const val ENABLE_RANDOM_WALLPAPER_BUTTON = true
+        const val ENABLE_RANDOM_WALLPAPER_BUTTON = false
     }
 
     object GAME {
