@@ -25,6 +25,9 @@ object RemoteConfigKeys {
     // Ad Gate config (JSON format)
     const val AD_GATE_CONFIG = "ad_gate_config"
 
+    // Native Ads config (JSON format)
+    const val NATIVE_ADS_CONFIG = "native_ads_config"
+
     // Album data (character data - legacy name)
     const val CHARACTERS_DATA = "characters_data"
 

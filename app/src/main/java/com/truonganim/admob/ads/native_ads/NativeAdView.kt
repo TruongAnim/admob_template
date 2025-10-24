@@ -22,12 +22,19 @@ import com.truonganim.admob.R
  * Displays a native ad using AndroidView
  * Observes StateFlow from NativeAdManager to automatically update when ad is loaded
  * Shows skeleton loading while ad is being loaded
+ * Returns nothing if position is disabled in remote config
  */
 @Composable
 fun NativeAdView(
     position: NativeAdPosition,
     modifier: Modifier = Modifier
 ) {
+    // Check if position is enabled in remote config
+    if (!NativeAdHelper.isPositionEnabled(position)) {
+        println("🚫 NativeAdView for ${position.name} is disabled in remote config - not showing")
+        return
+    }
+
     val context = LocalContext.current
     val adManager = remember { NativeAdManager.getInstance() }
 
@@ -122,7 +129,7 @@ private fun populateNativeAdView(
 fun PreloadNativeAd(position: NativeAdPosition) {
     val context = LocalContext.current
     val adManager = remember { NativeAdManager.getInstance() }
-    
+
     DisposableEffect(position) {
         adManager.preloadAd(context, position)
         onDispose { }

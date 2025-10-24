@@ -30,28 +30,23 @@ fun NotificationBanner(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable(onClick = onEnableClick),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(0.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Icon
             Box(
                 modifier = Modifier
-                    .size(56.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFFFA726)),
+                    .size(44.dp)
+                    .background(Color(0xFF211532)),
                 contentAlignment = Alignment.Center
             ) {
                 Image(

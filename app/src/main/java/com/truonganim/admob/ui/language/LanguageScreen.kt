@@ -182,7 +182,7 @@ fun LanguageScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = stringResource(R.string.downloading_images),
+                        text = stringResource(R.string.loading),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )

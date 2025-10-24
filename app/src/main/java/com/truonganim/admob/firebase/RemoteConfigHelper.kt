@@ -2,6 +2,7 @@ package com.truonganim.admob.firebase
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
+import com.truonganim.admob.data.NativeAdConfig
 import kotlinx.coroutines.tasks.await
 
 /**
@@ -41,6 +42,7 @@ class RemoteConfigHelper {
             RemoteConfigKeys.ALBUMS_DATA to "[]", // Empty array as default (albums list)
             RemoteConfigKeys.GAMES_DATA to """[{"id":"tap_to_zoom","name":"Tap to Zoom","description":"Tap the image to zoom in and win!","thumbnail_url":"https://picsum.photos/400/200?random=1","ads_required":0,"input_images":["https://picsum.photos/800/600?random=100"],"activity_type":"tap_to_zoom","is_unlocked":true}]""", // Default games data
             RemoteConfigKeys.SHOW_GAME_ALBUM to false, // Default: hide game album in Albums tab
+            RemoteConfigKeys.NATIVE_ADS_CONFIG to NativeAdConfig.getDefault().toJson(), // Default: all native ads enabled
             RemoteConfigKeys.PRIVACY_POLICY_URL to "https://www.example.com/privacy",
             RemoteConfigKeys.FEEDBACK_EMAIL to "feedback@example.com",
             RemoteConfigKeys.FEEDBACK_FORM_URL to "https://forms.google.com/your-form-id",

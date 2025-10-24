@@ -36,6 +36,12 @@ class NativeAdManager private constructor() {
      * This should be called early (e.g., in Application.onCreate or Activity.onCreate)
      */
     fun preloadAd(context: Context, position: NativeAdPosition) {
+        // Check if position is enabled in remote config
+        if (!NativeAdHelper.isPositionEnabled(position)) {
+            println("🚫 Native ad for ${position.name} is disabled in remote config")
+            return
+        }
+
         // Get or create StateFlow for this position
         val stateFlow = adStateFlows.getOrPut(position) {
             MutableStateFlow(null)
@@ -67,6 +73,12 @@ class NativeAdManager private constructor() {
      * This will trigger the StateFlow to emit the ad when loaded
      */
     fun loadAd(context: Context, position: NativeAdPosition) {
+        // Check if position is enabled in remote config
+        if (!NativeAdHelper.isPositionEnabled(position)) {
+            println("🚫 Native ad for ${position.name} is disabled in remote config")
+            return
+        }
+
         // Get or create StateFlow for this position
         val stateFlow = adStateFlows.getOrPut(position) {
             MutableStateFlow(null)
@@ -129,7 +141,7 @@ class NativeAdManager private constructor() {
         clearAllAds()
         adStateFlows.clear()
     }
-    
+
     companion object {
         @Volatile
         private var instance: NativeAdManager? = null
