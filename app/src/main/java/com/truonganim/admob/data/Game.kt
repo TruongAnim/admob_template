@@ -61,9 +61,9 @@ data class Game(
          */
         private fun getActivityClass(activityType: String): Class<out Activity> {
             return when (activityType) {
-                "tap_to_zoom" -> com.truonganim.admob.games.taptozoom.TapToZoomGameActivity::class.java
+//                "tap_to_zoom" -> com.truonganim.admob.games.taptozoom.TapToZoomGameActivity::class.java
                 // Add more game types here as they are created
-                else -> com.truonganim.admob.games.taptozoom.TapToZoomGameActivity::class.java // Default
+                else -> com.truonganim.admob.games.imagepuzzle.ImagePuzzleGameActivity::class.java // Default
             }
         }
 
