@@ -76,6 +76,13 @@
             android:theme="@style/Theme.AdMobBase">
         </activity>
 
+        <activity
+            android:name=".games.imagepuzzle.ImagePuzzleGameActivity"
+            android:exported="false"
+            android:label="Tap to Zoom"
+            android:theme="@style/Theme.AdMobBase">
+        </activity>
+
         <!-- App Resume Ad Activity -->
         <activity
             android:name=".ads.AppResumeAdActivity"
